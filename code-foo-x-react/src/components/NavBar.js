@@ -19,7 +19,7 @@ loginButton: {
     fontSize: "1em"
 },
 image: {
-    height: "4vw"
+    width: "12.5%"
 }
 
 }));
@@ -29,7 +29,7 @@ export default function NavBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" jus>
+      <AppBar position="static">
             <Toolbar>
                 <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                     <MenuIcon />
