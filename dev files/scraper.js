@@ -151,18 +151,18 @@ function calculateQuestsWithHighestReturns() {
         pdf.getPage(PDF_PAGE).then(function (page) {
             //wait until page is ready to be read
             page.getTextContent().then(function (textContent) {
-                // let quests = [];
+                //let quests = [];
 
-                // //textContent contains information about the PDF's text data
-                // //if we access textContent.items we'll get a bunch of objects
-                // //that contain information about the PDF's text objects
-                // //including the value of the text which we access by doing
-                // //textContent.items[item].str. See the pdf.js docs for more
-                // //info: https://mozilla.github.io/pdf.js/examples/index.html#interactive-examples
+                //textContent contains information about the PDF's text data
+                //if we access textContent.items we'll get a bunch of objects
+                //that contain information about the PDF's text objects
+                //including the value of the text which we access by doing
+                //textContent.items[item].str. See the pdf.js docs for more
+                //info: https://mozilla.github.io/pdf.js/examples/index.html#interactive-examples
 
-                // //This for loop extracts data from the PDF a row at a time,
-                // //creates a quest object from it, and appends the quest
-                // //into an array which holds all the quests
+                //This for loop extracts data from the PDF a row at a time,
+                //creates a quest object from it, and appends the quest
+                //into an array which holds all the quests
                 // for (let index = NUMBER_OF_PDF_COLUMNS; index < textContent.items.length; index = index + 7) {
                 //     let quest = {
                 //         "quest": String(textContent.items[index].str), //quest name (converted to string just in case)
@@ -178,62 +178,44 @@ function calculateQuestsWithHighestReturns() {
                     {
                       "quest": "A",
                       "start_date": 1,
-                      "end_date": 2,
-                      "reward": 2
+                      "end_date": 3,
+                      "reward": 1
                     },
                     {
                         "quest": "B",
-                        "start_date": 1,
-                        "end_date": 2,
-                        "reward": 3
+                        "start_date": 3,
+                        "end_date": 4,
+                        "reward": 2
                       },
                       {
                         "quest": "C",
-                        "start_date": 2,
-                        "end_date": 4,
-                        "reward": 5
+                        "start_date": 4,
+                        "end_date": 6,
+                        "reward": 1
                       },
                       {
                         "quest": "D",
-                        "start_date": 4,
-                        "end_date": 6,
-                        "reward": 10
+                        "start_date": 3,
+                        "end_date": 5,
+                        "reward": 4
                       },
                       {
                         "quest": "E",
                         "start_date": 5,
                         "end_date": 6,
-                        "reward": 2
+                        "reward": 1
                       },
                       {
                         "quest": "F",
-                        "start_date": 5,
+                        "start_date": 6,
                         "end_date": 8,
                         "reward": 1
                       },
                       {
                         "quest": "G",
-                        "start_date": 7,
-                        "end_date": 8,
-                        "reward": 2
-                      },
-                      {
-                        "quest": "H",
                         "start_date": 8,
                         "end_date": 9,
-                        "reward": 2
-                      },
-                      {
-                        "quest": "I",
-                        "start_date": 8,
-                        "end_date": 11,
-                        "reward": 3
-                      },
-                      {
-                        "quest": "J",
-                        "start_date": 10,
-                        "end_date": 11,
-                        "reward": 5
+                        "reward": 1
                       }
 
                   ]
