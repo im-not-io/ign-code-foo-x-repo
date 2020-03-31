@@ -137,7 +137,7 @@ class BarChart extends Component {
     svg.append('defs').append('marker')
         .attr('id', 'arrowhead')
         .attr('viewBox', '-0 -5 10 10')
-        .attr('refX',25)
+        .attr('refX',15)
         .attr('refY', 0)
         .attr('orient','auto')
         .attr('markerWidth',10)
