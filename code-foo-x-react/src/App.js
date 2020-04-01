@@ -30,7 +30,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <NavBar />
-      <BarChart data={[5,10,1,3,20,5]} width={1000} height={500}/>
+      <BarChart data={[5,10,1,3,20,5]} width={300} height={500}/>
     </ThemeProvider>
   );
 }

@@ -27,13 +27,13 @@ class BarChart extends Component {
         
     var w = 1000;
     var h = 600;
-    var linkDistance=200;
+    var linkDistance=250;
 
 
     var dataset = {
 
     nodes: [
-    {name: "Adam", fx: 50, fy: 200},
+    {name: "Adam", fx: 50, fy: 100},
     {name: "Bob"},
     {name: "Carrie"},
     {name: "James"},
@@ -42,25 +42,41 @@ class BarChart extends Component {
     {name: "A"},
     {name: "B"},
     {name: "C"},
-    {name: "D", fx: 900, fy: 200}
+    {name: "D"},
+    {name: "E", fx: 970, fy: 100},
+
     ],
     edges: [
-    {source: "Adam", target: "Bob", label: "This is a label"},
-    {source: "Bob", target: "Carrie", label: "This is another"},
-    {source: "Carrie", target: "James", label: "This is another"},
-    {source: "Carrie", target: "Rolly", label: "This is another"},
-    {source: "James", target: "Rolly", label: "Test"},
-    {source: "Rolly", target: "End", label: "Test"},
-    {source: "End", target: "A", label: "Test"},
-    {source: "End", target: "B", label: "Test"},
-    {source: "A", target: "B", label: "Test"},
-    {source: "B", target: "C", label: "Test"},
-    {source: "C", target: "D", label: "Test"},
+    {source: "Adam", target: "Bob", label: "200"},
+    {source: "Bob", target: "Carrie", label: "500"},
+    {source: "Carrie", target: "James", label: "100"},
+    {source: "Carrie", target: "Rolly", label: "200"},
+    {source: "James", target: "Rolly", label: "2100"},
+    {source: "Rolly", target: "End", label: "432"},
+    {source: "End", target: "A", label: "200"},
+    {source: "End", target: "B", label: "150"},
+    {source: "B", target: "C", label: "220"},
+    {source: "C", target: "D", label: "100"},
+    {source: "D", target: "E", label: "50"}
+
     ]
     };
 
  
-    var svg = d3.select("#mySvg");
+    var svg = d3.select("#mySvg")
+    
+    let g = svg.append("g")
+    .attr("cursor", "grab");
+
+    svg.call(d3.zoom()
+    .extent([[0, 0], [this.props.width, this.props.height]])
+    .scaleExtent([1, 8])
+    .on("zoom", zoomed));
+
+    function zoomed() {
+        g.attr("transform", d3.event.transform);
+      }
+
 
     var force = d3.forceSimulation()
         .nodes(dataset.nodes)
@@ -71,73 +87,99 @@ class BarChart extends Component {
 
  
 
-    var edges = svg.append("g")
+    var edges = g.append("g")
         .attr("class", "links")
         .selectAll("line")
         .data(dataset.edges)
         .enter()
         .append("line")
-        .style("stroke","black")
-        .style("pointer-events", "none");
+        .style("stroke","#adadad");
       
 
-    
-    var nodes = svg.append("g")
+
+
+
+    var nodelabels = g.selectAll(".nodelabel") 
+       .data(dataset.nodes)
+       .enter()
+       .append("text")
+        .attr("x", function(d){return d.x; })
+        .attr("y", function(d){return d.y; })
+        .attr("class", "nodelabel")
+       .text(function(d){return d.name;})
+       .attr("font-size",15)
+       .attr("fill", "#4a4a4a")
+       .attr("font-family", "Verdana, sans-serif")
+       .attr("font-weight", "bold");
+
+       
+
+    var edgepaths = g.append("g")
+    .attr("class", "edgepath")
+    .selectAll(".edgepath")
+        .data(dataset.edges)
+        .enter()
+        .append('path')
+        .attr('d', function(d) {return 'M '+d.source.x+' '+d.source.y+' L '+ d.target.x +' '+d.target.y})
+        .attr('class', 'edgepath')
+        .attr('fill-opacity', 0)
+        .attr('stroke-opacity', 0)
+        .attr('marker-end','url(#arrowhead)')
+        .attr('id', function(d,i) {return 'edgepath'+i})
+        
+
+    var edgelabels = g.selectAll(".edgelabel")
+        .data(dataset.edges)
+        .enter()
+        .append('text')
+        .attr("text-anchor", "middle")
+        .style("pointer-events", "none")
+        .attr("class","edgelabel")
+        .attr("id", function(d,i){return 'edgelabel'+i})
+        .attr("dx",0)
+        .attr("dy", 0)
+        .attr("font-size",10)
+        .attr("fill", "#adadad")
+        .attr("font-family", "Verdana, sans-serif")
+        .attr("font-weight", "bold");
+
+        var drag_handler = d3.drag()
+        .on("drag", function(d) {
+              d3.select(this)
+                .attr("cx", d.x = d3.event.x  )
+                .attr("cy", d.y = d3.event.y  )
+                force.restart();
+                }); 
+
+
+        var nodes = g.append("g")
         .attr("class", "nodes")
     .selectAll("circle")
       .data(dataset.nodes)
       .enter()
       .append("circle")
-      .attr("r", 5)
+      .attr("r", 7)
       .attr("cx", 100)
       .attr("cy", 100)
-      .attr("fill", "red");
-      //.call(force.drag)
+      .attr("fill", "#adadad");
+
+      drag_handler(nodes);   
 
 
-    var nodelabels = svg.selectAll(".nodelabel") 
-       .data(dataset.nodes)
-       .enter()
-       .append("text")
-        .attr("x", function(d){return d.x; })
-        .attr("y", function(d){return d.y;})
-        .attr("class", "nodelabel")
-       .text(function(d){return d.name;});
-
-    var edgepaths = svg.selectAll(".edgepath")
-        .data(dataset.edges)
-        .enter()
-        .append('path')
-        .attr('class', 'edgepath')
-        .attr('fill-opacity', 0)
-        .attr('stroke-opacity', 0)
-        .attr('fill', 'blue')
-        .attr('stroke','red')
-        .attr('marker-end','url(#arrowhead)')
-        .attr('id', function(d,i) {return 'edgepath'+i});
-
-    var edgelabels = svg.selectAll(".edgelabel")
-        .data(dataset.edges)
-        .enter()
-        .append('text')
-        .style("pointer-events", "none")
-        .attr("class","edgelabel")
-        .attr("id", function(d,i){return 'edgelabel'+i})
-        .attr("dx",80)
-        .attr("dy", 0)
-        .attr("font-size",10)
-        .attr("fill", "#aaa");
 
     edgelabels.append('textPath')
-        .attr('xlink:href',function(d,i) {return '#edgepath'+i})
-        .style("pointer-events", "none")
-        .text(function(d,i){console.log("d", d); return d.label});
+        .attr('href',function(d,i) {return '#edgepath'+i})
+        .style("pointer-events", "none")   
+        .text(function(d,i){console.log("d", d); return d.label})
+        .attr("class","edgelabel")
+        .attr("startOffset", "50%")
+
 
 
     svg.append('defs').append('marker')
         .attr('id', 'arrowhead')
         .attr('viewBox', '-0 -5 10 10')
-        .attr('refX',15)
+        .attr('refX',16)
         .attr('refY', 0)
         .attr('orient','auto')
         .attr('markerWidth',10)
@@ -145,8 +187,10 @@ class BarChart extends Component {
         .attr('xoverflow','visible')
         .append('svg:path')
             .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
-            .attr('fill', '#ccc')
-            .attr('stroke','#ccc');
+            .attr('fill', '#adadad')
+            .attr('stroke','#adadad')
+            .attr("font-family", "Verdana, sans-serif")
+            .attr("font-weight", "bold");
      
 
             force.on("tick", function(){
@@ -162,8 +206,8 @@ class BarChart extends Component {
                 edges.attr("x2", function(d){return d.target.x;});
                 edges.attr("y2", function(d){return d.target.y;});
         
-                nodelabels.attr("x", function(d) { return d.x; }) 
-                          .attr("y", function(d) { return d.y; });
+                nodelabels.attr("x", function(d) { return d.x + 10; }) 
+                          .attr("y", function(d) { return d.y + 5; });
         
                 edgepaths.attr('d', function(d) { 
                     var path='M '+d.source.x+' '+d.source.y+' L '+ d.target.x +' '+d.target.y;
@@ -172,6 +216,7 @@ class BarChart extends Component {
                 edgelabels.attr('transform',function(d,i){
                     if (d.target.x < d.source.x){
                         let bbox = this.getBBox();
+
                         let rx = bbox.x+bbox.width/2;
                         let ry = bbox.y+bbox.height/2;
                         return 'rotate(180 '+rx+' '+ry+')';
