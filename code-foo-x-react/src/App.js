@@ -5,32 +5,46 @@ import NavBar from './components/NavBar';
 import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import { orange } from '@material-ui/core/colors';
 import * as d3 from "d3";
-import BarChart from './components/BarChart';
+import LinksQuestCalculatorPage from './components/LinksQuestCalculatorPage'
+
+
+const sizes = {
+  mobile: 600,
+  mobileContentLength: 1000
+}
+
 
 const theme = createMuiTheme({
   palette: {
     primary: {
-       light: '#fff',
-       main: '#BF1313',
-       dark: '#000'
+      light: '#fff',
+      main: '#BF1313',
+      dark: '#000'
     },
     secondary: {
-      main: '#f44336',
+      main: '#adadad',
+      dark: '#4a4a4a'
     },
- }
+ },
+ typography: {
+  fontFamily: "Verdana, sans-serif"
+},
 });
 
-function setupD3() {
+function getIdealContainerWidth() {
 
+  return window.innerWidth < sizes.mobile ? sizes.mobileContentLength : window.innerWidth;
+}
+
+function getIdealContainerHeight() {
+  return (window.innerHeight/3)*2;
 }
 
 function App() {
 
-  setupD3();
   return (
     <ThemeProvider theme={theme}>
-      <NavBar />
-      <BarChart data={[5,10,1,3,20,5]} width={300} height={500}/>
+      <LinksQuestCalculatorPage/>
     </ThemeProvider>
   );
 }

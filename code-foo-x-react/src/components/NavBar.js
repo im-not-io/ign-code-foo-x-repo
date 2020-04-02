@@ -7,21 +7,23 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
-spacer: {
-    flexGrow: 1
-},
-loginButton: {
-    fontSize: "1em"
-},
-image: {
-    width: "12.5%"
-}
-
+  spacer: {
+      flexGrow: 1
+  },
+  loginButton: {
+      fontSize: "1em",
+      textTransform: "none",
+      fontWeight: "bold"
+  },
+  image: {
+    height: "2em"
+  }
 }));
 
 export default function NavBar() {
@@ -34,7 +36,9 @@ export default function NavBar() {
                 <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                     <MenuIcon />
                 </IconButton>
-            <img src="https://firebasestorage.googleapis.com/v0/b/code-foo-x-firebase.appspot.com/o/ign-code-foo-logo-nick-edit-2020-07-29.svg?alt=media&token=933b0b60-be20-451f-bd52-15850e3b2c9c" className={classes.image}></img>
+                <Box>
+                  <img src="https://firebasestorage.googleapis.com/v0/b/code-foo-x-firebase.appspot.com/o/ign-code-foo-logo-nick-edit-2020-07-29.svg?alt=media&token=933b0b60-be20-451f-bd52-15850e3b2c9c" className={classes.image}></img>
+                </Box>
             <div className={classes.spacer}></div>
             <Button className={classes.loginButton} color="inherit">Sign in</Button>
             </Toolbar>
