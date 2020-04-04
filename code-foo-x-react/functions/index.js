@@ -217,6 +217,7 @@ exports.calulateBestQuests = functions.https.onRequest((req, resOther) => {
         
         
                             let result = findOptimalQuestSequence(quests);
+                            resOther.setHeader('Content-Type', 'application/json');
                             resOther.status(200).send(JSON.stringify(result));
                             
         
