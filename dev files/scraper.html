@@ -1,51 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import NavBar from './components/NavBar';
-import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import { orange } from '@material-ui/core/colors';
-import * as d3 from "d3";
-import LinksQuestCalculatorPage from './components/LinksQuestCalculatorPage';
-import pdfjsLib from 'pdfjs-dist';
-import * as glib from 'graphlib';
-import { useEffect } from 'react';
+<!doctype html>
+<html class="no-js" lang="">
 
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
 
-const sizes = {
-  mobile: 600,
-  mobileContentLength: 1000
-}
+  <meta name="theme-color" content="#fafafa">
+  <script src="https://dagrejs.github.io/project/graphlib/latest/graphlib.js"></script>
+  <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script></head>
+  <script>
+    var pdfjsLib = window['pdfjs-dist/build/pdf'];
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.js';
 
+    
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      light: '#fff',
-      main: '#BF1313',
-      dark: '#000'
-    },
-    secondary: {
-      main: '#adadad',
-      dark: '#4a4a4a'
-    },
- },
- typography: {
-  fontFamily: "Verdana, sans-serif"
-},
-});
-
-function getIdealContainerWidth() {
-
-  return window.innerWidth < sizes.mobile ? sizes.mobileContentLength : window.innerWidth;
-}
-
-function getIdealContainerHeight() {
-  return (window.innerHeight/3)*2;
-}
-
-
-var Graph = glib.Graph;
+var Graph = new graphlib.Graph();
 
 function sortByStartDate(list) {
     return (list.sort(function(a, b) {
@@ -125,6 +100,7 @@ function removeAndReturnMaxDistance(distances) {
 
 function findMaximumPath(graph, pathEndVertex, distances) {
 
+    console.log("ready to calculate max path");
     let mostExpensivePath = [pathEndVertex];
     let currentVertex = graph.node(pathEndVertex);
 
@@ -181,16 +157,10 @@ function findOptimalQuestSequence(quests) {
 
 
 function calculateQuestsWithHighestReturns() {
-  console.log("ready to calculate quests");
-
     const PDF_URL = 'https://media.ignimgs.com/code-foo/2020/files/quests_for_question.pdf'
     const PDF_PAGE = 1;
     const NUMBER_OF_PDF_COLUMNS = 7
 
-
-    pdfjsLib.GlobalWorkerOptions.workerSrc =
-  "../../node_modules/pdfjs-dist/build/pdf.worker.js";
-  
     //This function downloads t he PDF from the IGN website
     //and parses it so we can extract data from
     let loadingTask = pdfjsLib.getDocument(PDF_URL);
@@ -199,7 +169,7 @@ function calculateQuestsWithHighestReturns() {
         pdf.getPage(PDF_PAGE).then(function (page) {
             //wait until page is ready to be read
             page.getTextContent().then(function (textContent) {
-                let quests = [];
+                //let quests = [];
 
                 //textContent contains information about the PDF's text data
                 //if we access textContent.items we'll get a bunch of objects
@@ -211,15 +181,63 @@ function calculateQuestsWithHighestReturns() {
                 //This for loop extracts data from the PDF a row at a time,
                 //creates a quest object from it, and appends the quest
                 //into an array which holds all the quests
-                for (let index = NUMBER_OF_PDF_COLUMNS; index < textContent.items.length; index = index + 7) {
-                    let quest = {
-                        "quest": String(textContent.items[index].str), //quest name (converted to string just in case)
-                        "start_date": parseInt(textContent.items[index + 1].str), //quest start date (converted to number)
-                        "end_date": parseInt(textContent.items[index + 1].str) + parseInt(textContent.items[index + 2].str), //quest duration
-                        "reward": parseInt(textContent.items[index + 3].str) //quest reward (converted to number)
-                    }
-                    quests.push(quest);
-                }
+                // for (let index = NUMBER_OF_PDF_COLUMNS; index < textContent.items.length; index = index + 7) {
+                //     let quest = {
+                //         "quest": String(textContent.items[index].str), //quest name (converted to string just in case)
+                //         "start_date": parseInt(textContent.items[index + 1].str), //quest start date (converted to number)
+                //         "end_date": parseInt(textContent.items[index + 1].str) + parseInt(textContent.items[index + 2].str), //quest duration
+                //         "reward": parseInt(textContent.items[index + 3].str) //quest reward (converted to number)
+                //     }
+                //     quests.push(quest);
+                // }
+
+                //FOR DEBUG ONLY/////////////
+                let quests = [
+                    {
+                      "quest": "A",
+                      "start_date": 1,
+                      "end_date": 3,
+                      "reward": 1
+                    },
+                    {
+                        "quest": "B",
+                        "start_date": 3,
+                        "end_date": 4,
+                        "reward": 2
+                      },
+                      {
+                        "quest": "C",
+                        "start_date": 4,
+                        "end_date": 6,
+                        "reward": 1
+                      },
+                      {
+                        "quest": "D",
+                        "start_date": 3,
+                        "end_date": 5,
+                        "reward": 4
+                      },
+                      {
+                        "quest": "E",
+                        "start_date": 5,
+                        "end_date": 6,
+                        "reward": 1
+                      },
+                      {
+                        "quest": "F",
+                        "start_date": 6,
+                        "end_date": 8,
+                        "reward": 1
+                      },
+                      {
+                        "quest": "G",
+                        "start_date": 8,
+                        "end_date": 9,
+                        "reward": 1
+                      }
+
+                  ]
+                  /////////////////////////////
                                   
 
                 let result = findOptimalQuestSequence(quests);
@@ -228,16 +246,61 @@ function calculateQuestsWithHighestReturns() {
             }).catch(err => console.log(err));
         }).catch(err => console.log(err));
     }).catch(err => console.log(err));
-};
-
-function App() {
-  useEffect(() => calculateQuestsWithHighestReturns());
-
-  return (
-    <ThemeProvider theme={theme}>
-      <LinksQuestCalculatorPage/>
-    </ThemeProvider>
-  );
 }
 
-export default App;
+calculateQuestsWithHighestReturns();
+
+// //TODO: Add assertions to assure the data file is correct.
+
+// var glib = require("graphlib");
+// var Graph = glib.Graph;
+
+// // Create a new directed graph
+// var g = new Graph({ directed: true });
+
+// g.setEdge("A","B",-10);
+// g.setEdge("A","C",-5);
+// g.setEdge("B","D",-10);
+// g.setEdge("C","D",-17);
+// g.setEdge("D","F",-5);
+
+// function weight(e) { return g.edge(e); }
+
+// let result = glib.alg.floydWarshall(g, weight);
+// // => { A: { distance: 0 },
+// //      B: { distance: 6, predecessor: 'C' },
+// //      C: { distance: 4, predecessor: 'A' },
+// //      D: { distance: 2, predecessor: 'A' },
+// //      E: { distance: 8, predecessor: 'F' },
+// //      F: { distance: 4, predecessor: 'D' } }
+
+/*
+Algorithm:
+
+n = number of quests
+
+-Loop through each quest
+    -Create a vertex for the quest
+    -Look backwards to find the first quest
+    with a start date before the current quest ends
+    then link the vertex to that quest
+    (if any) - O(n - 1)
+    -Look forward to find the first quest
+    with an end date after the current quest ends 
+    then link the vertex to that quest
+    (if any) - O(n - 1)
+
+
+*/
+  </script>
+
+<body>
+  <!--[if IE]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+  <![endif]-->
+
+
+
+</body>
+
+</html>

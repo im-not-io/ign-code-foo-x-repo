@@ -163,7 +163,7 @@ function createBarChart(props) {
         edgelabels.append('textPath')
             .attr('href',function(d,i) {return '#edgepath'+i})
             .style("pointer-events", "none")   
-            .text(function(d,i){console.log("d", d); return d.label})
+            .text(function(d,i){return d.label})
             .attr("class","edgelabel")
             .attr("startOffset", "50%")
     

@@ -8,11 +8,15 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "crawler-request": "^1.2.2",
     "d3": "^5.15.0",
     "d3-drag": "^1.2.5",
     "d3-scale": "^3.2.1",
     "d3-selection-multi": "^1.0.1",
     "firebase": "^7.13.1",
+    "graphlib": "^2.1.8",
+    "pdf2json": "^1.2.0",
+    "pdfreader": "^1.0.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1"
@@ -37,5 +41,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "pdfjs-dist": "^2.3.200"
   }
 }

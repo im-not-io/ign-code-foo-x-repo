@@ -40,7 +40,7 @@ export default function NavBar() {
                   <img src="https://firebasestorage.googleapis.com/v0/b/code-foo-x-firebase.appspot.com/o/ign-code-foo-logo-nick-edit-2020-07-29.svg?alt=media&token=933b0b60-be20-451f-bd52-15850e3b2c9c" className={classes.image}></img>
                 </Box>
             <div className={classes.spacer}></div>
-            <Button className={classes.loginButton} color="inherit">Sign in</Button>
+            <Button className={classes.loginButton} color="inherit">Create a poll</Button>
             </Toolbar>
       </AppBar>
     </div>

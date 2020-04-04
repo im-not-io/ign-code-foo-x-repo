@@ -1,54 +1,11 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import NavBar from './components/NavBar';
-import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import { orange } from '@material-ui/core/colors';
-import * as d3 from "d3";
-import LinksQuestCalculatorPage from './components/LinksQuestCalculatorPage';
-import pdfjsLib from 'pdfjs-dist';
-import * as glib from 'graphlib';
-import { useEffect } from 'react';
-
-
-
-const sizes = {
-  mobile: 600,
-  mobileContentLength: 1000
-}
-
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      light: '#fff',
-      main: '#BF1313',
-      dark: '#000'
-    },
-    secondary: {
-      main: '#adadad',
-      dark: '#4a4a4a'
-    },
- },
- typography: {
-  fontFamily: "Verdana, sans-serif"
-},
-});
-
-function getIdealContainerWidth() {
-
-  return window.innerWidth < sizes.mobile ? sizes.mobileContentLength : window.innerWidth;
-}
-
-function getIdealContainerHeight() {
-  return (window.innerHeight/3)*2;
-}
-
-
+const pdfjsLib = require('pdfjs-dist');
+const glib = require("graphlib");
 var Graph = glib.Graph;
 
+
+
 function sortByStartDate(list) {
-    return (list.sort(function(a, b) {
+    return (list.sort(function (a, b) {
         if (a.start_date > b.start_date) {
             return 1;
         } else if (a.start_date < b.start_date) {
@@ -60,7 +17,9 @@ function sortByStartDate(list) {
 }
 
 function buildQuestGraph(quests) {
-    let graph = new Graph({directed: true});
+    let graph = new Graph({
+        directed: true
+    });
     graph.setNode("Start", "Start");
     for (let index = 0; index < quests.length; index = index + 1) {
         let currentQuest = quests[index];
@@ -125,6 +84,7 @@ function removeAndReturnMaxDistance(distances) {
 
 function findMaximumPath(graph, pathEndVertex, distances) {
 
+    console.log("ready to calculate max path");
     let mostExpensivePath = [pathEndVertex];
     let currentVertex = graph.node(pathEndVertex);
 
@@ -165,32 +125,14 @@ function findOptimalQuestSequence(quests) {
         maxPath: maxPath,
         maxDistance: maxDistance
     }
-
-
-// // Create a new directed graph
-// var g = new Graph({ directed: true });
-
-// g.setEdge("A","B",-10);
-// g.setEdge("A","C",-5);
-// g.setEdge("B","D",-10);
-// g.setEdge("C","D",-17);
-// g.setEdge("D","F",-5);
-
-// let result = g.edges();
 }
 
 
 function calculateQuestsWithHighestReturns() {
-  console.log("ready to calculate quests");
-
     const PDF_URL = 'https://media.ignimgs.com/code-foo/2020/files/quests_for_question.pdf'
     const PDF_PAGE = 1;
     const NUMBER_OF_PDF_COLUMNS = 7
 
-
-    pdfjsLib.GlobalWorkerOptions.workerSrc =
-  "../../node_modules/pdfjs-dist/build/pdf.worker.js";
-  
     //This function downloads t he PDF from the IGN website
     //and parses it so we can extract data from
     let loadingTask = pdfjsLib.getDocument(PDF_URL);
@@ -220,7 +162,6 @@ function calculateQuestsWithHighestReturns() {
                     }
                     quests.push(quest);
                 }
-                                  
 
                 let result = findOptimalQuestSequence(quests);
                 console.log(result);
@@ -228,16 +169,15 @@ function calculateQuestsWithHighestReturns() {
             }).catch(err => console.log(err));
         }).catch(err => console.log(err));
     }).catch(err => console.log(err));
-};
-
-function App() {
-  useEffect(() => calculateQuestsWithHighestReturns());
-
-  return (
-    <ThemeProvider theme={theme}>
-      <LinksQuestCalculatorPage/>
-    </ThemeProvider>
-  );
 }
 
-export default App;
+
+export default function QuestCalculator() {
+
+    calculateQuestsWithHighestReturns();
+
+    return {
+        bestQuests: null,
+        pathsGraph: null
+    }
+};
