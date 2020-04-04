@@ -165,8 +165,11 @@ exports.calulateBestQuests = functions.https.onRequest((req, resOther) => {
         return {
             maxPath: maxPath,
             maxDistance: maxDistance,
-            nodes: graph.nodes(),
-            edges: graph.edges()
+            graph: {
+                nodes: graph.nodes(),
+                edges: graph.edges()
+            }
+
         }
 
     }
@@ -218,6 +221,7 @@ exports.calulateBestQuests = functions.https.onRequest((req, resOther) => {
         
                             let result = findOptimalQuestSequence(quests);
                             resOther.setHeader('Content-Type', 'application/json');
+                            resOther.setHeader('Access-Control-Allow-Origin', '*');
                             resOther.status(200).send(JSON.stringify(result));
                             
         

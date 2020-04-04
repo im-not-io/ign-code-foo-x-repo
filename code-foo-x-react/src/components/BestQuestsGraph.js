@@ -16,16 +16,17 @@ import Box from '@material-ui/core/Box';
 import { colors } from '@material-ui/core';
 
 const width = 1000;
-const height = 600;
+const height = 400;
 const linkDistance = 100;
-const nodeRadius = 7;
+const nodeRadius = 10;
+const SAFETY_PADDING = 3;
 
 function createBarChart(props) {
     {
         var dataset = {
     
         nodes: [
-        {name: "Adam", fx: nodeRadius/2 + 4, fy: 50},
+        {name: "Adam", fx: nodeRadius + SAFETY_PADDING, fy: nodeRadius + SAFETY_PADDING},
         {name: "Bob"},
         {name: "Carrie"},
         {name: "James"},
@@ -35,7 +36,7 @@ function createBarChart(props) {
         {name: "B"},
         {name: "C"},
         {name: "D"},
-        {name: "E", fx: width - 50, fy: height - 50},
+        {name: "E", fx: width - (nodeRadius + SAFETY_PADDING), fy: height - (nodeRadius + SAFETY_PADDING)},
     
         ],
         edges: [
@@ -199,8 +200,8 @@ function createBarChart(props) {
                     edges.attr("x2", function(d){return d.target.x;});
                     edges.attr("y2", function(d){return d.target.y;});
             
-                    nodelabels.attr("x", function(d) { return d.x + 10; }) 
-                              .attr("y", function(d) { return d.y + 5; });
+                    nodelabels.attr("x", function(d) { return d.x + 15; }) 
+                              .attr("y", function(d) { return d.y + 6; });
             
                     edgepaths.attr('d', function(d) { 
                         var path='M '+d.source.x+' '+d.source.y+' L '+ d.target.x +' '+d.target.y;

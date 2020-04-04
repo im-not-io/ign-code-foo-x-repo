@@ -37,7 +37,7 @@ export default function NavBar() {
                     <MenuIcon />
                 </IconButton>
                 <Box>
-                  <img src="https://firebasestorage.googleapis.com/v0/b/code-foo-x-firebase.appspot.com/o/ign-code-foo-logo-nick-edit-2020-07-29.svg?alt=media&token=933b0b60-be20-451f-bd52-15850e3b2c9c" className={classes.image}></img>
+                  <img src="https://code-foo-x-firebase.firebaseapp.com/ign-code-foo-logo-nick-edit-2020-04-03-night.svg" className={classes.image}></img>
                 </Box>
             <div className={classes.spacer}></div>
             <Button className={classes.loginButton} color="inherit">Create a poll</Button>
