@@ -16,48 +16,80 @@ import Box from '@material-ui/core/Box';
 import { colors } from '@material-ui/core';
 
 const width = 1000;
-const height = 400;
-const linkDistance = 100;
+const height = 700;
+const linkDistance = 500;
 const nodeRadius = 10;
-const SAFETY_PADDING = 3;
+const SAFETY_PADDING = 20;
 
-function createBarChart(props) {
-    {
-        var dataset = {
+function createBarChart(graph, pinLeftNode, pinRightNode) {
+    console.log("create bar", graph, pinLeftNode, pinRightNode)
+
+        // var dataset = {
     
-        nodes: [
-        {name: "Adam", fx: nodeRadius + SAFETY_PADDING, fy: nodeRadius + SAFETY_PADDING},
-        {name: "Bob"},
-        {name: "Carrie"},
-        {name: "James"},
-        {name: "Rolly"},
-        {name: "End"},
-        {name: "A"},
-        {name: "B"},
-        {name: "C"},
-        {name: "D"},
-        {name: "E", fx: width - (nodeRadius + SAFETY_PADDING), fy: height - (nodeRadius + SAFETY_PADDING)},
+        // nodes: [
+        // {name: "Adam", fx: nodeRadius + SAFETY_PADDING, fy: nodeRadius + SAFETY_PADDING},
+        // {name: "Bob"},
+        // {name: "Carrie"},
+        // {name: "James"},
+        // {name: "Rolly"},
+        // {name: "End"},
+        // {name: "A"},
+        // {name: "B"},
+        // {name: "C"},
+        // {name: "D"},
+        // {name: "E", fx: width - (nodeRadius + SAFETY_PADDING), fy: height - (nodeRadius + SAFETY_PADDING)},
     
-        ],
-        edges: [
-        {source: "Adam", target: "Bob", label: "200"},
-        {source: "Bob", target: "Carrie", label: "500"},
-        {source: "Carrie", target: "James", label: "100"},
-        {source: "Carrie", target: "Rolly", label: "200"},
-        {source: "James", target: "Rolly", label: "2100"},
-        {source: "Rolly", target: "End", label: "432"},
-        {source: "End", target: "A", label: "200"},
-        {source: "End", target: "B", label: "150"},
-        {source: "B", target: "C", label: "220"},
-        {source: "C", target: "D", label: "100"},
-        {source: "D", target: "E", label: "50"}
+        // ],
+        // edges: [
+        // {source: "Adam", target: "Bob", label: "200"},
+        // {source: "Bob", target: "Carrie", label: "500"},
+        // {source: "Carrie", target: "James", label: "100"},
+        // {source: "Carrie", target: "Rolly", label: "200"},
+        // {source: "James", target: "Rolly", label: "2100"},
+        // {source: "Rolly", target: "End", label: "432"},
+        // {source: "End", target: "A", label: "200"},
+        // {source: "End", target: "B", label: "150"},
+        // {source: "B", target: "C", label: "220"},
+        // {source: "C", target: "D", label: "100"},
+        // {source: "D", target: "E", label: "50"}
     
-        ]
+        // ]
+        // };
+
+
+
+        console.log("graph", graph);
+        let dataset = {
+    
+        nodes: graph.nodes,
+        edges: graph.edges
         };
-    
-     
+
+        for (let i = 0; i < dataset.nodes.length; i++) {
+            let node = dataset.nodes[i];
+            if (node.name === pinLeftNode) {
+                dataset.nodes[i].fx = nodeRadius + SAFETY_PADDING;
+                dataset.nodes[i].fy = nodeRadius + SAFETY_PADDING;
+            }
+            if (node.name === pinRightNode) {
+                dataset.nodes[i].fx =  width - (nodeRadius + SAFETY_PADDING  + 100);
+                dataset.nodes[i].fy = height - (nodeRadius + SAFETY_PADDING);
+            }
+        }
+
+
+
+
+        console.log("Ds", dataset);
+
+
+
         var svg = d3.select("#mySvg")
         .attr("cursor", "grab")
+
+        d3.selectAll("#mySvg > *").remove();
+
+        // d3.selectAll("#mySvg > *").remove();
         
         let g = svg.append("g")
         .attr("style", "border: solid 1px black;");
@@ -146,7 +178,7 @@ function createBarChart(props) {
                     }); 
     
     
-            var nodes = g.append("g")
+        var nodes = g.append("g")
             .attr("class", "nodes")
         .selectAll("circle")
           .data(dataset.nodes)
@@ -157,7 +189,7 @@ function createBarChart(props) {
           .attr("cy", 100)
           .attr("fill", "#adadad");
     
-          drag_handler(nodes);   
+          drag_handler(nodes);
     
     
     
@@ -173,7 +205,7 @@ function createBarChart(props) {
         svg.append('defs').append('marker')
             .attr('id', 'arrowhead')
             .attr('viewBox', '-0 -5 10 10')
-            .attr('refX',16)
+            .attr('refX',19)
             .attr('refY', 0)
             .attr('orient','auto')
             .attr('markerWidth',10)
@@ -220,12 +252,25 @@ function createBarChart(props) {
                             }
                     });
                 });
-        }
+        
+}
+
+function test(props) {
+    var svg = d3.select("#mySvg")
+    .attr("cursor", "grab")
 }
 
 function BestQuestsGraph(props) {
+    console.log(props.questCalculatorResult.maxPath)
 
-    useEffect(() => createBarChart(props));
+    useEffect(() => {
+        if (props.questCalculatorResult.graph !== null) {
+            console.log("creating bar chart");
+            createBarChart(props.questCalculatorResult.graph, props.questCalculatorResult.maxPath[0], props.questCalculatorResult.maxPath[props.questCalculatorResult.maxPath.length - 1]);
+        }
+
+    });
+
 
     return (
         <svg id = "mySvg" width = { width } height = { height } ></svg>

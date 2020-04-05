@@ -50,26 +50,13 @@ function getIdealContainerHeight() {
 
 function App() {
 
-    const [data, setData] = useState(null);
 
-    useEffect(() => {
-
-      });
-
-    function reqListener () {
-        const questCalculatorData = JSON.parse(this.responseText);
-        console.log(questCalculatorData);
-    }
-  
-  var oReq = new XMLHttpRequest();
-  oReq.addEventListener("load", reqListener);
-  oReq.open("GET", "https://us-central1-code-foo-x-firebase.cloudfunctions.net/calulateBestQuests");
-  oReq.send();
 
   return (
     <ThemeProvider theme={theme}>
-      <LinksQuestCalculatorPage/>
+      <LinksQuestCalculatorPage />
     </ThemeProvider>
+   
   );
 }
 

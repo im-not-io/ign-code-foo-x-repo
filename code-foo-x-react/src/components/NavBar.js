@@ -17,12 +17,12 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1
   },
   loginButton: {
-      fontSize: "1em",
+      fontSize: "0.9em",
       textTransform: "none",
       fontWeight: "bold"
   },
   image: {
-    height: "2em"
+    height: "1.7em"
   }
 }));
 

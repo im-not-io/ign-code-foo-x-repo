@@ -11,12 +11,13 @@ import {
     select
 } from 'd3-selection'
 import * as d3 from 'd3';
-import { useEffect } from 'react';
 import NavBar from './NavBar';
 import Grid from '@material-ui/core/Grid';
 import BestQuestsGraph from './BestQuestsGraph';
 import PageTitle from './PageTitle';
 import { makeStyles } from '@material-ui/core/styles';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -49,6 +50,24 @@ function LinksQuestCalculatorPage(props) {
 
 */
 
+const [questCalculatorResult, setQuestCalculatorResult] = useState({
+    graph: null,
+});
+https://us-central1-code-foo-x-firebase.cloudfunctions.net/calulateBestQuests
+
+useEffect(() => {
+    async function fetchData() {
+        const result = await axios({
+            url: 'https://us-central1-code-foo-x-firebase.cloudfunctions.net/calulateBestQuests',
+            method: 'get'
+            });
+        setQuestCalculatorResult(result.data);
+      }
+      fetchData();
+  }, []);
+
+
+
 const classes = useStyles();
 
 
@@ -60,7 +79,7 @@ const classes = useStyles();
             <Grid item xs={1}></Grid> 
             <Grid item xs={11}>
                 <PageTitle title="Best Quests Graph"/>
-                <BestQuestsGraph />
+                <BestQuestsGraph questCalculatorResult={questCalculatorResult}/>
             </Grid> 
         </Grid>
     );

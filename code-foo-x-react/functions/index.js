@@ -166,8 +166,12 @@ exports.calulateBestQuests = functions.https.onRequest((req, resOther) => {
             maxPath: maxPath,
             maxDistance: maxDistance,
             graph: {
-                nodes: graph.nodes(),
-                edges: graph.edges()
+                nodes: graph.nodes().map(item => ({name: item})),
+                edges: graph.edges().map(edge => ({
+                    source: edge.v,
+                    target: edge.w,
+                    label: graph.edge(edge)
+                }))
             }
 
         }
