@@ -18,6 +18,7 @@ import PageTitle from './PageTitle';
 import { makeStyles } from '@material-ui/core/styles';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import BestQuestsTable from './BestQuestsTable';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -34,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
     },
     image: {
       height: "2em"
+    },
+    instructionText: {
+        color: theme.palette.secondary.dark
     }
   }));
 
@@ -52,6 +56,8 @@ function LinksQuestCalculatorPage(props) {
 
 const [questCalculatorResult, setQuestCalculatorResult] = useState({
     graph: null,
+    maxPath: [],
+    maxDistance: null
 });
 https://us-central1-code-foo-x-firebase.cloudfunctions.net/calulateBestQuests
 
@@ -71,14 +77,25 @@ useEffect(() => {
 const classes = useStyles();
 
 
+
+//                <BestQuestsGraph questCalculatorResult={questCalculatorResult}/>
     return (
         <Grid container spacing={0}>
             <Grid item xs={12}>
                 <NavBar />
             </Grid>   
+
             <Grid item xs={1}></Grid> 
-            <Grid item xs={11}>
-                <PageTitle title="Best Quests Graph"/>
+            <Grid item xs={9}>
+                <PageTitle title="Ideal Quest Sequence"/>
+                <BestQuestsTable questCalculatorResult={questCalculatorResult}/>
+            </Grid> 
+            <Grid item xs={2}></Grid> 
+
+            <Grid item xs={1}></Grid> 
+            <Grid item xs={9}>
+                <PageTitle title="All possible quest paths"/>
+                <p className={classes.instructionText}>Drag a node to drag it around to see things better.</p>
                 <BestQuestsGraph questCalculatorResult={questCalculatorResult}/>
             </Grid> 
         </Grid>

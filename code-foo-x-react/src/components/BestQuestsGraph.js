@@ -165,7 +165,7 @@ function createBarChart(graph, pinLeftNode, pinRightNode) {
             .attr("dx",0)
             .attr("dy", 0)
             .attr("font-size",10)
-            .attr("fill", "#adadad")
+            .attr("fill", "#4a4a4a")
             .attr("font-family", "Verdana, sans-serif")
             .attr("font-weight", "bold");
     

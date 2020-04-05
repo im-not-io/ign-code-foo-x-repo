@@ -12,34 +12,6 @@ const admin = require('firebase-admin');
 admin.initializeApp();
 
 exports.calulateBestQuests = functions.https.onRequest((req, resOther) => {
-    // https.get("https://media.ignimgs.com/code-foo/2020/files/quests_for_question.pdf", function(res) {
-    // var data = [];
-    // res.on('data', function(chunk) {
-    //     data.push(chunk);
-    // }).on('end', function() {
-    //     //at this point data is an array of Buffers
-    //     //so Buffer.concat() can make us a new Buffer
-    //     //of all of them together
-    //     var buffer = Buffer.concat(data);
-    //     var loadingTask = pdfjsLib.getDocument(buffer);
-
-    //     const PDF_PAGE = 1;
-
-    //     loadingTask.promise.then(function (pdf) {
-    //         //wait until PDF is ready to be read
-    //         pdf.getPage(PDF_PAGE).then(function (page) {
-    //             //wait until page is ready to be read
-    //             page.getTextContent().then(function (textContent) {
-    //                 resOther.status(200).send(textContent);
-    //             }).catch(err => console.log(err));
-    //         }).catch(err => console.log(err));
-    //     }).catch(err => console.log(err));
-
-
-
-    //     });
-    // });
-
 
     var Graph = glib.Graph;
 
@@ -56,8 +28,6 @@ exports.calulateBestQuests = functions.https.onRequest((req, resOther) => {
     }
 
     function buildQuestGraph(quests) {
-
-
         let graph = new Graph({
             directed: true
         });
@@ -124,8 +94,6 @@ exports.calulateBestQuests = functions.https.onRequest((req, resOther) => {
     }
 
     function findMaximumPath(graph, pathEndVertex, distances) {
-
-        console.log("ready to calculate max path");
         let mostExpensivePath = [pathEndVertex];
         let currentVertex = graph.node(pathEndVertex);
 
@@ -137,9 +105,15 @@ exports.calulateBestQuests = functions.https.onRequest((req, resOther) => {
                 //cost
                 maxEntry = removeAndReturnMaxDistance(distances);
             }
+
+            let inEdges = graph.inEdges(maxEntry);
+            let inEdge = graph.edges(inEdges[0]);
+            let earnedRupees = graph.edge(inEdge)
+
             mostExpensivePath.push(maxEntry);
             currentVertex = maxEntry;
         }
+
         return mostExpensivePath.reverse();
     }
 
