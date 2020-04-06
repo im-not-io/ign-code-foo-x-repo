@@ -1,16 +1,8 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import SwipeableSidebar from './SwipeableSidebar'
 import clsx from 'clsx';
+import { makeStyles } from '@material-ui/core/styles';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
+import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
@@ -20,30 +12,17 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import { useState, useEffect } from 'react';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
+const useStyles = makeStyles({
+  list: {
+    width: 250,
   },
-  spacer: {
-      flexGrow: 1
+  fullList: {
+    width: 'auto',
   },
-  loginButton: {
-      fontSize: "0.9em",
-      textTransform: "none",
-      fontWeight: "bold"
-  },
-  image: {
-    height: "1.7em"
-  },
-  navBar: {
-    background: "rgb(191,19,19)",
-    background: "linear-gradient(180deg, rgba(191,19,19,1) 0%, rgba(153,18,18,1) 100%)"
-  }
-}));
+});
 
-export default function NavBar() {
+export default function SwipeableSidebar(props) {
   const classes = useStyles();
-
   const [state, setState] = React.useState({
     left: false
   });
@@ -71,7 +50,7 @@ export default function NavBar() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {['This is a super long title that is a test', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
           <ListItem button key={text}>
             <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
             <ListItemText primary={text} />
@@ -91,19 +70,10 @@ export default function NavBar() {
   );
 
   return (
-    <div className={classes.root}>
-      <AppBar position="static" className={classes.navBar}>
-            <Toolbar>
-                <IconButton onClick={toggleDrawer("left", true)} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                    <MenuIcon />
-                </IconButton>
-                <Box>
-                  <img src="https://code-foo-x-firebase.firebaseapp.com/ign-code-foo-logo-nick-edit-2020-04-03-night.svg" className={classes.image}></img>
-                </Box>
-            <div className={classes.spacer}></div>
-            <Button className={classes.loginButton} color="inherit">Create a poll</Button>
-            </Toolbar>
-            <SwipeableDrawer
+    <div>
+        <React.Fragment key={"left"}>
+          <Button onClick={toggleDrawer("left", true)}>Left</Button>
+          <SwipeableDrawer
             anchor={"left"}
             open={state["left"]}
             onClose={toggleDrawer("left", false)}
@@ -111,7 +81,7 @@ export default function NavBar() {
           >
             {list("left")}
           </SwipeableDrawer>
-      </AppBar>
+        </React.Fragment>
     </div>
   );
 }

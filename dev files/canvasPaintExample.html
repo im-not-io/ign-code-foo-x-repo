@@ -1,0 +1,27 @@
+ <html>
+    <body></body>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
+    <script>
+        let lines = [];  
+        function setup() {
+            createCanvas(710, 400);
+            background(102);
+          }
+          
+          function draw() {
+            stroke(255);
+            strokeWeight(5);
+            if (mouseIsPressed === true) {
+              lines.push(mouseX, mouseY, pmouseX, pmouseY)
+              line(mouseX, mouseY, pmouseX, pmouseY);
+              console.clear();
+              console.log(lines);
+            }
+        
+          }
+          
+          
+    </script>
+    </html>
+
+    
