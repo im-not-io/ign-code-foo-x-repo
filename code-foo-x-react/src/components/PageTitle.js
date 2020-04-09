@@ -10,8 +10,7 @@ const useStyles = makeStyles((theme) => ({
 
 function PageTitle(props) {
     const classes = useStyles();
-  return (
-        <Box>
+  return ( <Box color="inherit">
             <h1 className={classes.h1Color}>{props.title}</h1>
         </Box>
   );

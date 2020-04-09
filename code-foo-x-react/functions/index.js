@@ -5,13 +5,21 @@ const https = require('https');
 const glib = require("graphlib");
 const START_NODE_NAME = "[[[[START_NODE]]]]"
 
+var admin = require('firebase-admin');
 
-// The Firebase Admin SDK to access the Firebase Realtime Database.
-const admin = require('firebase-admin');
 
-admin.initializeApp();
+    //Use this for production ONLY
+    admin.initializeApp()
 
-exports.calulateBestQuests = functions.https.onRequest((req, resOther) => {
+    // //Comment out for debug mode ONLY
+    // admin.initializeApp({
+    // credential: admin.credential.applicationDefault(),
+    // databaseURL: 'https://code-foo-x-firebase.firebaseio.com/'
+    // });
+    // ////////////////////////////////////
+
+
+exports.calculateBestQuests = functions.https.onRequest(async (req, res) => {
 
     var Graph = glib.Graph;
 
@@ -94,7 +102,10 @@ exports.calulateBestQuests = functions.https.onRequest((req, resOther) => {
     }
 
     function findMaximumPath(graph, pathEndVertex, distances) {
-        let mostExpensivePath = [pathEndVertex];
+        let mostExpensivePath = [{
+            quest: pathEndVertex,
+            earnedRupees: graph.edge(graph.inEdges(pathEndVertex)[0])
+        }];
         let currentVertex = graph.node(pathEndVertex);
 
         while (currentVertex != START_NODE_NAME) {
@@ -107,10 +118,15 @@ exports.calulateBestQuests = functions.https.onRequest((req, resOther) => {
             }
 
             let inEdges = graph.inEdges(maxEntry);
-            let inEdge = graph.edges(inEdges[0]);
-            let earnedRupees = graph.edge(inEdge)
 
-            mostExpensivePath.push(maxEntry);
+            if (inEdges.length >= 1) {
+                mostExpensivePath.push({
+                    quest: maxEntry,
+                    earnedRupees: graph.edge(inEdges[0])
+                });
+            }
+
+
             currentVertex = maxEntry;
         }
 
@@ -119,7 +135,10 @@ exports.calulateBestQuests = functions.https.onRequest((req, resOther) => {
 
     function findOptimalQuestSequence(quests) {
 
+        //O(q^2) where q is the number of quests
         let sorted = sortByStartDate(quests);
+
+        //O(q^2) where q is the number of quests
         let graph = buildQuestGraph(sorted);
 
         console.assert(glib.alg.isAcyclic(graph) === true);
@@ -130,7 +149,7 @@ exports.calulateBestQuests = functions.https.onRequest((req, resOther) => {
 
         distances[START_NODE_NAME] = 0;
 
-
+        //O(V + E) time complexity because of the topological sort
         let endVertex = findBestEndVertex(graph, distances);
         let maxDistance = distances[endVertex];
 
@@ -152,13 +171,19 @@ exports.calulateBestQuests = functions.https.onRequest((req, resOther) => {
 
     }
 
+    function pushToFirebase(obj) {
+            res.setHeader("Access-Control-Allow-Origin", "*");
+            res.setHeader("Content-Type", "application/json");
+            res.status(200).send(JSON.stringify(obj));
+    }
+
 
     function calculateQuestsWithHighestReturns() {
         const PDF_URL = 'https://media.ignimgs.com/code-foo/2020/files/quests_for_question.pdf'
         const PDF_PAGE = 1;
         const NUMBER_OF_PDF_COLUMNS = 7
 
-        https.get("https://media.ignimgs.com/code-foo/2020/files/quests_for_question.pdf", function (res) {
+        https.get(PDF_URL, function (res) {
             var data = [];
             res.on('data', function (chunk) {
                 data.push(chunk);
@@ -195,17 +220,29 @@ exports.calulateBestQuests = functions.https.onRequest((req, resOther) => {
                                 }
                                 quests.push(quest);
                             }
-        
-        
+                            
+                            
                             let result = findOptimalQuestSequence(quests);
-                            resOther.setHeader('Content-Type', 'application/json');
-                            resOther.setHeader('Access-Control-Allow-Origin', '*');
-                            resOther.status(200).send(JSON.stringify(result));
+    
+
+                            pushToFirebase(result);
+
+   
+
                             
         
-                        }).catch(err => console.log(err));
-                    }).catch(err => console.log(err));
-                }).catch(err => console.log(err));
+                        }).catch(err => { 
+                            console.log(err);
+                            throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.');
+                        });
+                    }).catch(err => { 
+                        console.log(err);
+                        throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.');  
+                    });
+                }).catch(err => { 
+                    console.log(err);
+                    throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.');
+                });
             });
         });
 

@@ -2,23 +2,16 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-import SwipeableSidebar from './SwipeableSidebar'
 import clsx from 'clsx';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-import { useState, useEffect } from 'react';
+import InfoIcon from '@material-ui/icons/Info';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,16 +21,26 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1
   },
   loginButton: {
-      fontSize: "0.9em",
+      fontSize: "1em",
       textTransform: "none",
-      fontWeight: "bold"
+      color: "white",
+      fontWeight: 450
   },
   image: {
     height: "1.7em"
   },
   navBar: {
-    background: "rgb(191,19,19)",
     background: "linear-gradient(180deg, rgba(191,19,19,1) 0%, rgba(153,18,18,1) 100%)"
+  },
+  gray: {
+    color: theme.palette.secondary.dark
+  },
+  icon: {
+    color: theme.palette.secondary.dark,
+    marginRight: "0.7em"
+  },
+  listItem: {
+    marginRight: "0.7em"
   }
 }));
 
@@ -71,21 +74,10 @@ export default function NavBar() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {['This is a super long title that is a test', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
+          <ListItem button key="how_nick_made_this" className={classes.listItem}>
+            <InfoIcon className={classes.icon}/>
+            <ListItemText className={classes.gray} primary="How Nick Made This" />
           </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
       </List>
     </div>
   );
@@ -98,10 +90,10 @@ export default function NavBar() {
                     <MenuIcon />
                 </IconButton>
                 <Box>
-                  <img src="https://code-foo-x-firebase.firebaseapp.com/ign-code-foo-logo-nick-edit-2020-04-03-night.svg" className={classes.image}></img>
+                  <img src="/ign-code-foo-logo-nick-edit-2020-04-03-night.svg" alt="Code Foo X Logo" className={classes.image}></img>
                 </Box>
             <div className={classes.spacer}></div>
-            <Button className={classes.loginButton} color="inherit">Create a poll</Button>
+            <Button className={classes.loginButton}>Create a poll</Button>
             </Toolbar>
             <SwipeableDrawer
             anchor={"left"}

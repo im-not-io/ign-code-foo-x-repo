@@ -1,19 +1,9 @@
-import React, {
-    Component
-} from 'react'
-import {
-    scaleLinear
-} from 'd3-scale'
-import {
-    max
-} from 'd3-array'
-import {
-    select
-} from 'd3-selection'
+import React from 'react'
 import * as d3 from 'd3';
 import { useEffect } from 'react';
-import Box from '@material-ui/core/Box';
-import { colors } from '@material-ui/core';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Grid from '@material-ui/core/Grid';
+
 
 const width = 1000;
 const height = 700;
@@ -22,7 +12,6 @@ const nodeRadius = 10;
 const SAFETY_PADDING = 20;
 
 function createBarChart(graph, pinLeftNode, pinRightNode) {
-    console.log("create bar", graph, pinLeftNode, pinRightNode)
 
         // var dataset = {
     
@@ -56,9 +45,6 @@ function createBarChart(graph, pinLeftNode, pinRightNode) {
         // ]
         // };
 
-
-
-        console.log("graph", graph);
         let dataset = {
     
         nodes: graph.nodes,
@@ -77,10 +63,6 @@ function createBarChart(graph, pinLeftNode, pinRightNode) {
             }
         }
 
-
-
-
-        console.log("Ds", dataset);
 
 
 
@@ -255,17 +237,9 @@ function createBarChart(graph, pinLeftNode, pinRightNode) {
         
 }
 
-function test(props) {
-    var svg = d3.select("#mySvg")
-    .attr("cursor", "grab")
-}
-
 function BestQuestsGraph(props) {
-    console.log(props.questCalculatorResult.maxPath)
-
     useEffect(() => {
         if (props.questCalculatorResult.graph !== null) {
-            console.log("creating bar chart");
             createBarChart(props.questCalculatorResult.graph, props.questCalculatorResult.maxPath[0], props.questCalculatorResult.maxPath[props.questCalculatorResult.maxPath.length - 1]);
         }
 
@@ -273,8 +247,15 @@ function BestQuestsGraph(props) {
 
 
     return (
-        <svg id = "mySvg" width = { width } height = { height } ></svg>
+
+        <Grid container spacing={0}>
+        <Grid item xs={12}>
+        <LinearProgress color="primary" />
+                {/* <svg id = "mySvg" width = { width } height = { height } ></svg> */}
+        </Grid> 
+        </Grid>
+
     );
 
 }
-export default BestQuestsGraph
+export default BestQuestsGraph;

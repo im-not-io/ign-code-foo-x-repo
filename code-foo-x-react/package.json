@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.9.8",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.48",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -14,13 +15,14 @@
     "d3-drag": "^1.2.5",
     "d3-scale": "^3.2.1",
     "d3-selection-multi": "^1.0.1",
-    "firebase": "^7.13.1",
+    "firebase": "^7.13.2",
     "graphlib": "^2.1.8",
     "pdf2json": "^1.2.0",
     "pdfreader": "^1.0.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "typeface-roboto": "0.0.75"
   },
   "scripts": {
     "start": "react-scripts start",
