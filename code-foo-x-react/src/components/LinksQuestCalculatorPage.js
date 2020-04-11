@@ -75,10 +75,12 @@ const useStyles = makeStyles((theme) => ({
 function LinksQuestCalculatorPage(props) {
 
 const classes = useStyles();
+  const CODE_FOO_QUESTS_URL = "https://media.ignimgs.com/code-foo/2020/files/quests_for_question.pdf";
   const [questCalculatorResult, setQuestCalculatorResult] = useState(null);
   const [reloadFromSourceButtonState, setReloadFromSourceButtonState] = useState("normal");
   const [dataReloadErrorExists, setDataReloadErrorExists] = useState(false);
   const [modifySourceDialogOpen, setModifySourceDialogOpen] = useState(false);
+  const [pdfUrl, setPdfUrl] = useState(CODE_FOO_QUESTS_URL);
 
   useEffect(() => {
 
@@ -106,7 +108,6 @@ const classes = useStyles();
   }, []);
 
   function toggleDialog() {
-    console.log("toggle dialog");
     setModifySourceDialogOpen(!modifySourceDialogOpen);
   }
 
@@ -117,7 +118,11 @@ const classes = useStyles();
       });
     }
   function saveQuestCalculatorResultToFirebase(result) {
-    firebase.database().ref('questCalculatorResult/').set(result).catch(function(error) {
+    let resultObject = result;
+
+    resultObject.timestamp = (new Date()).getTime();
+
+    firebase.database().ref('questCalculatorResult/').set(resultObject).catch(function(error) {
       setDataReloadErrorExists(true);
       console.log(error);
     });
@@ -132,15 +137,18 @@ const classes = useStyles();
   }
 
   function fetchQuestCalculatorResult() {
+
+  
     setReloadFromSourceButtonState("loading");
+    const targetUrl = "http://localhost:5000/code-foo-x-firebase/us-central1/calculateBestQuests?" + "url=" + pdfUrl;
+    console.log("using target URL", targetUrl);
     deleteQuestCalculatorResult();
-    fetch('http://localhost:5000/code-foo-x-firebase/us-central1/calculateBestQuests')
+    fetch(encodeURI(targetUrl))
     .then(
       function(response) {
         if (response.status !== 200) {
-          console.log('Looks like there was a problem. Status Code: ' +
-            response.status);
-          return;
+          console.log('Fetch data failed.');
+          setReloadFromSourceButtonState("normal");
         }
         
         // Examine the text in the response
@@ -192,9 +200,24 @@ function getBestQuestPath() {
   }
 }
 
+function timestampToString(timestamp) {
+  console.log("timestamp to string")
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  const d = new Date(timestamp);
+  const minutes  = d.getMinutes() % 12;
+  return (monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear() + " " + d.toLocaleTimeString());
+}
 
+function getQuestCalculatorTimestamp() {
+  if (questCalculatorResult != undefined) {
+    return "Date last updated: "+ timestampToString(questCalculatorResult.timestamp)
+  } else {
+    return "";
+  }
+}
 
-console.log("qc result", questCalculatorResult)
     return (<Grid container spacing={0} justify="center">
             <Grid item xs={12}>
                 <NavBar />
@@ -203,17 +226,18 @@ console.log("qc result", questCalculatorResult)
                
               <Grid item xs={12}>
                 <PageTitle title="Most lucrative quest sequence"/>
-                  <BestQuestsTable quests={ getBestQuestPath() } />
+                  <BestQuestsTable quests={ getBestQuestPath() }/>
               </Grid> 
             
               <Grid item xs={12}>
                   <PageTitle title="All possible quest paths"/>
                   <p className={classes.instructionText}>Drag a node to drag it around to see things better.</p>
+                  <BestQuestsGraph questCalculatorResult={questCalculatorResult}/>
               </Grid> 
                 
               <Grid container item xs={12} alignItems="center">
                 <Grid item xs={12}>
-                  <p className={classes.instructionText}>Data last loaded April 3, 2020, 5:00PM PST</p>
+                  <p className={classes.instructionText}>{getQuestCalculatorTimestamp()}</p>
                   {getReloadFromSourceButton()}
                   <Button variant="contained" color="primary" onClick={toggleDialog} className={classes.button}><MoreHorizIcon /></Button>
                 </Grid>
@@ -224,7 +248,7 @@ console.log("qc result", questCalculatorResult)
                 </Grow>
               </Grid> 
             </Grid>
-            <ModifySourceDialog isOpen={modifySourceDialogOpen} handleClose={toggleDialog}/>
+            <ModifySourceDialog isOpen={modifySourceDialogOpen} handleClose={toggleDialog} pdfUrl={pdfUrl} setPdfUrl={setPdfUrl}/>
         </Grid>);
 
 }

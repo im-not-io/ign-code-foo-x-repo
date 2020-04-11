@@ -4,6 +4,7 @@ const pdfjsLib = require('pdfjs-dist')
 const https = require('https');
 const glib = require("graphlib");
 const START_NODE_NAME = "[[[[START_NODE]]]]"
+const PDF_URL = "https://media.ignimgs.com/code-foo/2020/files/quests_for_question.pdf"
 
 var admin = require('firebase-admin');
 
@@ -177,12 +178,30 @@ exports.calculateBestQuests = functions.https.onRequest(async (req, res) => {
             res.status(200).send(JSON.stringify(obj));
     }
 
+    function getPdfUrl() {
+        if (req.query.hasOwnProperty('url')) {
+            return req.query.url;
+        } else {
+            return PDF_URL;
+        }
+    }
+
+
+    function returnJsonError(errorText) {
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.setHeader("Content-Type", "application/json");
+        res.status(400).send(JSON.stringify({
+            "error": errorText
+        }));
+    }
 
     function calculateQuestsWithHighestReturns() {
-        const PDF_URL = 'https://media.ignimgs.com/code-foo/2020/files/quests_for_question.pdf'
+        const PDF_URL = getPdfUrl();
+        console.log("res url", PDF_URL);
         const PDF_PAGE = 1;
         const NUMBER_OF_PDF_COLUMNS = 7
 
+        try {
         https.get(PDF_URL, function (res) {
             var data = [];
             res.on('data', function (chunk) {
@@ -233,18 +252,26 @@ exports.calculateBestQuests = functions.https.onRequest(async (req, res) => {
         
                         }).catch(err => { 
                             console.log(err);
-                            throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.');
+                            returnJsonError("The PDF provided couldn't be read.");
                         });
                     }).catch(err => { 
                         console.log(err);
-                        throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.');  
+                        returnJsonError("The PDF provided couldn't be read.");
                     });
                 }).catch(err => { 
                     console.log(err);
-                    throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.');
+                    returnJsonError("The PDF provided couldn't be read.");
                 });
             });
+        }).on("error", function(error) {
+            console.log(error.message);
+            returnJsonError("There was an issue retrieving the PDF from the server.");
         });
+        } catch (error) {
+            if (error instanceof TypeError) {
+                returnJsonError("The URL entered doesn't appear to be valid.");
+            }
+        }
 
     }
 

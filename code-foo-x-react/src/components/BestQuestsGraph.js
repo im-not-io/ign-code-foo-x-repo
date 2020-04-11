@@ -5,13 +5,14 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
 
 
-const width = 1000;
-const height = 700;
+const width = (window.innerWidth/12) * 10;
+const height = (window.innerHeight/12) * 10;
 const linkDistance = 500;
 const nodeRadius = 10;
 const SAFETY_PADDING = 20;
 
 function createBarChart(graph, pinLeftNode, pinRightNode) {
+
 
         // var dataset = {
     
@@ -239,23 +240,32 @@ function createBarChart(graph, pinLeftNode, pinRightNode) {
 
 function BestQuestsGraph(props) {
     useEffect(() => {
-        if (props.questCalculatorResult.graph !== null) {
-            createBarChart(props.questCalculatorResult.graph, props.questCalculatorResult.maxPath[0], props.questCalculatorResult.maxPath[props.questCalculatorResult.maxPath.length - 1]);
+        if (props.questCalculatorResult != null) {
+            createBarChart(props.questCalculatorResult.graph, "[[[[START_NODE]]]]", props.questCalculatorResult.maxPath[props.questCalculatorResult.maxPath.length - 1].quest);
         }
-
     });
+    function getQuestGraph() {
+        if (props.questCalculatorResult != null) {
+            return (
+                <Grid container spacing={0}>
+                <Grid item xs={12}>
+                    <svg id = "mySvg" width = { width } height = { height } ></svg>
+                </Grid> 
+                </Grid>
+            )
+        } else {
+            return (
+                <Grid container spacing={0}>
+                <Grid item xs={12}>
+                    <LinearProgress color="primary" />
+                </Grid> 
+                </Grid>
+            )
+        }
+    }
 
 
-    return (
-
-        <Grid container spacing={0}>
-        <Grid item xs={12}>
-        <LinearProgress color="primary" />
-                {/* <svg id = "mySvg" width = { width } height = { height } ></svg> */}
-        </Grid> 
-        </Grid>
-
-    );
+    return getQuestGraph();
 
 }
 export default BestQuestsGraph;

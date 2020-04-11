@@ -50,7 +50,6 @@ function addRows(quests, classes) {
 }
 
 function getSum(quests, classes) {
-    console.log("qsss", quests)
     let sum = 0;
     for (let i = 0; i < quests.length; i++) {
         sum = sum + quests[i].earnedRupees;
@@ -66,7 +65,6 @@ function getSum(quests, classes) {
 }
 
 function getBestQuestsTable(classes, props) {
-    console.log("gbqt", props.quests)
     if (props.quests === null) {
         return (<Grid container spacing={0}>
             <Grid item xs={12}>
