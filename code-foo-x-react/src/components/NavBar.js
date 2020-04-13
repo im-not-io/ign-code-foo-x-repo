@@ -12,6 +12,12 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import InfoIcon from '@material-ui/icons/Info';
+import ExploreIcon from '@material-ui/icons/Explore';
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
+import PollIcon from '@material-ui/icons/Poll';
+
+import { Link, BrowserRouter} from "react-router-dom";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,7 +50,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function NavBar() {
+export default function NavBar(props) {
+  const { icon, primary, to } = props;
   const classes = useStyles();
 
   const [state, setState] = React.useState({
@@ -65,21 +72,34 @@ export default function NavBar() {
   };
 
   const list = (anchor) => (
-    <div
-      className={clsx(classes.list, {
-        [classes.fullList]: anchor === 'top' || anchor === 'bottom',
-      })}
-      role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
-    >
-      <List>
-          <ListItem button key="how_nick_made_this" className={classes.listItem}>
-            <InfoIcon className={classes.icon}/>
-            <ListItemText className={classes.gray} primary="How Nick Made This" />
-          </ListItem>
-      </List>
-    </div>
+      <div
+        className={clsx(classes.list, {
+          [classes.fullList]: anchor === 'top' || anchor === 'bottom',
+        })}
+        role="presentation"
+        onClick={toggleDrawer(anchor, false)}
+        onKeyDown={toggleDrawer(anchor, false)}
+      >
+        <List>
+              <ListItem component={Link} to="/polls"  button key="all_polls" className={classes.listItem}>
+                <PollIcon className={classes.icon}/>
+                <ListItemText className={classes.gray} primary="All polls" />
+              </ListItem>
+              <ListItem button component={Link} to="/quest-calculator" key="links_quest_calculator" className={classes.listItem}>
+                  <ExploreIcon className={classes.icon}/>
+                  <ListItemText className={classes.gray} primary="Link's Quest Calculator" />
+                </ListItem>
+              <ListItem component={Link} to="/admin-portal"  button key="admin_portal" className={classes.listItem}>
+                <SupervisorAccountIcon className={classes.icon}/>
+                <ListItemText className={classes.gray} primary="Admin Portal" />
+              </ListItem>
+            <ListItem button onClick={function() { window.location="https://docs.google.com/document/d/1PtKbyj2Ok5p8wN2_9CehYEnAztizlfmtF9uVuBkj9Z8/edit?usp=sharing" }}>
+              <InfoIcon className={classes.icon}/>
+              <ListItemText className={classes.gray} primary="How Nick Made This" />
+            </ListItem>
+        </List>
+      </div>
+
   );
 
   return (
@@ -93,7 +113,7 @@ export default function NavBar() {
                   <img src="/ign-code-foo-logo-nick-edit-2020-04-03-night.svg" alt="Code Foo X Logo" className={classes.image}></img>
                 </Box>
             <div className={classes.spacer}></div>
-            <Button className={classes.loginButton}>Create a poll</Button>
+            <Button className={classes.loginButton}>All polls</Button>
             </Toolbar>
             <SwipeableDrawer
             anchor={"left"}

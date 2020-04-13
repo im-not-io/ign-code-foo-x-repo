@@ -166,13 +166,14 @@ exports.calculateBestQuests = functions.https.onRequest(async (req, res) => {
                     target: edge.w,
                     label: graph.edge(edge)
                 }))
-            }
+            },
+
 
         }
 
     }
 
-    function pushToFirebase(obj) {
+    function returnJsonResponse(obj) {
             res.setHeader("Access-Control-Allow-Origin", "*");
             res.setHeader("Content-Type", "application/json");
             res.status(200).send(JSON.stringify(obj));
@@ -242,9 +243,9 @@ exports.calculateBestQuests = functions.https.onRequest(async (req, res) => {
                             
                             
                             let result = findOptimalQuestSequence(quests);
-    
+                            result.source = PDF_URL;
 
-                            pushToFirebase(result);
+                            returnJsonResponse(result);
 
    
 

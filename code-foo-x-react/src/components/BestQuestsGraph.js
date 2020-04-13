@@ -13,7 +13,6 @@ const SAFETY_PADDING = 20;
 
 function createBarChart(graph, pinLeftNode, pinRightNode) {
 
-
         // var dataset = {
     
         // nodes: [
@@ -66,25 +65,28 @@ function createBarChart(graph, pinLeftNode, pinRightNode) {
 
 
 
-
+        document.getElementById("mySvg").focus();
         var svg = d3.select("#mySvg")
         .attr("cursor", "grab")
 
         d3.selectAll("#mySvg > *").remove();
 
-        // d3.selectAll("#mySvg > *").remove();
         
         let g = svg.append("g")
         .attr("style", "border: solid 1px black;");
-    
-        svg.call(d3.zoom()
-        .extent([[0, 0], [width, height]])
-        .scaleExtent([1, 8])
-        .on("zoom", zoomed));
+
+        let zoom = d3.zoom()
+        .on("zoom", zoomed);
+
+        svg
+    .call(zoom);
+        
     
         function zoomed() {
             g.attr("transform", d3.event.transform);
           }
+
+
     
     
         var force = d3.forceSimulation()
@@ -142,7 +144,6 @@ function createBarChart(graph, pinLeftNode, pinRightNode) {
             .enter()
             .append('text')
             .attr("text-anchor", "middle")
-            .style("pointer-events", "none")
             .attr("class","edgelabel")
             .attr("id", function(d,i){return 'edgelabel'+i})
             .attr("dx",0)
@@ -178,7 +179,6 @@ function createBarChart(graph, pinLeftNode, pinRightNode) {
     
         edgelabels.append('textPath')
             .attr('href',function(d,i) {return '#edgepath'+i})
-            .style("pointer-events", "none")   
             .text(function(d,i){return d.label})
             .attr("class","edgelabel")
             .attr("startOffset", "50%")
@@ -200,7 +200,7 @@ function createBarChart(graph, pinLeftNode, pinRightNode) {
                 .attr('stroke','#adadad')
                 .attr("font-family", "Verdana, sans-serif")
                 .attr("font-weight", "bold");
-         
+        
     
                 force.on("tick", function(){
     

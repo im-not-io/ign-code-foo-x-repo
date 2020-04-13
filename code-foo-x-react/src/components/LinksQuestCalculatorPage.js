@@ -83,6 +83,7 @@ const classes = useStyles();
   const [pdfUrl, setPdfUrl] = useState(CODE_FOO_QUESTS_URL);
 
   useEffect(() => {
+    document.title = "Link's Quest Calculator";
 
 
     firebase.auth().signInAnonymously().catch(function(error) {
@@ -118,6 +119,8 @@ const classes = useStyles();
       });
     }
   function saveQuestCalculatorResultToFirebase(result) {
+
+
     let resultObject = result;
 
     resultObject.timestamp = (new Date()).getTime();
@@ -140,7 +143,7 @@ const classes = useStyles();
 
   
     setReloadFromSourceButtonState("loading");
-    const targetUrl = "http://localhost:5000/code-foo-x-firebase/us-central1/calculateBestQuests?" + "url=" + pdfUrl;
+    const targetUrl = "https://us-central1-code-foo-x-firebase.cloudfunctions.net/calculateBestQuests?" + "url=" + pdfUrl;
     console.log("using target URL", targetUrl);
     deleteQuestCalculatorResult();
     fetch(encodeURI(targetUrl))
@@ -154,8 +157,13 @@ const classes = useStyles();
         // Examine the text in the response
         response.json().then(function(data) {
           console.log(data);
-          saveQuestCalculatorResultToFirebase(data)
-          setReloadFromSourceButtonState("normal");
+          if (data.hasOwnProperty("error")) {
+            setDataReloadErrorExists(true);
+          } else {
+            saveQuestCalculatorResultToFirebase(data);
+            setReloadFromSourceButtonState("normal");
+          }
+
         });
       }
     )
