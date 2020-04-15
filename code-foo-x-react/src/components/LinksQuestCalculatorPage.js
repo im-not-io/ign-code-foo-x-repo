@@ -18,21 +18,12 @@ import Grow from '@material-ui/core/Grow';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import ReplayIcon from '@material-ui/icons/Replay';
 import ModifySourceDialog from './ModifySourceDialog'
+import BetterButton from './BetterButton';
 
 
 
 
-var firebaseConfig = {
-    apiKey: "AIzaSyDrlRLAzlG_qAF5RzrY-HBTd4y6sDcwrzY",
-    authDomain: "code-foo-x-firebase.firebaseapp.com",
-    databaseURL: "https://code-foo-x-firebase.firebaseio.com",
-    projectId: "code-foo-x-firebase",
-    storageBucket: "code-foo-x-firebase.appspot.com",
-    messagingSenderId: "82570174117",
-    appId: "1:82570174117:web:8047c9987f9700d0f4774c"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
+
   
 
 
@@ -54,17 +45,13 @@ const useStyles = makeStyles((theme) => ({
       fontSize: "1em",
       fontWeight: 450,
       textTransform: "none",
-      marginRight: "0.5rem"
+      marginRight: "1rem"
     },
     circleProgress: {
       marginLeft: '0.5em'
     },
-    buttonDisabled: {
-      textTransform: "none",
-      marginRight: "0.5rem"
-    },
-    replayIcon: {
-      marginRight: "0.25rem"
+    marginLeft: {
+      marginLeft: "0.25rem"
     }
   }));
 
@@ -183,22 +170,6 @@ const classes = useStyles();
   });
 }
 
-function getReloadFromSourceButton() {
-  if (reloadFromSourceButtonState === "loading") {
-    return (
-      <Button variant="contained"  disabled={true} color="primary" className={classes.buttonDisabled}>
-          Please wait...<CircularProgress className={classes.circleProgress} color="secondary" size={16} thickness={5}/>
-      </Button>
-      )
-  } else {
-    return (
-      <Button variant="contained" onClick={fetchQuestCalculatorResult} color="primary" className={classes.button}>
-          <span className={classes.replayIcon}>Reload from source</span><ReplayIcon />
-      </Button>
-      )
-  }
-
-}
 
 function getBestQuestPath() {
   if (questCalculatorResult === null) {
@@ -246,8 +217,8 @@ function getQuestCalculatorTimestamp() {
               <Grid container item xs={12} alignItems="center">
                 <Grid item xs={12}>
                   <p className={classes.instructionText}>{getQuestCalculatorTimestamp()}</p>
-                  {getReloadFromSourceButton()}
-                  <Button variant="contained" color="primary" onClick={toggleDialog} className={classes.button}><MoreHorizIcon /></Button>
+                  <BetterButton state={reloadFromSourceButtonState} function={fetchQuestCalculatorResult}>Reload from source<ReplayIcon className={classes.marginLeft}/></BetterButton>
+                  <BetterButton state={reloadFromSourceButtonState} function={toggleDialog}><MoreHorizIcon /></BetterButton>
                 </Grid>
                 <Grow in={dataReloadErrorExists}>
                   <Grid item>

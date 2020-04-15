@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
 
 function SectionTitle(props) {
     const classes = useStyles();
-  return (<h2 className={classes.color}>{props.title}</h2>);
+  return (<h2 className={classes.color}>{props.children}</h2>);
 }
 
 export default SectionTitle;

@@ -158,7 +158,7 @@ const classes = useStyles();
             </DialogContent>
             <DialogActions>
                   <Button variant="contained" className={classes.noTextTransform} fullWidth color="primary">
-                    Permanently Change URL
+                    Permanently change URL
                   </Button>
                 </DialogActions>
           </Dialog>

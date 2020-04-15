@@ -20,6 +20,7 @@ import ReplayIcon from '@material-ui/icons/Replay';
 import ModifySourceDialog from './ModifySourceDialog'
 import SectionTitle from './SectionTitle'
 import AdminLogin from './AdminLogin'
+import UserManagementArea from './UserManagementArea';
 
 
 
@@ -38,16 +39,24 @@ const useStyles = makeStyles((theme) => ({
 
 function AdminPage(props) {
   const classes = useStyles();
+  const [isLoginAreaShown, setIsLoginAreaShown] = useState(true);
 
-    return (<Grid container spacing={0}>
+    return (<Grid container spacing={5} justify="center">
             <Grid item xs={12}>
                 <NavBar />
             </Grid>
-            <Grid item container spacing={3} xs={12} lg={5}>
-              <Grid item xs={12} className={classes.marginTop}>
-                <AdminLogin />
+            <Grid item container xs={11}>
+              <Grid item md={5} xs={12}>
+                <AdminLogin show={isLoginAreaShown} enforceRole={"admin"}/>
               </Grid>
             </Grid>
+            <Grid item container xs={11}>
+              <Grid item md={5} xs={12}>
+              <SectionTitle>Add/delete users</SectionTitle>
+                <UserManagementArea />
+              </Grid>
+            </Grid>
+
         </Grid>);
 
 }

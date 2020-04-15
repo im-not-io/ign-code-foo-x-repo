@@ -1,8 +1,9 @@
 import React from 'react'
 import * as d3 from 'd3';
-import { useEffect } from 'react';
+import { useEffect} from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
 
 
 const width = (window.innerWidth/12) * 10;
@@ -10,6 +11,13 @@ const height = (window.innerHeight/12) * 10;
 const linkDistance = 500;
 const nodeRadius = 10;
 const SAFETY_PADDING = 20;
+
+const useStyles = makeStyles((theme) => ({
+    svg: {
+      width: "100%",
+      height: "40em"
+    }
+  }));
 
 function createBarChart(graph, pinLeftNode, pinRightNode) {
 
@@ -239,6 +247,7 @@ function createBarChart(graph, pinLeftNode, pinRightNode) {
 }
 
 function BestQuestsGraph(props) {
+    const classes = useStyles();
     useEffect(() => {
         if (props.questCalculatorResult != null) {
             createBarChart(props.questCalculatorResult.graph, "[[[[START_NODE]]]]", props.questCalculatorResult.maxPath[props.questCalculatorResult.maxPath.length - 1].quest);
@@ -249,7 +258,7 @@ function BestQuestsGraph(props) {
             return (
                 <Grid container spacing={0}>
                 <Grid item xs={12}>
-                    <svg id = "mySvg" width = { width } height = { height } ></svg>
+                    <svg id = "mySvg" className = { classes.svg }></svg>
                 </Grid> 
                 </Grid>
             )
