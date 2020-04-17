@@ -5,16 +5,12 @@ import BestQuestsGraph from './BestQuestsGraph';
 import PageTitle from './PageTitle';
 import { makeStyles } from '@material-ui/core/styles';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import BestQuestsTable from './BestQuestsTable';
 import * as firebase from "firebase/app";
 import "firebase/database";
 import "firebase/auth";
 import "firebase/functions";
-import { Button, Box } from '@material-ui/core';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import ErrorBox from './ErrorBox'
-import Grow from '@material-ui/core/Grow';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import ReplayIcon from '@material-ui/icons/Replay';
 import ModifySourceDialog from './ModifySourceDialog'
@@ -71,28 +67,8 @@ const classes = useStyles();
 
   useEffect(() => {
     document.title = "Link's Quest Calculator";
-
-
-    firebase.auth().signInAnonymously().catch(function(error) {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        console.log(errorCode, errorMessage)
-      });
-      firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-          // User is signed in.
-          
-          console.log("login OK");
-          //read Firebase data and load questCalculatorResult into state
-
-          listenForFirebaseUpdates();
-          fetchDataIfEmpty();
-        } else {
-          // User is signed out.
-          // ...
-        }
-        // ...
-      });
+    listenForFirebaseUpdates();
+    fetchDataIfEmpty();
   }, []);
 
   function toggleDialog() {
@@ -162,7 +138,7 @@ const classes = useStyles();
   }
 
   function fetchDataIfEmpty() {
-    var ref = firebase.database().ref("/questCalculatorResult").once("value")
+    firebase.database().ref("/questCalculatorResult").once("value")
     .then(function(snapshot) {
       if (!snapshot.exists()) {
         fetchQuestCalculatorResult();
@@ -185,12 +161,11 @@ function timestampToString(timestamp) {
     "July", "August", "September", "October", "November", "December"
   ];
   const d = new Date(timestamp);
-  const minutes  = d.getMinutes() % 12;
   return (monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear() + " " + d.toLocaleTimeString());
 }
 
 function getQuestCalculatorTimestamp() {
-  if (questCalculatorResult != undefined) {
+  if (questCalculatorResult) {
     return "Date last updated: "+ timestampToString(questCalculatorResult.timestamp)
   } else {
     return "";
@@ -220,11 +195,9 @@ function getQuestCalculatorTimestamp() {
                   <BetterButton state={reloadFromSourceButtonState} function={fetchQuestCalculatorResult}>Reload from source<ReplayIcon className={classes.marginLeft}/></BetterButton>
                   <BetterButton state={reloadFromSourceButtonState} function={toggleDialog}><MoreHorizIcon /></BetterButton>
                 </Grid>
-                <Grow in={dataReloadErrorExists}>
                   <Grid item>
                     <ErrorBox message="The server isn't feeling well right now. Please try again later."/>
                   </Grid>
-                </Grow>
               </Grid> 
             </Grid>
             <ModifySourceDialog isOpen={modifySourceDialogOpen} handleClose={toggleDialog} pdfUrl={pdfUrl} setPdfUrl={setPdfUrl}/>

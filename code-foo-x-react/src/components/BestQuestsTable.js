@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 function addRows(quests, classes) {
 
-    if (quests == undefined || quests.length === 0) {
+    if (quests === undefined || quests.length === 0) {
         return (
             <div></div>
         )

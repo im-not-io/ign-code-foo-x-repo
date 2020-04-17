@@ -1,9 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import DrawingBoard from './components/DrawingBoard';
-import Grid from '@material-ui/core/Grid';
-import { Container } from '@material-ui/core';
 import {
   BrowserRouter,
   Switch,
@@ -13,6 +10,11 @@ import {
 import LinksQuestCalculatorPage from './components/LinksQuestCalculatorPage';
 import AdminPage from './components/AdminPage';
 import PollsPage from './components/PollsPage';
+import AdminLogin from './components/AdminLogin';
+import * as firebase from "firebase/app";
+import "firebase/database";
+import "firebase/auth";
+import "firebase/functions";
 
 
 
@@ -41,20 +43,24 @@ const theme = createMuiTheme({
   }
 });
 
-function Home() {
-  return <h2>Home</h2>;
-}
-
-function About() {
-  return <h2>About</h2>;
-}
-
-function Users() {
-  return <h2>Users</h2>;
+function getRoute() {
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      console.log("user signed in");
+      return <Redirect to="/admin-portal" />
+    } else {
+      console.log("user not signed in")
+      return <Redirect to="/login" />
+    }
+  });
 }
 
 
 function App() {
+  useEffect(() => {
+    getRoute();
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
@@ -67,6 +73,9 @@ function App() {
           </Route>
           <Route path="/admin-portal">
             <AdminPage />
+          </Route>
+          <Route path="/login">
+            <AdminLogin enforceRole={"administrator"}/>
           </Route>
         </Switch>
       </BrowserRouter>

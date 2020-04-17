@@ -3,9 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import "firebase/database";
 import "firebase/auth";
 import "firebase/functions";
-import { Button, Box } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import ReplayIcon from '@material-ui/icons/Replay';
 
 
 

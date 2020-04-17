@@ -1,9 +1,7 @@
 import React from 'react';
-import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import p5 from 'p5';
-import Container from '@material-ui/core/Container';
 
 const useStyles = makeStyles((theme) => ({
     h1Color: {
@@ -19,7 +17,7 @@ function preventBehavior(e) {
 function DrawingBoard(props) {
 
   
-    const classes = useStyles();
+    // const classes = useStyles();
     let lines = []; 
 
       useEffect(() => {

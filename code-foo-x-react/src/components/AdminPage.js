@@ -1,63 +1,75 @@
 import React from 'react'
 import NavBar from './NavBar';
 import Grid from '@material-ui/core/Grid';
-import BestQuestsGraph from './BestQuestsGraph';
-import PageTitle from './PageTitle';
-import { makeStyles } from '@material-ui/core/styles';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import BestQuestsTable from './BestQuestsTable';
+import { useState } from 'react';
 import * as firebase from "firebase/app";
 import "firebase/database";
 import "firebase/auth";
 import "firebase/functions";
-import { Button, Box } from '@material-ui/core';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import ErrorBox from './ErrorBox'
-import Grow from '@material-ui/core/Grow';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import ReplayIcon from '@material-ui/icons/Replay';
-import ModifySourceDialog from './ModifySourceDialog'
 import SectionTitle from './SectionTitle'
 import AdminLogin from './AdminLogin'
 import UserManagementArea from './UserManagementArea';
-
-
-
+import BetterButton from './BetterButton';
+import { makeStyles } from '@material-ui/core/styles';
+import Grow from '@material-ui/core/Grow';
+import SignOutArea from './SignOutArea';
 
 
 const useStyles = makeStyles((theme) => ({
-    marginTop: {
-      marginTop: "2rem",
-      marginLeft: "2rem"
-    },
-  }));
-
-
-
-
+  error: {
+      backgroundColor: "#ffd8d6",
+      fontWeight: 450,
+      color: theme.palette.primary.main,
+      padding: "1rem",
+      borderRadius: "0.5rem"
+  },
+  cancelIcon: {
+      marginRight: "0.5em"
+  },
+  errorBox: {
+      marginTop: "1rem",
+      marginBottom: "1rem"
+  },
+  marginBottom: {
+    marginBottom: "2rem"
+  },
+  accountCircle: {
+      color: theme.palette.secondary.dark
+  }
+}));
 
 function AdminPage(props) {
   const classes = useStyles();
-  const [isLoginAreaShown, setIsLoginAreaShown] = useState(true);
+  // const [isLoginAreaShown, setIsLoginAreaShown] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [animationTime, setAnimationTime] = useState(false);
+
+  function administratorIsLoggedIn(isLoggedIn) {
+    console.log("isLoggedIn", isLoggedIn);
+    setIsLoggedIn(isLoggedIn);
+  }
+
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (!user) {
+      window.location.href = "/login"
+    }
+  });
 
     return (<Grid container spacing={5} justify="center">
             <Grid item xs={12}>
                 <NavBar />
             </Grid>
-            <Grid item container xs={11}>
-              <Grid item md={5} xs={12}>
-                <AdminLogin show={isLoginAreaShown} enforceRole={"admin"}/>
-              </Grid>
-            </Grid>
-            <Grid item container xs={11}>
-              <Grid item md={5} xs={12}>
-              <SectionTitle>Add/delete users</SectionTitle>
-                <UserManagementArea />
-              </Grid>
+            <Grid item container xs={6}>
+                <Grid item md={12} xs={12} className={classes.marginBottom}>
+                  <UserManagementArea show={isLoggedIn}/>
+                </Grid>
+                <Grid item md={12} xs={12} className={classes.marginBottom}>
+                  <SignOutArea show={isLoggedIn} />
+                </Grid>
             </Grid>
 
         </Grid>);
 
 }
 export default AdminPage;
+

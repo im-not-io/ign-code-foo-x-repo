@@ -1,9 +1,9 @@
 import React from 'react';
-import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Grow from '@material-ui/core/Grow';
+
 
 const useStyles = makeStyles((theme) => ({
     error: {
@@ -13,6 +13,9 @@ const useStyles = makeStyles((theme) => ({
         padding: "1rem",
         borderRadius: "0.5rem"
     },
+    cancelIcon: {
+        marginRight: "0.5em"
+    },
     errorBox: {
         marginTop: "1rem",
         marginBottom: "1rem"
@@ -21,20 +24,25 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ErrorBox(props) {
+    console.log("props show", props.show)
 const classes = useStyles();
         return (
-            <Grow in={props.show} timeout={500} unmountOnExit={true}>
-                <Grid container className={classes.errorBox}>
-                    <Grid container item justify="flex-start" alignItems="center" className={classes.error}>
-                        <Grid item container xs={1} alignItems="center" justify="center">
-                            <CancelIcon className={classes.cancelIcon}/>
-                        </Grid>
-                        <Grid item container alignItems="center" className={classes.moveLeft} xs={11}>
-                            {props.children}
+            <div>
+                <Grow in={props.show} timeout={500} unmountOnExit={true}>
+                    <Grid container className={classes.errorBox}>
+                        <Grid container item justify="flex-start" alignItems="center" className={classes.error}>
+                            <Grid item container xs={1} alignItems="center">
+                                <CancelIcon className={classes.cancelIcon}/>
+                            </Grid>
+                            <Grid item container alignItems="center" className={classes.moveLeft} xs={11}>
+                                {props.children}
+                            </Grid>
                         </Grid>
                     </Grid>
-                </Grid>
-            </Grow>
+                </Grow>
+            </div>
+
+
         );
 
 }

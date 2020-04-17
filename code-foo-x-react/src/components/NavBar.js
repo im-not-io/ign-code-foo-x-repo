@@ -15,8 +15,14 @@ import InfoIcon from '@material-ui/icons/Info';
 import ExploreIcon from '@material-ui/icons/Explore';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import PollIcon from '@material-ui/icons/Poll';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import * as firebase from "firebase/app";
+import "firebase/database";
+import "firebase/auth";
+import "firebase/functions";
+import {useState, useEffect} from 'react';
 
-import { Link, BrowserRouter} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -51,12 +57,40 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function NavBar(props) {
-  const { icon, primary, to } = props;
   const classes = useStyles();
+  const [currentUser, setCurrentUser] = useState(firebase.auth().currentUser);
+  const [userName, setUserName] = useState(null);
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        console.log("auth state change call")
+        setCurrentUser(firebase.auth().currentUser);
+        firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/name").on('value', function(snapshot) {
+          console.log("setting user name", snapshot.val())
+          setUserName(snapshot.val())
+        });
+    }
+    })
+  }, []);
 
   const [state, setState] = React.useState({
     left: false
   });
+  
+  function runLoginFunction() {
+    firebase.auth().onAuthStateChanged(function() {
+      if (firebase.auth().currentUser) {
+      //is signed in the button should then sign the user out
+      //use the AuthStateChanged callback to make sure
+      //the firebase.auth().currentUser is ready
+        firebase.auth().signOut();
+      }
+    });
+    //if the user is not signed in the React Router
+    //will redirect to the login page so we don't handle
+    //the other case
+  }
 
 
 
@@ -97,6 +131,10 @@ export default function NavBar(props) {
               <InfoIcon className={classes.icon}/>
               <ListItemText className={classes.gray} primary="How Nick Made This" />
             </ListItem>
+            <ListItem component={Link} to="/login" button key="login" className={classes.listItem} onClick={runLoginFunction}>
+                <VpnKeyIcon className={classes.icon}/>
+                <ListItemText className={classes.gray} primary={userName ? userName + " — Sign out" : "Log in"} />
+              </ListItem>
         </List>
       </div>
 

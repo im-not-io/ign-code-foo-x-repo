@@ -1,28 +1,17 @@
 import React, { useState } from 'react';
-import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import Link from '@material-ui/core/Link';
-import WarningIcon from '@material-ui/icons/Warning';
 import { Grid } from '@material-ui/core';
-import Container from '@material-ui/core/Container';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
-import Checkbox from '@material-ui/core/Checkbox';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 
@@ -90,23 +79,10 @@ const useStyles = makeStyles((theme) => ({
 function ModifySourceDialog(props) {
   const [inputValue, setInputValue] = useState("");
 
-function saveAndClose() {
-    props.setPdfUrl(inputValue);
-    props.handleClose();
-}
 
 function handleChange(event) {
   setInputValue(event.target.value);
 }
-
-function setTextFieldToSampleQuest1() {
-  setInputValue("https://code-foo-x-firebase.firebaseapp.com/assets/sample_quests.pdf");
-}
-
-function setTextFieldToIgnDefault() {
-  setInputValue("https://media.ignimgs.com/code-foo/2020/files/quests_for_question.pdf");
-}
-
 const DialogTitle = withStyles(styles)((props) => {
   const { children, classes, onClose, ...other } = props;
   return (
@@ -121,7 +97,6 @@ const DialogTitle = withStyles(styles)((props) => {
   );
 });
   
-const [modifySourceDialogOpen, setModifySourceDialogOpen] = useState(false);
 const classes = useStyles();
         return (
             <Dialog open={props.isOpen} onClose={props.handleClose} aria-labelledby="form-dialog-title">
