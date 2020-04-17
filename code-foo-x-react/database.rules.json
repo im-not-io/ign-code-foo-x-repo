@@ -1,6 +1,12 @@
 {
   "rules": {
-    ".read": "auth != null",
-    ".write": "auth != null"
-  }
+  "questCalculatorResult": {
+      ".read": true,
+      ".write": false
+    },
+  "users": {
+    	".read": "auth !== null && root.child('users').child(auth.uid).child('role').val() === 'administrator'",
+    	".write": "auth !== null && root.child('users').child(auth.uid).child('role').val() === 'administrator'"
+  	}
+  },
 }
