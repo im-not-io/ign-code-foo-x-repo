@@ -24,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ErrorBox(props) {
-    console.log("props show", props.show)
 const classes = useStyles();
         return (
             <div>

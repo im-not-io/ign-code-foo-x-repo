@@ -8,5 +8,5 @@
     	".read": "auth !== null && root.child('users').child(auth.uid).child('role').val() === 'administrator'",
     	".write": "auth !== null && root.child('users').child(auth.uid).child('role').val() === 'administrator'"
   	}
-  },
+  }
 }

@@ -14,6 +14,9 @@ import Typography from '@material-ui/core/Typography';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
+import TextField from '@material-ui/core/TextField';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const styles = (theme) => ({
   root: {
@@ -76,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function ModifySourceDialog(props) {
+function AddUserDialog(props) {
   const [inputValue, setInputValue] = useState("");
 
 
@@ -99,39 +102,45 @@ const DialogTitle = withStyles(styles)((props) => {
   
 const classes = useStyles();
         return (
-            <Dialog open={props.isOpen} onClose={props.handleClose} aria-labelledby="form-dialog-title">
+            <Dialog open={props.open} onClose={props.toggleFunction} aria-labelledby="form-dialog-title">
             <DialogTitle onClose={props.handleClose}>Modify data set</DialogTitle>
             <DialogContent>
-            <Grid container>
-              <Grid item className={classes.dialogInstructions} xs={12}>
-                Use the dropdown to permanently change the data source used by the quest calculator. Access the <Link className={classes.link} color="primary">Admin Panel</Link> to add/delete new datasets.
-              </Grid>
-              <Grid item xs={12}>
-              <InputLabel>Select data set</InputLabel>
-                <Select fullWidth
-                  value={inputValue}
-                  onChange={handleChange}
-                >
-                  <MenuItem value={"Link's Quest Calculator Data"}>Link's Quest Calculator Data</MenuItem>
-                  <MenuItem value={"Sample Data"}>Sample Data</MenuItem>
-                </Select>
-        
-              </Grid>
-            </Grid>
-
-              {/* <TextField
-                autoFocus
-                margin="dense"
-                label={props.pdfUrl}
-                onChange={handleChange}
-                value={inputValue}
-                fullWidth
-              /> */}
-
+            <DialogContentText>
+            To subscribe to this website, please enter your email address here. We will send updates
+            occasionally.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Name"
+            fullWidth
+          />
+          <TextField
+            margin="dense"
+            id="email"
+            label="Email"
+            type="email"
+            fullWidth
+          />
+        <TextField
+            margin="dense"
+            id="confirmEmail"
+            label="Confirm Email"
+            type="email"
+            fullWidth
+          />
+        <TextField
+            margin="dense"
+            id="password"
+            label="Password"
+            type="password"
+            fullWidth
+          />
             </DialogContent>
             <DialogActions>
                   <Button variant="contained" className={classes.noTextTransform} fullWidth color="primary">
-                    Permanently change URL
+                    Create new administrator
                   </Button>
                 </DialogActions>
           </Dialog>
@@ -139,4 +148,4 @@ const classes = useStyles();
 
 }
 
-export default ModifySourceDialog;
+export default AddUserDialog;

@@ -70,7 +70,7 @@ function AdminLogin(props) {
           console.log("user is logged in");
           var userId = firebase.auth().currentUser.uid;
           console.log('/users/' + userId + "/role");
-          return firebase.database().ref('/users/' + userId + "/role").once("value").then(function(snapshot) {
+          firebase.database().ref('/users/' + userId + "/role").once("value").then(function(snapshot) {
             const role = snapshot.val();
             if (role === props.enforceRole) {
               console.log("Role is valid.", role, props.enforceRole)

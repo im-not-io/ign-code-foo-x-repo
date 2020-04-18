@@ -27,17 +27,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SignOutArea(props) {
-    console.log("props show", props.show)
 const classes = useStyles();
 
 return (
     <div>
-        <Grow in={props.show} timeout={500} unmountOnExit={true}>
             <Box>
                 <SectionTitle>You are signed in</SectionTitle>
                 <BetterButton function={() => firebase.auth().signOut()}>Sign out</BetterButton>
             </Box>
-        </Grow>
     </div>
 )
 

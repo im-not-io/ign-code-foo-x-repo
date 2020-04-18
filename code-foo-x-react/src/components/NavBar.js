@@ -79,14 +79,19 @@ export default function NavBar(props) {
   });
   
   function runLoginFunction() {
-    firebase.auth().onAuthStateChanged(function() {
-      if (firebase.auth().currentUser) {
-      //is signed in the button should then sign the user out
-      //use the AuthStateChanged callback to make sure
-      //the firebase.auth().currentUser is ready
-        firebase.auth().signOut();
-      }
-    });
+    var unsubscribe = firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        //is signed in the button should then sign the user out
+        //use the AuthStateChanged callback to make sure
+        //the firebase.auth().currentUser is ready
+        //it's wrapped in onAuthStateChanged to ensure the auth().currentUser
+        //is already initialized
+          firebase.auth().signOut();
+        }
+   });
+   //force Firebase to stop listening for auth changes to prevent weird login errors
+  
+   unsubscribe();
     //if the user is not signed in the React Router
     //will redirect to the login page so we don't handle
     //the other case
