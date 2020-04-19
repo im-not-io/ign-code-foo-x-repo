@@ -1,22 +1,15 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import Link from '@material-ui/core/Link';
-import { Grid } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
+import { DialogContentText } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import BetterButton from './BetterButton'
 
 const styles = (theme) => ({
   root: {
@@ -28,64 +21,20 @@ const styles = (theme) => ({
     right: theme.spacing(1),
     top: theme.spacing(1),
     color: theme.palette.grey[500],
-  }
+  },
 });
-
-
 const useStyles = makeStyles((theme) => ({
-    error: {
-        backgroundColor: "#ffd8d6",
-        fontWeight: 450,
-        color: theme.palette.primary.main,
-        padding: "1rem",
-        borderRadius: "0.5rem"
-    },
-    cancelIcon: {
-        marginRight: "0.5em"
-    },
-    errorBox: {
-        marginTop: "1rem",
-        marginBottom: "1rem"
-    },
-    persistenceWarning: {
-      marginTop: "0.5rem"
-    },
-    modalButton: {
-      textTransform: "none"
-    },
-    warningIcon: {
-      marginRight: "0.20rem"
-    },
-    link: {
-      cursor: "pointer"
-    },
-    linkPushRight: {
-      cursor: "pointer",
-      marginLeft: "0.3rem"
-    },
-    buttonPushRight: {
-      cursor: "pointer",
-      marginLeft: "0.4rem"
-    },
-    dialogInstructions: {
-      marginBottom: "1rem"
-    },
-    noSpacing: {
-      paddingLeft: 0
-    },
-    noTextTransform: {
-      textTransform: "none",
-      fontSize: "1rem"
-    }
+  noTextTransform: {
+    textTransform: "none",
+    fontSize: "1rem"
+  },
+  pullUp: {
+    marginBottom: "-0.25rem"
+  }
 }));
 
-function AddUserDialog(props) {
-  const [inputValue, setInputValue] = useState("");
 
 
-function handleChange(event) {
-  setInputValue(event.target.value);
-}
 const DialogTitle = withStyles(styles)((props) => {
   const { children, classes, onClose, ...other } = props;
   return (
@@ -99,53 +48,74 @@ const DialogTitle = withStyles(styles)((props) => {
     </MuiDialogTitle>
   );
 });
-  
-const classes = useStyles();
-        return (
-            <Dialog open={props.open} onClose={props.toggleFunction} aria-labelledby="form-dialog-title">
-            <DialogTitle onClose={props.handleClose}>Modify data set</DialogTitle>
-            <DialogContent>
-            <DialogContentText>
-            To subscribe to this website, please enter your email address here. We will send updates
-            occasionally.
+
+const DialogContent = withStyles((theme) => ({
+  root: {
+    padding: theme.spacing(2),
+  },
+}))(MuiDialogContent);
+
+const DialogActions = withStyles((theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(1),
+  },
+}))(MuiDialogActions);
+
+export default function CustomizedDialogs(props) {
+  const classes = useStyles();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  function createAdminUser() {
+    console.log("ready to create admin");
+    console.log(name, email, password)
+  }
+
+  return (
+    <div>
+      <Dialog maxWidth={"sm"} fullWidth={true} onClose={props.toggleFunction} aria-labelledby="customized-dialog-title" open={props.isOpen}>
+        <DialogTitle id="customized-dialog-title" onClose={props.toggleFunction}>
+          Add administrator
+        </DialogTitle>
+        <DialogContent dividers>
+          <DialogContentText className={classes.pullUp}>
+          Fill out the fields to create a new administrator user.
           </DialogContentText>
           <TextField
             autoFocus
             margin="dense"
-            id="name"
             label="Name"
+            onChange={(event) => setName(event.target.value)}
             fullWidth
           />
           <TextField
             margin="dense"
-            id="email"
             label="Email"
+            onChange={(event) => setEmail(event.target.value)}
+            fullWidth
+          />
+          <TextField
+            margin="dense"
+            label="Confirm email"
             type="email"
             fullWidth
           />
-        <TextField
+          <TextField
             margin="dense"
-            id="confirmEmail"
-            label="Confirm Email"
-            type="email"
-            fullWidth
-          />
-        <TextField
-            margin="dense"
-            id="password"
-            label="Password"
             type="password"
+            label="Password"
+            onChange={(event) => setPassword(event.target.value)}
             fullWidth
           />
-            </DialogContent>
-            <DialogActions>
-                  <Button variant="contained" className={classes.noTextTransform} fullWidth color="primary">
-                    Create new administrator
-                  </Button>
-                </DialogActions>
-          </Dialog>
-        );
-
+        </DialogContent>
+        <DialogActions>
+        <BetterButton function={createAdminUser} className={classes.noTextTransform} fullWidth={true}>
+          Create administrator account
+        </BetterButton>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
 }
-
-export default AddUserDialog;

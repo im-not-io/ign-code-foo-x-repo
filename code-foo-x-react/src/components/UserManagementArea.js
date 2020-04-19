@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import UserModificationItem from './UserModificationItem';
 import * as firebase from "firebase/app";
 import "firebase/database";
@@ -10,7 +10,6 @@ import BetterButton from './BetterButton';
 import SectionTitle from './SectionTitle';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { makeStyles } from '@material-ui/core/styles';
-import Grow from '@material-ui/core/Grow';
 import AddUserDialog from './AddUserDialog'
 
 const useStyles = makeStyles((theme) => ({
@@ -32,23 +31,22 @@ function UserManagementArea(props) {
         firebase.database().ref('/users/' + uid).remove();
     }
 
-    function setUpFirebaseReadListener() {
-        firebase.database().ref("users/").on('value', function(snapshot) {
-            let users = snapshot.val();
-            let result = [];
-            console.log("valchange detected", "value change detected");
-            console.log("payload", users)
-            for (const key in users) {
-                result.push(
-                    <UserModificationItem in={true} key={key} uid={key} name={users[key].name} role={users[key].role} onDeleteIconClicked={deleteUserFromFirebase}/>
-                );
-            }
-            setUserModificationItems(result);
-        });
-
-    }
-
     useEffect(() => {
+        function setUpFirebaseReadListener() {
+            firebase.database().ref("users/").on('value', function(snapshot) {
+                let users = snapshot.val();
+                let result = [];
+                console.log("valchange detected", "value change detected");
+                console.log("payload", users)
+                for (const key in users) {
+                    result.push(
+                        <UserModificationItem in={true} key={key} uid={key} name={users[key].name} role={users[key].role} onDeleteIconClicked={deleteUserFromFirebase}/>
+                    );
+                }
+                setUserModificationItems(result);
+            });
+    
+        }    
         setUpFirebaseReadListener();
     }, []);
 
@@ -76,14 +74,12 @@ function UserManagementArea(props) {
     
 
     return (
-    <div>
             <Box>
                 <SectionTitle>Add/delete users</SectionTitle>
                 {getLoaderOrData()}
-                <BetterButton function={toggleAddUserDialog}>Add administrator</BetterButton>
-                <AddUserDialog open={dialogOpen} toggleFunction={toggleAddUserDialog}/>
+                <BetterButton function={toggleAddUserDialog}>Add administrator</BetterButton>    
+                <AddUserDialog isOpen={dialogOpen} toggleFunction={toggleAddUserDialog}/>
             </Box>
-    </div>
 
   );
 

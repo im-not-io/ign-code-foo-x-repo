@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import NavBar from './NavBar';
 import Grid from '@material-ui/core/Grid';
 import { useState } from 'react';
@@ -6,12 +6,8 @@ import * as firebase from "firebase/app";
 import "firebase/database";
 import "firebase/auth";
 import "firebase/functions";
-import SectionTitle from './SectionTitle'
-import AdminLogin from './AdminLogin'
 import UserManagementArea from './UserManagementArea';
-import BetterButton from './BetterButton';
 import { makeStyles } from '@material-ui/core/styles';
-import Grow from '@material-ui/core/Grow';
 import SignOutArea from './SignOutArea';
 
 
@@ -42,18 +38,18 @@ function AdminPage(props) {
   const classes = useStyles();
   // const [isLoginAreaShown, setIsLoginAreaShown] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [animationTime, setAnimationTime] = useState(false);
 
-  function administratorIsLoggedIn(isLoggedIn) {
-    console.log("isLoggedIn", isLoggedIn);
-    setIsLoggedIn(isLoggedIn);
-  }
-
-  firebase.auth().onAuthStateChanged(function(user) {
-    if (!user) {
-      window.location.href = "/login"
-    }
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (!user) {
+        setIsLoggedIn(false);
+        window.location.href = "/login";
+      } else {
+        setIsLoggedIn(true);
+      }
+    });
   });
+
 
     return (<Grid container spacing={5} justify="center">
             <Grid item xs={12}>

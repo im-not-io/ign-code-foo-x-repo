@@ -58,14 +58,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function NavBar(props) {
   const classes = useStyles();
-  const [currentUser, setCurrentUser] = useState(firebase.auth().currentUser);
   const [userName, setUserName] = useState(null);
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         console.log("auth state change call")
-        setCurrentUser(firebase.auth().currentUser);
         firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/name").on('value', function(snapshot) {
           console.log("setting user name", snapshot.val())
           setUserName(snapshot.val())

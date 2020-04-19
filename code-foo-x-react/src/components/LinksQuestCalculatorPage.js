@@ -61,15 +61,17 @@ const classes = useStyles();
   const CODE_FOO_QUESTS_URL = "https://media.ignimgs.com/code-foo/2020/files/quests_for_question.pdf";
   const [questCalculatorResult, setQuestCalculatorResult] = useState(null);
   const [reloadFromSourceButtonState, setReloadFromSourceButtonState] = useState("normal");
-  const [dataReloadErrorExists, setDataReloadErrorExists] = useState(false);
   const [modifySourceDialogOpen, setModifySourceDialogOpen] = useState(false);
   const [pdfUrl, setPdfUrl] = useState(CODE_FOO_QUESTS_URL);
 
   useEffect(() => {
     document.title = "Link's Quest Calculator";
     listenForFirebaseUpdates();
-    fetchDataIfEmpty();
   }, []);
+
+  useEffect(() => {
+    fetchDataIfEmpty();
+  });
 
   function toggleDialog() {
     setModifySourceDialogOpen(!modifySourceDialogOpen);
@@ -89,7 +91,6 @@ const classes = useStyles();
     resultObject.timestamp = (new Date()).getTime();
 
     firebase.database().ref('questCalculatorResult/').set(resultObject).catch(function(error) {
-      setDataReloadErrorExists(true);
       console.log(error);
     });
   }
@@ -103,10 +104,8 @@ const classes = useStyles();
   }
 
   function fetchQuestCalculatorResult() {
-
-  
     setReloadFromSourceButtonState("loading");
-    const targetUrl = "https://us-central1-code-foo-x-firebase.cloudfunctions.net/calculateBestQuests?" + "url=" + pdfUrl;
+    const targetUrl = "https://us-central1-code-foo-x-firebase.cloudfunctions.net/calculateBestQuests?url=" + pdfUrl;
     console.log("using target URL", targetUrl);
     deleteQuestCalculatorResult();
     fetch(encodeURI(targetUrl))
@@ -121,7 +120,6 @@ const classes = useStyles();
         response.json().then(function(data) {
           console.log(data);
           if (data.hasOwnProperty("error")) {
-            setDataReloadErrorExists(true);
           } else {
             saveQuestCalculatorResultToFirebase(data);
             setReloadFromSourceButtonState("normal");
@@ -133,7 +131,6 @@ const classes = useStyles();
     .catch(function(err) {
       console.log('Fetch data failed.');
       setReloadFromSourceButtonState("normal");
-      setDataReloadErrorExists(true);
     });
   }
 

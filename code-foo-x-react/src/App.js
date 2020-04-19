@@ -46,10 +46,8 @@ const theme = createMuiTheme({
 function getRoute() {
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-      console.log("user signed in");
       return <Redirect to="/admin-portal" />
     } else {
-      console.log("user not signed in")
       return <Redirect to="/login" />
     }
   });

@@ -1,7 +1,7 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import * as firebase from "firebase/app";
 import "firebase/database";
 import "firebase/auth";
@@ -14,7 +14,6 @@ import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import BetterButton from './BetterButton';
 import ErrorBox from './ErrorBox';
-import Grow from '@material-ui/core/Grow';
 import NavBar from './NavBar';
 
 const useStyles = makeStyles((theme) => ({
@@ -46,7 +45,6 @@ function AdminLogin(props) {
     const [errorBoxText, setErrorBoxText] = useState("Login error.");
     const [buttonState, setButtonState] = useState("normal");
     const [forgotPasswordText, setForgotPasswordText] = useState("Forgot password?");
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 
     function loginToFirebase() {
@@ -67,7 +65,6 @@ function AdminLogin(props) {
       // firebase.auth().signOut();
       firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
-          console.log("user is logged in");
           var userId = firebase.auth().currentUser.uid;
           console.log('/users/' + userId + "/role");
           firebase.database().ref('/users/' + userId + "/role").once("value").then(function(snapshot) {
@@ -82,8 +79,6 @@ function AdminLogin(props) {
               setButtonState("normal");
             }
           });
-        } else {
-          setIsLoggedIn(false);
         }
       });
 

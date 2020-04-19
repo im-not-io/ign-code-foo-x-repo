@@ -7,7 +7,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import Grow from '@material-ui/core/Grow';
 
 
 const useStyles = makeStyles((theme) => ({
