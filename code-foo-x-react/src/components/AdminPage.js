@@ -9,6 +9,7 @@ import "firebase/functions";
 import UserManagementArea from './UserManagementArea';
 import { makeStyles } from '@material-ui/core/styles';
 import SignOutArea from './SignOutArea';
+import Grow from '@material-ui/core/Grow';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -38,6 +39,7 @@ function AdminPage(props) {
   const classes = useStyles();
   // const [isLoginAreaShown, setIsLoginAreaShown] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(function(user) {
@@ -46,6 +48,10 @@ function AdminPage(props) {
         window.location.href = "/login";
       } else {
         setIsLoggedIn(true);
+        return firebase.database().ref('/users/' + user.uid).once('value').then(function(snapshot) {
+          const role = snapshot.val().role;
+          setIsAdmin(role === "owner" || role === "administrator");
+        });
       }
     });
   });
@@ -56,9 +62,11 @@ function AdminPage(props) {
                 <NavBar />
             </Grid>
             <Grid item container xs={6}>
+              <Grow in={isAdmin} timeout={500} unmountOnExit>
                 <Grid item md={12} xs={12} className={classes.marginBottom}>
                   <UserManagementArea show={isLoggedIn}/>
                 </Grid>
+              </Grow>
                 <Grid item md={12} xs={12} className={classes.marginBottom}>
                   <SignOutArea show={isLoggedIn} />
                 </Grid>

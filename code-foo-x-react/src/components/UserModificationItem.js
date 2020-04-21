@@ -7,6 +7,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import InfoIcon from '@material-ui/icons/Info';
+import Tooltip from '@material-ui/core/Tooltip';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -29,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+
 function UserModifcationItem(props) {
 
 const classes = useStyles();
@@ -38,12 +41,18 @@ const classes = useStyles();
                     <AccountCircleIcon style={{ fontSize: 40 }} className={classes.accountCircle}/>
                 </ListItemAvatar>
                 <ListItemText
-                primary={props.name}
-                secondary={props.role}
+                primary={props.name + " (" + props.role + ")"}
+                secondary={props.email}
                 />
                 <ListItemSecondaryAction>
                 <IconButton edge="end" aria-label="delete" onClick={function() { props.onDeleteIconClicked(props.uid) }}>
-                    <DeleteIcon />
+                    {props.showDeleteIcon ? <Tooltip title="Delete" aria-label="Delete">
+                                                <DeleteIcon />
+                                            </Tooltip> :
+                                            <Tooltip title="Owner may not be deleted" aria-label="Owner may not be deleted">
+                                                <InfoIcon />
+                                            </Tooltip>
+                                            }
                 </IconButton>
                 </ListItemSecondaryAction>
           </ListItem>

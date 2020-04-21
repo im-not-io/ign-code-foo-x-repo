@@ -15,6 +15,9 @@ import Link from '@material-ui/core/Link';
 import BetterButton from './BetterButton';
 import ErrorBox from './ErrorBox';
 import NavBar from './NavBar';
+import {
+  useLocation
+} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -49,16 +52,25 @@ function AdminLogin(props) {
 
     function loginToFirebase() {
       setButtonState("loading");
-      firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+      firebase.auth().signInWithEmailAndPassword(email, password).then(() =>  {
+        window.location.href = '/admin-portal';
+        console.log("successful sign in");
+      })
+      .catch(function(error) {
         // Handle Errors here.
         console.log(error);
         setErrorBoxText("Authentication failed. Please check email and password.");
         setShowErrorBox(true);
         setButtonState("normal");
-
       });
-      enforceRole();
+      // enforceRole();
   }
+
+  function useQuery() {
+    return new URLSearchParams(useLocation().search);
+  }
+
+  let query = useQuery();
 
   function enforceRole() {
     if ("enforceRole" in props) {

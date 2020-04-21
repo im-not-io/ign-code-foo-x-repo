@@ -73,7 +73,7 @@ function App() {
             <AdminPage />
           </Route>
           <Route path="/login">
-            <AdminLogin enforceRole={"administrator"}/>
+            <AdminLogin />
           </Route>
         </Switch>
       </BrowserRouter>

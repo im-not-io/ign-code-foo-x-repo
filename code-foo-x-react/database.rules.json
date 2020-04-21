@@ -1,12 +1,17 @@
 {
   "rules": {
-  "questCalculatorResult": {
+    "questCalculatorResult": {
       ".read": true,
       ".write": false
     },
-  "users": {
-    	".read": "auth !== null && root.child('users').child(auth.uid).child('role').val() === 'administrator'",
-    	".write": "auth !== null && root.child('users').child(auth.uid).child('role').val() === 'administrator'"
-  	}
+    "users": {
+      ".read": "root.child('users').child(auth.uid).child('role').val() === 'administrator' || root.child('users').child(auth.uid).child('role').val() === 'owner'",
+      "$uid": {
+				".read": "root.child('users').child(auth.uid).child('role').val() === 'administrator' || root.child('users').child(auth.uid).child('role').val() === 'owner'",
+        ".write": "root.child('users').child($uid).child('role').val() !== 'owner' && (root.child('users').child(auth.uid).child('role').val() === 'administrator' || root.child('users').child(auth.uid).child('role').val() === 'owner')" 
+      }
+ 
+    }
+    
   }
 }
