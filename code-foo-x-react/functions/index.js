@@ -258,6 +258,7 @@ exports.calculateBestQuests = functions.https.onRequest(async (req, res) => {
 
                                 let result = findOptimalQuestSequence(quests);
                                 result.source = PDF_URL;
+                                result.creationTimeMilliseconds = Date.now();
 
                                 admin.database().ref("/" + "questCalculatorResult").set(result)
                                 .then(() => {

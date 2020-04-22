@@ -15,6 +15,8 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import ReplayIcon from '@material-ui/icons/Replay';
 import ModifySourceDialog from './ModifySourceDialog'
 import BetterButton from './BetterButton';
+import StorageIcon from '@material-ui/icons/Storage';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 
 
@@ -125,6 +127,7 @@ const classes = useStyles();
     setReloadFromSourceButtonState("loading");
     const targetUrl = "";
     // deleteQuestCalculatorResult();
+    //https://us-central1-code-foo-x-firebase.cloudfunctions.net/calculateBestQuests
     fetch("http://localhost:5000/code-foo-x-firebase/us-central1/calculateBestQuests")
     .then(
       function(response) {
@@ -170,7 +173,6 @@ function getBestQuestPath() {
 }
 
 function timestampToString(timestamp) {
-  console.log("timestamp to string")
     const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
   ];
@@ -180,7 +182,7 @@ function timestampToString(timestamp) {
 
 function getQuestCalculatorTimestamp() {
   if (questCalculatorResult) {
-    return "Date last updated: "+ timestampToString(questCalculatorResult.timestamp)
+    return "Date last updated: "+ timestampToString(questCalculatorResult.creationTimeMilliseconds)
   } else {
     return "";
   }
@@ -209,7 +211,7 @@ function getQuestCalculatorTimestamp() {
                 <Grid item xs={12}>
                   <p className={classes.instructionText}>{getQuestCalculatorTimestamp()}</p>
                   <BetterButton state={reloadFromSourceButtonState} function={fetchQuestCalculatorResult}>Reload from source<ReplayIcon className={classes.marginLeft}/></BetterButton>
-                  <BetterButton function={toggleDialog}><MoreHorizIcon /></BetterButton>
+                  <BetterButton function={toggleDialog}>Modify data source<SettingsIcon className={classes.marginLeft}/></BetterButton>
                 </Grid>
                   <Grid item>
                     <ErrorBox message="The server isn't feeling well right now. Please try again later."/>

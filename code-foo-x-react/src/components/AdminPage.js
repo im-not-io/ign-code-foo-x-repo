@@ -67,14 +67,12 @@ function AdminPage(props) {
                 <NavBar />
             </Grid>
             <Grid item container xs={4}>
-              <Grow in={isAdmin} timeout={500} unmountOnExit>
                 <Grid item md={12} xs={12} className={classes.marginBottom}>
                   <UserManagementArea show={isLoggedIn}/>
                 </Grid>
-              </Grow>
-              <Grid item md={12} xs={12} className={classes.marginBottom}>
-                  <GraphCalculatorDatasets /> 
-              </Grid>
+                <Grid item md={12} xs={12} className={classes.marginBottom}>
+                    <GraphCalculatorDatasets /> 
+                </Grid>
               <Grid item md={12} xs={12} className={classes.marginBottom}>
                 <SignOutArea show={isLoggedIn} />
               </Grid>
