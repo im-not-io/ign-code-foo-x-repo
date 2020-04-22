@@ -66,7 +66,7 @@ function AdminPage(props) {
             <Grid item xs={12}>
                 <NavBar />
             </Grid>
-            <Grid item container xs={4}>
+            <Grid item container xs={6}>
                 <Grid item md={12} xs={12} className={classes.marginBottom}>
                   <UserManagementArea show={isLoggedIn}/>
                 </Grid>

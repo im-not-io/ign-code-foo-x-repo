@@ -127,8 +127,9 @@ const classes = useStyles();
     setReloadFromSourceButtonState("loading");
     const targetUrl = "";
     // deleteQuestCalculatorResult();
+    //http://localhost:5000/code-foo-x-firebase/us-central1/calculateBestQuests
     //https://us-central1-code-foo-x-firebase.cloudfunctions.net/calculateBestQuests
-    fetch("http://localhost:5000/code-foo-x-firebase/us-central1/calculateBestQuests")
+    fetch("https://us-central1-code-foo-x-firebase.cloudfunctions.net/calculateBestQuests")
     .then(
       function(response) {
         if (response.status !== 200) {
