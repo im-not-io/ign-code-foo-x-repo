@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -14,6 +14,10 @@ import Typography from '@material-ui/core/Typography';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
+import * as firebase from "firebase/app";
+import "firebase/database";
+import "firebase/auth";
+import "firebase/functions";
 
 const styles = (theme) => ({
   root: {
@@ -78,11 +82,45 @@ const useStyles = makeStyles((theme) => ({
 
 function ModifySourceDialog(props) {
   const [inputValue, setInputValue] = useState("");
+  const [datasets, setDatasets] = useState([]);
+  
+  useEffect(() => {
+    firebase.database().ref("datasets").on("value", (snapshot) => {
+      let result = [];
+      let obj = snapshot.val();
+      for (let key in obj) {
+        result.push(<MenuItem key={obj[key].url} value={obj[key].url}>{obj[key].name}</MenuItem>);
+      }
+      setDatasets(result);
+    });
 
+    firebase.database().ref("activeDatasetUrl/").once("value")
+    .then((dataSnapshot) => {
+      setInputValue(dataSnapshot.val());
+    })
+    .catch((error) => {
+      console.log("couldn't read current PDF url value");
+    });
+
+  },[]);
 
 function handleChange(event) {
   setInputValue(event.target.value);
 }
+
+function setTargetPdfUrl() {
+  firebase.database().ref("activeDatasetUrl/")
+  .set(inputValue)
+  .then(() => {
+    console.log("target pdf set success");
+    props.handleClose();
+  })
+  .catch((error) => {
+    console.log("failed to set target pdf");
+    console.log(error);
+  })
+}
+
 const DialogTitle = withStyles(styles)((props) => {
   const { children, classes, onClose, ...other } = props;
   return (
@@ -96,7 +134,9 @@ const DialogTitle = withStyles(styles)((props) => {
     </MuiDialogTitle>
   );
 });
+
   
+
 const classes = useStyles();
         return (
             <Dialog open={props.isOpen} onClose={props.handleClose} aria-labelledby="form-dialog-title">
@@ -112,8 +152,7 @@ const classes = useStyles();
                   value={inputValue}
                   onChange={handleChange}
                 >
-                  <MenuItem value={"Link's Quest Calculator Data"}>Link's Quest Calculator Data</MenuItem>
-                  <MenuItem value={"Sample Data"}>Sample Data</MenuItem>
+                  {datasets}
                 </Select>
         
               </Grid>
@@ -130,7 +169,7 @@ const classes = useStyles();
 
             </DialogContent>
             <DialogActions>
-                  <Button variant="contained" className={classes.noTextTransform} fullWidth color="primary">
+                  <Button variant="contained" className={classes.noTextTransform} fullWidth onClick={setTargetPdfUrl} color="primary">
                     Permanently change URL
                   </Button>
                 </DialogActions>

@@ -67,15 +67,13 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
-export default function CustomizedDialogs(props) {
+export default function AddDatasetDialog(props) {
   const classes = useStyles();
-  const [name, setName] = useState("Newu Sername");
-  const [email, setEmail] = useState("ndigeron@uci.edu");
-  const [emailConfirmation, setEmailConfirmation] = useState("ndigeron@uci.edu");
-  const [password, setPassword] = useState("password");
+  const [name, setName] = useState("");
+  const [url, setUrl] = useState("");
+  const [errorText, setErrorText] = useState("The user could not be created.");
   const [isErrorBoxShown, setIsErrorBoxShown] = useState(false);
-  const [errorText, setErrorText] = useState("The account creation failed.");
-  const [buttonState, setButtonState] =  useState("normal");
+  const [buttonState, setButtonState] = useState("normal");
 
   function handleKeydown(event) {
     if (event.key === "Enter") {
@@ -87,74 +85,43 @@ export default function CustomizedDialogs(props) {
     if (name === "") {
       setErrorText("Name cannot be blank.");
       setIsErrorBoxShown(true);
-    } else if (emailConfirmation !== email) {
-      setErrorText("The confirmation email doesn't match.");
-      setIsErrorBoxShown(true);
-    } else if (email.length === 0) {
-      setErrorText("Email cannot be blank.");
+    } else if (url === "") {
+      setErrorText("The URL provided cannot be blank.");
       setIsErrorBoxShown(true);
     } else {
-      setButtonState("loading");
-      firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
-        executeCreateUserOnServer(idToken);
-      }).catch(function(error) {
-        setButtonState("normal");
-        setErrorText(error.message);
-        setIsErrorBoxShown(true);
-      });
+        setButtonState("loading");
+        //passed checks execute user addition on server
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            //wrapping in the onAuthStateChanged handler makes sure
+            //user UID is not initializing
+            firebase.database().ref('datasets/').push({
+              name: name,
+              url: url
+            })
+            .then(() => {
+              console.log("push success");
+              setButtonState("normal");
+              props.toggleFunction();
+            })
+            .catch(() => {
+              console.log("push failure")
+            });
+          }
+        });
     }
 
   }
 
-
-  function executeCreateUserOnServer(idToken) {
-    fetch('http://localhost:5000/code-foo-x-firebase/us-central1/users', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json'
-        },
-      body: JSON.stringify({
-        "idToken": idToken,
-        "name": name,
-        "email": email,
-        "password": password
-      })
-    }).then(function(response) {
-      response.json().then(data => {
-        if (response.status !== 200) {
-          setErrorText(data.error);
-          setIsErrorBoxShown(true);
-          setButtonState("normal");
-          
-        } else {
-          console.log("successfully created user");
-          //close the dialog
-
-          setButtonState("normal");
-          props.toggleFunction();
-
-        }
-
-      })
-    })
-    .catch((error) => {
-      console.log("error")
-      console.log(error)
-      setButtonState("normal");
-    });
-  }
-
-
-
   return (
     <div>
       <Dialog maxWidth={"sm"} fullWidth={true} onClose={props.toggleFunction} aria-labelledby="customized-dialog-title" open={props.isOpen}>
-        <DialogTitle onClose={props.toggleFunction}>
+        <DialogTitle id="customized-dialog-title" onClose={props.toggleFunction}>
           Add dataset
         </DialogTitle>
         <DialogContent dividers>
           <DialogContentText className={classes.pullUp}>
-          Fill out the fields to create a new administrator user.
+          Add a new dataset that can be used by the quest calculator.
           </DialogContentText>
           <form onKeyDown={handleKeydown}>
           <TextField
@@ -167,25 +134,9 @@ export default function CustomizedDialogs(props) {
           />
           <TextField
             margin="dense"
-            label="Email"
-            onChange={(event) => setEmail(event.target.value)}
-            value={email}
-            fullWidth
-          />
-          <TextField
-            margin="dense"
-            label="Confirm email"
-            type="email"
-            onChange={(event) => setEmailConfirmation(event.target.value)}
-            value={emailConfirmation}
-            fullWidth
-          />
-          <TextField
-            margin="dense"
-            type="password"
-            label="Password"
-            onChange={(event) => setPassword(event.target.value)}
-            value={password}
+            label="PDF URL"
+            onChange={(event) => setUrl(event.target.value)}
+            value={url}
             fullWidth
           />
           </form>
@@ -193,7 +144,7 @@ export default function CustomizedDialogs(props) {
         </DialogContent>
         <DialogActions>
         <BetterButton function={createAdminUserV2} state={buttonState} className={classes.noTextTransform} fullWidth={true}>
-          Create administrator account
+          Add dataset
         </BetterButton>
         </DialogActions>
       </Dialog>

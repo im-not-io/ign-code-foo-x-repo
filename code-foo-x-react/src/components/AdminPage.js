@@ -10,6 +10,7 @@ import UserManagementArea from './UserManagementArea';
 import { makeStyles } from '@material-ui/core/styles';
 import SignOutArea from './SignOutArea';
 import Grow from '@material-ui/core/Grow';
+import GraphCalculatorDatasets from './GraphCalculatorDatasets';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -42,6 +43,10 @@ function AdminPage(props) {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
+    document.title = "Admin portal";
+  });
+
+  useEffect(() => {
     firebase.auth().onAuthStateChanged(function(user) {
       if (!user) {
         setIsLoggedIn(false);
@@ -61,15 +66,18 @@ function AdminPage(props) {
             <Grid item xs={12}>
                 <NavBar />
             </Grid>
-            <Grid item container xs={6}>
+            <Grid item container xs={4}>
               <Grow in={isAdmin} timeout={500} unmountOnExit>
                 <Grid item md={12} xs={12} className={classes.marginBottom}>
                   <UserManagementArea show={isLoggedIn}/>
                 </Grid>
               </Grow>
-                <Grid item md={12} xs={12} className={classes.marginBottom}>
-                  <SignOutArea show={isLoggedIn} />
-                </Grid>
+              <Grid item md={12} xs={12} className={classes.marginBottom}>
+                  <GraphCalculatorDatasets /> 
+              </Grid>
+              <Grid item md={12} xs={12} className={classes.marginBottom}>
+                <SignOutArea show={isLoggedIn} />
+              </Grid>
             </Grid>
 
         </Grid>);

@@ -185,13 +185,13 @@ exports.calculateBestQuests = functions.https.onRequest(async (req, res) => {
         res.status(200).send(JSON.stringify(obj));
     }
 
-    function getPdfUrl() {
-        if (req.query.hasOwnProperty('url')) {
-            return req.query.url;
-        } else {
-            return PDF_URL;
-        }
-    }
+    // function getPdfUrl() {
+    //     if (req.query.hasOwnProperty('url')) {
+    //         return req.query.url;
+    //     } else {
+    //         return PDF_URL;
+    //     }
+    // }
 
 
     function returnJsonError(errorText) {
@@ -202,8 +202,16 @@ exports.calculateBestQuests = functions.https.onRequest(async (req, res) => {
         }));
     }
 
-    function calculateQuestsWithHighestReturns() {
-        const PDF_URL = getPdfUrl();
+    function getPdfUrl() {
+        return admin.database().ref("activeDatasetUrl/").once("value")
+        .then((dataSnapshot) => {
+            console.log("datasnap ready")
+            return dataSnapshot.val();
+        });
+    }
+
+    async function calculateQuestsWithHighestReturns() {
+        const PDF_URL = await getPdfUrl();
         console.log("res url", PDF_URL);
         const PDF_PAGE = 1;
         const NUMBER_OF_PDF_COLUMNS = 7
@@ -251,7 +259,17 @@ exports.calculateBestQuests = functions.https.onRequest(async (req, res) => {
                                 let result = findOptimalQuestSequence(quests);
                                 result.source = PDF_URL;
 
-                                returnJsonResponse(result);
+                                admin.database().ref("/" + "questCalculatorResult").set(result)
+                                .then(() => {
+                                    returnJsonResponse({
+                                        "result": "The quest calculator result was successfully written to the database."
+                                    });
+                                })
+                                .catch(() => {
+                                    returnJsonError("The data failed to write to the database.")
+                                });
+
+
 
 
 
@@ -288,8 +306,6 @@ exports.calculateBestQuests = functions.https.onRequest(async (req, res) => {
 
 
 });
-
-
 
 exports.users = functions.https.onRequest((req, res) => {
     return cors(req, res, () => {
@@ -366,7 +382,6 @@ exports.users = functions.https.onRequest((req, res) => {
                                 });
                             })
                             .catch(function (error) {
-                                console.log("in error function");
                                 res.status(500).send({
                                     "error": error.message
                                 });

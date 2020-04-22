@@ -58,28 +58,46 @@ const useStyles = makeStyles((theme) => ({
 function LinksQuestCalculatorPage(props) {
 
 const classes = useStyles();
-  const CODE_FOO_QUESTS_URL = "https://media.ignimgs.com/code-foo/2020/files/quests_for_question.pdf";
   const [questCalculatorResult, setQuestCalculatorResult] = useState(null);
   const [reloadFromSourceButtonState, setReloadFromSourceButtonState] = useState("normal");
   const [modifySourceDialogOpen, setModifySourceDialogOpen] = useState(false);
-  const [pdfUrl, setPdfUrl] = useState(CODE_FOO_QUESTS_URL);
 
   useEffect(() => {
     document.title = "Link's Quest Calculator";
     listenForFirebaseUpdates();
+    //listenForFirebaseQuestUrlChange();
   }, []);
+
+  // useEffect(() => {
+  //   fetchQuestCalculatorResult();
+  // }, [pdfUrl]);
 
   useEffect(() => {
     fetchDataIfEmpty();
   });
 
+  function listenForFirebaseQuestUrlChange() {
+    firebase.database().ref('activeDatasetUrl/')
+    .on('value', (snapshot) => {
+      console.log(snapshot.val());
+    },
+    (error) => {
+      console.log(error);
+    })
+  }
+
   function toggleDialog() {
+    if (modifySourceDialogOpen === true) {
+      fetchQuestCalculatorResult();
+    }
     setModifySourceDialogOpen(!modifySourceDialogOpen);
   }
 
     function listenForFirebaseUpdates() {
       var ref = firebase.database().ref('questCalculatorResult/');
       ref.on('value', function(snapshot) {
+        console.log("snap");
+        console.log(snapshot.val());
         setQuestCalculatorResult(snapshot.val())
       });
     }
@@ -105,10 +123,9 @@ const classes = useStyles();
 
   function fetchQuestCalculatorResult() {
     setReloadFromSourceButtonState("loading");
-    const targetUrl = "https://us-central1-code-foo-x-firebase.cloudfunctions.net/calculateBestQuests?url=" + pdfUrl;
-    console.log("using target URL", targetUrl);
-    deleteQuestCalculatorResult();
-    fetch(encodeURI(targetUrl))
+    const targetUrl = "";
+    // deleteQuestCalculatorResult();
+    fetch("http://localhost:5000/code-foo-x-firebase/us-central1/calculateBestQuests")
     .then(
       function(response) {
         if (response.status !== 200) {
@@ -116,12 +133,12 @@ const classes = useStyles();
           setReloadFromSourceButtonState("normal");
         }
         
-        // Examine the text in the response
+        //Examine the text in the response
         response.json().then(function(data) {
-          console.log(data);
+          
           if (data.hasOwnProperty("error")) {
           } else {
-            saveQuestCalculatorResultToFirebase(data);
+            console.log("data is ready", data);
             setReloadFromSourceButtonState("normal");
           }
 
@@ -167,7 +184,9 @@ function getQuestCalculatorTimestamp() {
   } else {
     return "";
   }
+  
 }
+
 
     return (<Grid container spacing={0} justify="center">
             <Grid item xs={12}>
@@ -190,14 +209,14 @@ function getQuestCalculatorTimestamp() {
                 <Grid item xs={12}>
                   <p className={classes.instructionText}>{getQuestCalculatorTimestamp()}</p>
                   <BetterButton state={reloadFromSourceButtonState} function={fetchQuestCalculatorResult}>Reload from source<ReplayIcon className={classes.marginLeft}/></BetterButton>
-                  <BetterButton state={reloadFromSourceButtonState} function={toggleDialog}><MoreHorizIcon /></BetterButton>
+                  <BetterButton function={toggleDialog}><MoreHorizIcon /></BetterButton>
                 </Grid>
                   <Grid item>
                     <ErrorBox message="The server isn't feeling well right now. Please try again later."/>
                   </Grid>
               </Grid> 
             </Grid>
-            <ModifySourceDialog isOpen={modifySourceDialogOpen} handleClose={toggleDialog} pdfUrl={pdfUrl} setPdfUrl={setPdfUrl}/>
+            <ModifySourceDialog isOpen={modifySourceDialogOpen} handleClose={toggleDialog}/>
         </Grid>);
 
 }

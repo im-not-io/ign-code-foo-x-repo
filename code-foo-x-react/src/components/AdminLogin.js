@@ -132,7 +132,7 @@ function AdminLogin(props) {
             <Grid item xs={12}>
                 <NavBar />
             </Grid>
-            <Grid item container xs={6}>
+            <Grid item container xs={5}>
                 <Grid item md={12} xs={12} className={classes.marginBottom}>
                 <Card className={classes.card}> 
             <CardContent>

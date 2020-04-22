@@ -11,7 +11,15 @@
         ".write": "root.child('users').child($uid).child('role').val() !== 'owner' && (root.child('users').child(auth.uid).child('role').val() === 'administrator' || root.child('users').child(auth.uid).child('role').val() === 'owner')" 
       }
  
+    },
+    "datasets": {
+      ".read": "root.child('users').child(auth.uid).child('role').val() === 'administrator' || root.child('users').child(auth.uid).child('role').val() === 'owner'",
+      ".write": "root.child('users').child(auth.uid).child('role').val() === 'administrator' || root.child('users').child(auth.uid).child('role').val() === 'owner'"
+    },
+    "activeDatasetUrl": {
+      ".read": true,
+      ".write": true
+      
     }
-    
   }
 }
