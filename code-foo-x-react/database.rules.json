@@ -20,6 +20,10 @@
       ".read": true,
       ".write": true
       
+    },
+    "polls": {
+      ".read": true,
+      ".write": true
     }
   }
 }

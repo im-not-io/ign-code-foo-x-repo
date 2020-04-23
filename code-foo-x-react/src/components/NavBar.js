@@ -145,7 +145,7 @@ export default function NavBar(props) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="fixed" className={classes.navBar}>
+      <AppBar position="static" className={classes.navBar}>
             <Toolbar>
                 <IconButton onClick={toggleDrawer("left", true)} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                     <MenuIcon />

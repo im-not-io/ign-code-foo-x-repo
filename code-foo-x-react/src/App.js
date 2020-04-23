@@ -21,7 +21,7 @@ import "firebase/functions";
 const theme = createMuiTheme({
   palette: {
     primary: {
-      light: '#fff',
+      light: '#ffffff',
       main: '#BF1313',
       dark: '#8a1b13'
     },
