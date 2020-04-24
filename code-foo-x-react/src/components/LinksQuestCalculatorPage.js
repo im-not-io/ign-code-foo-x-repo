@@ -17,8 +17,7 @@ import ModifySourceDialog from './ModifySourceDialog'
 import BetterButton from './BetterButton';
 import StorageIcon from '@material-ui/icons/Storage';
 import SettingsIcon from '@material-ui/icons/Settings';
-
-
+import SectionTitle from './SectionTitle';
 
 
 
@@ -196,14 +195,16 @@ function getQuestCalculatorTimestamp() {
                 <NavBar />
             </Grid>
              <Grid container item xs={10} spacing={3}>
-               
+             <Grid item xs={12}>
+                <PageTitle>Quest calculator</PageTitle>
+                <SectionTitle>Most lucrative quest sequence</SectionTitle>
+              </Grid> 
               <Grid item xs={12}>
-                <PageTitle title="Most lucrative quest sequence"/>
                   <BestQuestsTable quests={ getBestQuestPath() }/>
               </Grid> 
             
               <Grid item xs={12}>
-                  <PageTitle title="All possible quest paths"/>
+                  <SectionTitle>All possible quest paths</SectionTitle>
                   <p className={classes.instructionText}>Drag a node to drag it around to see things better.</p>
                   <BestQuestsGraph questCalculatorResult={questCalculatorResult}/>
               </Grid> 

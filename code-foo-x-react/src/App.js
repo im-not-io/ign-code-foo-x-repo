@@ -32,6 +32,11 @@ const theme = createMuiTheme({
     },
  },
  overrides: {
+   MuiInputBase: {
+     root: {
+      borderColor: "!important blue"
+     }
+   },
     MuiInput: {
       underline: {
         color: "#4a4a4a",
@@ -39,7 +44,18 @@ const theme = createMuiTheme({
           borderColor: "#BF1313"
         }
       }
+    },
+    MuiOutlinedInput: {
+      root: {
+        "& $notchedOutline": {
+          borderColor: "rgba(0,0,0,0.4)"
+        },
+        "&:hover $notchedOutline": {
+          borderColor: "#BF1313",
+          borderWidth: "0.1rem"
+      }
     }
+  }
   }
 });
 

@@ -5,13 +5,15 @@ const useStyles = makeStyles((theme) => ({
     color: {
         color: theme.palette.secondary.dark,
         marginBottom: "0.5rem",
-        marginTop: "0rem"
+        marginTop: "0rem",
+        fontSize: "1.7rem",
+        fontWeight: "bold"
     }
 }));
 
 function SectionTitle(props) {
     const classes = useStyles();
-  return (<h2 className={classes.color}>{props.children}</h2>);
+  return (<span className={classes.color}>{props.children}</span>);
 }
 
 export default SectionTitle;

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import CancelIcon from '@material-ui/icons/Cancel';
@@ -44,10 +44,10 @@ function fetchPolls() {
             "id": "123456-790"
         },
     }
-    for (let key in  polls) {
+    for (let key in polls) {
         result.push(
         <Grid item xs={12}>
-            <Poll data={polls[key]}/>
+            <Poll key={key} data={polls[key]}/>
         </Grid>
         )
     }
@@ -58,10 +58,11 @@ function fetchPolls() {
 
 function AllPolls(props) {
 const classes = useStyles();
+const [polls, setPolls]= useState(null);
 
     useEffect(() => {
         firebase.database().ref("polls/").on("value", (dataSnapshot) => {
-            console.log(dataSnapshot.val());
+            console.log("data snapshot ready");
         },
         (error) => {
             console.log("Error");

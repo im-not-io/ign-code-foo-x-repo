@@ -17,6 +17,7 @@
     "d3-selection-multi": "^1.0.1",
     "firebase": "^7.13.2",
     "graphlib": "^2.1.8",
+    "material-ui-chip-input": "^2.0.0-beta.2",
     "p5": "^1.0.0",
     "pdf2json": "^1.2.0",
     "pdfreader": "^1.0.6",

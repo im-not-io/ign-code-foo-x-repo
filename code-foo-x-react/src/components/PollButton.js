@@ -10,7 +10,6 @@ const useStyles = makeStyles((theme) => ({
     pollButtonSelected: {
         backgroundColor: "white",
         color: theme.palette.primary.main,
-        boxSizing: "border-box",
         textTransform: "none",
         border: "0.2rem solid " + theme.palette.primary.main,
         "&:hover": {
@@ -56,13 +55,13 @@ function handleClick() {
 function getButton() {
     if (props.buttonState === "selected") {
         return (
-            <Button className={pollButtonStyle} variant="contained" color="primary" onClick={handleClick}>
+            <Button size="medium" className={pollButtonStyle} variant="contained" color="primary" onClick={handleClick}>
             {props.value}<CheckCircleIcon className={classes.checkCircle}/>
             </Button>
         );
     } else {
         return (
-            <Button className={pollButtonStyle} variant="contained" color="primary" onClick={handleClick}>
+            <Button size="medium" className={pollButtonStyle} variant="contained" color="primary" onClick={handleClick}>
             {props.value}
             </Button>
         );

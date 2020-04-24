@@ -42,7 +42,6 @@ function getOptionsForRender() {
     let result = [];
     for (let i = 0; i < props.data.options.length; i++) {
         const option = props.data.options[i];
-        console.log("option, selectedOption", option, selectedOption);
         result.push(
             <Grid item>
                 <PollButton className={classes.button} buttonState={option === selectedOption ? "selected" : "not-selected"} changePollOption={changePollOption} value={option} />
@@ -51,7 +50,6 @@ function getOptionsForRender() {
     }
     return result;
 }
-console.log("received poll with data", props.data);
 
         return (
             <Container className={classes.container}>

@@ -11,7 +11,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
     button: {
-      marginRight: "0.5rem",
       textTransform: "none"
     },
     pushRight: {
