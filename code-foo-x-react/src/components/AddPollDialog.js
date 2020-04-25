@@ -83,25 +83,52 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AddPollDialog(props) {
     const classes = useStyles();
-    const [pollOptions, setPollOptions] = useState([
-      "one", "two", "three", "four"
-    ]);
+    const [pollOptions, setPollOptions] = useState([]);
+    const [optionInput, setOptionInput] = useState("");
 
-    function deleteChip(uid) {
-      console.log("delete this id", uid);
-    }
-
-    function getChips() {
+    function deleteChip(index) {
+      console.log("delete called")
       let result = [];
       for (let i = 0; i < pollOptions.length; i++) {
-        const title = pollOptions[i];
+        if (index !== i) {
+          result.push(pollOptions[i])
+        }
+        setPollOptions(result);
+      }
+    }
+
+
+
+    function handleOptionInputKeydown(event) {
+      if (event.key === "Enter") {
+        //copy the array to force the state to re-render
+        //major react gotcha
+        let options = pollOptions.slice();
+        options.push(event.target.value);
+        console.log("pollOptions vs temp", pollOptions, options)
+        setPollOptions(options);
+        //clear the input so another option can be typed
+        setOptionInput("")
+
+      }
+    }
+
+    function renderOptions() {
+      console.log("rendering")
+      let result = [];
+      for (let i = 0; i < pollOptions.length; i++) {
         result.push(
-        <Grid item>
-          <PollChip key={i} uid={i} title={title} function={deleteChip}/>
-        </Grid>)
+          <Grid item>
+            <PollChip key={i} uid={i} title={pollOptions[i]} function={deleteChip}/>
+          </Grid>
+          );
       }
       return result;
     }
+
+
+
+
     
   return (
     <div>
@@ -125,10 +152,10 @@ export default function AddPollDialog(props) {
                 />
               </Grid>
               <Grid item container xs={12}>
-              {getChips()}
+              {renderOptions()}
               </Grid>
               <Grid item container xs={12} className={classes.inputArea}>
-                    <TextField placeholder="Type an option, press enter to add it" color="primary" fullWidth/>
+                    <TextField value={optionInput} onChange={(event) => setOptionInput(event.target.value)} onKeyDown={handleOptionInputKeydown} placeholder="Type an option, press enter to add it" color="primary" fullWidth/>
               </Grid>
             </Grid>
         </DialogContent>

@@ -19,6 +19,16 @@ function PollsPage(props) {
         },
         pullUp: {
             marginTop: "-2rem"
+        },
+        spacer: {
+            marginBottom: "2rem",
+            marginTop: "1rem"
+        },
+        pushTop: {
+            marginTop: "2rem"
+        },
+        standardMargin: {
+            margin: "0.5rem"
         }
     }));
     const classes = useStyles();
@@ -32,11 +42,13 @@ function PollsPage(props) {
             <NavBar />
             <Grid container spacing={0} justify="center">
                 <Grid item xs={9}>
-                    <Grid item>
-                        <PageTitle>
-                            <span className={classes.pageHeader}>Polls feed</span>
-                            <BetterButton function={toggleDialog}>Create a poll</BetterButton>
-                        </PageTitle>
+                    <Grid item container className={classes.standardMargin}>
+                        <Grid item xs={12} className={classes.spacer}>
+                            <PageTitle>
+                                Polls feed
+                            </PageTitle>
+                            <BetterButton  function={toggleDialog}>Create a poll</BetterButton>
+                        </Grid>
                     </Grid>
                     <Grid item className={classes.pullUp}>
                         <AllPolls />

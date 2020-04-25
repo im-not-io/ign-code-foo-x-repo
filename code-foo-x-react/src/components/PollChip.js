@@ -7,7 +7,10 @@ import DeleteIcon from '@material-ui/icons/Delete';
 const useStyles = makeStyles((theme) => ({
     chip: {
         backgroundColor: theme.palette.primary.main,
-        padding: "0.5rem",
+        paddingTop: "0.5rem",
+        paddingBottom: "0.5rem",
+        paddingLeft: "0.7rem",
+        paddingRight: "0.7rem",
         borderRadius: "0.2rem",
         marginRight: "0.5rem",
         color: theme.palette.primary.light,

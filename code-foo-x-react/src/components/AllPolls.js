@@ -46,8 +46,8 @@ function fetchPolls() {
     }
     for (let key in polls) {
         result.push(
-        <Grid item xs={12}>
-            <Poll key={key} data={polls[key]}/>
+        <Grid item xs={12} key={key}>
+            <Poll data={polls[key]}/>
         </Grid>
         )
     }

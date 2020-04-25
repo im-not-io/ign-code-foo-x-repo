@@ -43,7 +43,7 @@ function getOptionsForRender() {
     for (let i = 0; i < props.data.options.length; i++) {
         const option = props.data.options[i];
         result.push(
-            <Grid item>
+            <Grid item key={i}>
                 <PollButton className={classes.button} buttonState={option === selectedOption ? "selected" : "not-selected"} changePollOption={changePollOption} value={option} />
             </Grid>
         )
