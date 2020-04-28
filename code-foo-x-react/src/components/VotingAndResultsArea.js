@@ -120,8 +120,8 @@ function getBlocks() {
                 <Grid item key={i} xs={12} md={3}>
                     <PollButton buttonState={isSelected(option)} changePollOption={changePollOption} option={option} />   
                     {maxIndices.indexOf(i) !== -1 ?
-                    <ResultBubble visible={props.visible}><FontAwesomeIcon className={classes.trophyIcon} icon={faTrophy} />Most voted: {option.votes}</ResultBubble>
-                    : <ResultBubble visible={props.visible}>Votes: {option.votes}</ResultBubble>}
+                    <ResultBubble isTop={maxIndices.indexOf(i) !== -1} visible={props.visible}><FontAwesomeIcon className={classes.trophyIcon} icon={faTrophy} />Most voted: {option.votes}</ResultBubble>
+                    : <ResultBubble isTop={maxIndices.indexOf(i) !== -1} visible={props.visible}>Votes: {option.votes}</ResultBubble>}
                 </Grid>
             )
         }

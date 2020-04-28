@@ -5,8 +5,18 @@ import Slide from '@material-ui/core/Slide';
 
 
 const useStyles = makeStyles((theme) => ({
-    button: {
+    top: {
         backgroundColor: theme.palette.secondary.dark,
+        color: theme.palette.primary.light,
+        textTransform: "none",
+        border: "0.2rem solid " + theme.palette.secondary.dark,
+        "&:hover": {
+            backgroundColor: theme.palette.secondary.dark,
+        }
+    },
+    notTop: {
+        backgroundColor: theme.palette.secondary.dark,
+        opacity: "50%",
         color: theme.palette.primary.light,
         textTransform: "none",
         border: "0.2rem solid " + theme.palette.secondary.dark,
@@ -24,7 +34,7 @@ const classes = useStyles();
 
     return (
         <Slide direction="left" in={props.visible} mountOnEnter unmountOnExit>
-            <Button fullWidth className={classes.button} variant="contained" color="primary">
+            <Button fullWidth className={props.isTop ? classes.top : classes.notTop} variant="contained" color="primary">
                 {props.children}
             </Button>
         </Slide>
