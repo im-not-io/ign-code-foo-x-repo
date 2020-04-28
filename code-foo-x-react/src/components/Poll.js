@@ -5,6 +5,8 @@ import React, { useEffect, useState } from 'react';
 import PollOptions from './PollOptions';
 import PollResults from './PollResults';
 import SectionTitle from './SectionTitle';
+import VotingAndResultsArea from './VotingAndResultsArea';
+
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -39,8 +41,10 @@ console.log("props in poll", props);
                 <SectionTitle>{props.data.title}</SectionTitle>
                 <p className={classes.subsection}>Asked by {props.data.askedBy}</p>
                 <Grid container>
-                    <PollOptions voteWasCast={voteWasCast} options={props.data.options} pollReference={props.data.id} />
-                    <PollResults options={props.data.options} visible={pollResultsVisible} />
+                    {/* <PollOptions voteWasCast={voteWasCast} options={props.data.options} pollReference={props.data.id} />
+                    <PollResults options={props.data.options} visible={pollResultsVisible} /> */}
+        
+                            <VotingAndResultsArea pollReference={props.data.id} voteWasCast={voteWasCast} options={props.data.options} visible={pollResultsVisible}/>
                 </Grid>
             </Container>
         );

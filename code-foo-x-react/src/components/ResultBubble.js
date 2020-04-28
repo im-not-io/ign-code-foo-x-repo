@@ -1,6 +1,8 @@
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
+import Slide from '@material-ui/core/Slide';
+
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -21,9 +23,11 @@ function ResultBubble(props) {
 const classes = useStyles();
 
     return (
-        <Button fullWidth className={classes.button} variant="contained" color="primary">
-            {props.children}
-        </Button>
+        <Slide direction="left" in={props.visible} mountOnEnter unmountOnExit>
+            <Button fullWidth className={classes.button} variant="contained" color="primary">
+                {props.children}
+            </Button>
+        </Slide>
     )
 
 }

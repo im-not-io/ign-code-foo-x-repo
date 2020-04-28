@@ -13,7 +13,8 @@ const useStyles = makeStyles((theme) => ({
             backgroundColor: theme.palette.primary.light,
             color: theme.palette.primary.main,
             border: "0.2rem solid " + theme.palette.primary.main
-        }
+        },
+        marginBottom: "0.5em"
     },
     pollButtonNotSelected: {
         textTransform: "none",
@@ -21,7 +22,8 @@ const useStyles = makeStyles((theme) => ({
         "&:hover": {
             color: theme.palette.primary.light,
             border: "0.2rem solid rgba(0,0,0,0)",
-        }
+        },
+        marginBottom: "0.5rem"
     },
     checkCircle: {
         fontSize: 16,

@@ -49,7 +49,7 @@ function getMaxVoted(arr) {
 useEffect(() => {
     console.log("resetting max indices", props.options)
     setMaxIndices(getMaxVoted(props.options))
-}, props.options)
+}, [props.options])
 
 
 function getOptionsForRender() {
@@ -71,7 +71,7 @@ function getOptionsForRender() {
         } else {
             results.push(
                 <Grid item key={i} xs={4} md={3}>
-                    <ResultBubble>{result.votes}</ResultBubble>
+                    <ResultBubble>Votes: {result.votes}</ResultBubble>
                 </Grid>
             )
         }

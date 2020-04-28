@@ -1,6 +1,10 @@
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useState, useEffect } from 'react';
+import ResultBubble from './ResultBubble';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrophy } from '@fortawesome/free-solid-svg-icons'
+import Slide from '@material-ui/core/Slide';
 import PollButton from './PollButton';
 import * as firebase from "firebase/app";
 import "firebase/auth";
@@ -20,17 +24,21 @@ const useStyles = makeStyles((theme) => ({
     },
     marginTop: {
         marginTop: "0.5rem"
+    },
+    trophyIcon: {
+        marginRight: "0.5rem",
+        marginLeft: "-0.2rem"
     }
     
 }));
 
-function PollOptions(props) {
+
+function VotingAndResultsArea(props) {
 const classes = useStyles();
-const [selectedOption, setSelectedOption] = useState(null)
-const [previousOption, setPreviousOption] = useState(null)
 
-
-
+const [selectedOption, setSelectedOption] = useState(null);
+const [previousOption, setPreviousOption] = useState(null);
+const [maxIndices, setMaxIndices] = useState(null);
 
 useEffect(() => {
     console.log("prev, current", previousOption, selectedOption);
@@ -57,9 +65,8 @@ useEffect(() => {
 
 }, [selectedOption, previousOption]);
 
-
-
 function changePollOption(option) {
+    console.log("change poll trig");
     if (selectedOption !== null && option.name === selectedOption.name) {
         setPreviousOption(selectedOption);
         setSelectedOption(null);
@@ -81,28 +88,53 @@ function isSelected(currentOption) {
     }
 }
 
-function getOptionsForRender() {
+useEffect(() => {
+    console.log("resetting max indices", props.options)
+    setMaxIndices(getMaxVoted(props.options))
+}, [props.options])
 
+function getMaxVoted(arr) {    
+    let maxVotes = Number.NEGATIVE_INFINITY;
+    let maxHits = [];
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i].votes > maxVotes) {
+            maxHits = [];
+            maxVotes = arr[i].votes
+        }
+        if (arr[i].votes === maxVotes) {
+            maxHits.push(i)
+        }
+    }
+    return maxHits;
+}
+
+
+function getBlocks() {
+    if (maxIndices === null) {
+        return "Loading...";
+    }
     let result = [];
-
-
         for (let i = 0; i < props.options.length; i++) {
             const option = props.options[i];
             result.push(
-                <Grid item key={i} xs={4} md={3}>
-                    <PollButton buttonState={isSelected(option)} className={classes.button} changePollOption={changePollOption} option={option} /> 
+                <Grid item key={i} xs={12} md={3}>
+                    <PollButton buttonState={isSelected(option)} changePollOption={changePollOption} option={option} />   
+                    {maxIndices.indexOf(i) !== -1 ?
+                    <ResultBubble visible={props.visible}><FontAwesomeIcon className={classes.trophyIcon} icon={faTrophy} />Most voted: {option.votes}</ResultBubble>
+                    : <ResultBubble visible={props.visible}>Votes: {option.votes}</ResultBubble>}
                 </Grid>
             )
         }
 
+
     return result;
 }
         return (
-            <Grid container item spacing={1} className={classes.marginTop}>
-                {getOptionsForRender()}
-            </Grid>
+                <Grid container item xs={12} spacing={1} className={classes.marginTop}>
+                    {getBlocks()}
+                </Grid>
         );
 
 }
 
-export default PollOptions;
+export default VotingAndResultsArea;

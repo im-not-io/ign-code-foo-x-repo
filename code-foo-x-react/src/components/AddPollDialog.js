@@ -156,6 +156,13 @@ export default function AddPollDialog(props) {
 
     function handleOptionInputKeydown(event) {
       if (event.key === "Enter" && event.target.value !== "") {
+        if (event.target.value.length > 30) {
+          setErrorText("Your option may not exceed 30 characters.");
+          setIsErrorBoxShown(true);
+          //stop next execution
+          return;
+        }
+
         //copy the array to force the state to re-render
         //major react gotcha
         let options = pollOptions.slice();
@@ -189,14 +196,12 @@ export default function AddPollDialog(props) {
     function saveAndClose() {
       //pull out the poll option strings. We don't need to know
       //its deleted status or id to save in the database
-      console.log("requesting save and close");
 
       let options = pollOptions.map((optionObject, index) => {
         return {
           name: optionObject.option,
           votes: 0,
           index: index
-
         }
       });
       if (pollTitle === "") {
@@ -208,7 +213,6 @@ export default function AddPollDialog(props) {
       } else {
         //if input is valid 
         setButtonState("loading")
-        console.log("ready to write", pollTitle, name, pollOptions.map((optionObject) => optionObject.options));
         let push = firebase.database().ref("polls/").push();
         const key = push.key;
         let resultObject = {
