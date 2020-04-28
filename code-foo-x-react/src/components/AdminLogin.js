@@ -9,7 +9,7 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/database";
 import "firebase/functions";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import BetterButton from './BetterButton';
 import ErrorBox from './ErrorBox';
 import NavBar from './NavBar';
@@ -47,6 +47,10 @@ function AdminLogin(props) {
     const [errorBoxText, setErrorBoxText] = useState("Login error.");
     const [buttonState, setButtonState] = useState("normal");
     const [forgotPasswordText, setForgotPasswordText] = useState("Forgot password?");
+
+    useEffect(() => {
+      document.title = "Login"
+    });
 
 
     function loginToFirebase() {

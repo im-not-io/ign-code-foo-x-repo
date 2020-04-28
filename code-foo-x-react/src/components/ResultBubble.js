@@ -6,17 +6,17 @@ import Slide from '@material-ui/core/Slide';
 
 const useStyles = makeStyles((theme) => ({
     top: {
-        backgroundColor: theme.palette.secondary.dark,
+        backgroundColor: "#e0a910",
         color: theme.palette.primary.light,
         textTransform: "none",
-        border: "0.2rem solid " + theme.palette.secondary.dark,
+        border: "0.2rem solid #e0a910",
         "&:hover": {
-            backgroundColor: theme.palette.secondary.dark,
+            backgroundColor: "#e0a910"
         }
     },
     notTop: {
         backgroundColor: theme.palette.secondary.dark,
-        opacity: "50%",
+        opacity: 0.5,
         color: theme.palette.primary.light,
         textTransform: "none",
         border: "0.2rem solid " + theme.palette.secondary.dark,

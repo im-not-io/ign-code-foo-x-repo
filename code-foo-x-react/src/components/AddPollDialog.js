@@ -100,6 +100,7 @@ export default function AddPollDialog(props) {
     const [buttonState, setButtonState] = useState("normal");
 
     useEffect(() => {
+      document.title = "All polls";
       function clearFields() {
         setPollOptions([]);
         setOptionInput("");
@@ -288,9 +289,9 @@ export default function AddPollDialog(props) {
               </Grid>
               <Grid item container xs={12} className={classes.inputArea}>
                 <DialogContentText className={classes.pullUp}>
-                    Optionally, provide your name for public display
+                    Optionally, provide your name and email for public display:
                   </DialogContentText>
-                    <TextField variant="outlined" onKeyDown={handleTextFieldKeydown} onChange={(event) => setName(event.target.value)} value={name} placeholder="Your name (optional)" color="primary" fullWidth/>
+                    <TextField variant="outlined" onKeyDown={handleTextFieldKeydown} onChange={(event) => setName(event.target.value)} value={name} placeholder="Your name (email@example.com)" color="primary" fullWidth/>
               </Grid>
             </Grid>
           <ErrorBox show={isErrorBoxShown}>{errorText}</ErrorBox>

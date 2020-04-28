@@ -127,7 +127,7 @@ export default function NavBar(props) {
                 <SupervisorAccountIcon className={classes.icon}/>
                 <ListItemText className={classes.gray} primary="Admin Portal" />
               </ListItem>
-            <ListItem button onClick={function() { window.location="https://code-foo-x-firebase.firebaseapp.com/assets/code-foo-how-its-made.pdf" }}>
+            <ListItem button onClick={function() { window.location.href="/assets/How%20Nick%20Made%20This%20Website.pdf" }}>
               <InfoIcon className={classes.icon}/>
               <ListItemText className={classes.gray} primary="How Nick Made This" />
             </ListItem>
