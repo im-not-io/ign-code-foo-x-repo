@@ -1,22 +1,19 @@
-import React from 'react'
-import NavBar from './NavBar';
 import Grid from '@material-ui/core/Grid';
-import BestQuestsGraph from './BestQuestsGraph';
-import PageTitle from './PageTitle';
 import { makeStyles } from '@material-ui/core/styles';
-import { useEffect, useState } from 'react';
-import BestQuestsTable from './BestQuestsTable';
-import * as firebase from "firebase/app";
-import "firebase/database";
-import "firebase/auth";
-import "firebase/functions";
-import ErrorBox from './ErrorBox'
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import ReplayIcon from '@material-ui/icons/Replay';
-import ModifySourceDialog from './ModifySourceDialog'
-import BetterButton from './BetterButton';
-import StorageIcon from '@material-ui/icons/Storage';
 import SettingsIcon from '@material-ui/icons/Settings';
+import * as firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/database";
+import "firebase/functions";
+import React, { useEffect, useState } from 'react';
+import BestQuestsGraph from './BestQuestsGraph';
+import BestQuestsTable from './BestQuestsTable';
+import BetterButton from './BetterButton';
+import ErrorBox from './ErrorBox';
+import ModifySourceDialog from './ModifySourceDialog';
+import NavBar from './NavBar';
+import PageTitle from './PageTitle';
 import SectionTitle from './SectionTitle';
 
 
@@ -77,15 +74,6 @@ const classes = useStyles();
     fetchDataIfEmpty();
   });
 
-  function listenForFirebaseQuestUrlChange() {
-    firebase.database().ref('activeDatasetUrl/')
-    .on('value', (snapshot) => {
-      console.log(snapshot.val());
-    },
-    (error) => {
-      console.log(error);
-    })
-  }
 
   function toggleDialog() {
     if (modifySourceDialogOpen === true) {
@@ -102,29 +90,10 @@ const classes = useStyles();
         setQuestCalculatorResult(snapshot.val())
       });
     }
-  function saveQuestCalculatorResultToFirebase(result) {
 
-
-    let resultObject = result;
-
-    resultObject.timestamp = (new Date()).getTime();
-
-    firebase.database().ref('questCalculatorResult/').set(resultObject).catch(function(error) {
-      console.log(error);
-    });
-  }
-
-  function deleteQuestCalculatorResult() {
-    firebase.database().ref('questCalculatorResult/').remove().then(function() {
-      console.log("Document successfully deleted!");
-  }).catch(function(error) {
-      console.error("Error delete failure", error);
-  });
-  }
 
   function fetchQuestCalculatorResult() {
     setReloadFromSourceButtonState("loading");
-    const targetUrl = "";
     // deleteQuestCalculatorResult();
     //http://localhost:5000/code-foo-x-firebase/us-central1/calculateBestQuests
     //https://us-central1-code-foo-x-firebase.cloudfunctions.net/calculateBestQuests

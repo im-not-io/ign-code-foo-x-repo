@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import UserModificationItem from './UserModificationItem';
-import * as firebase from "firebase/app";
-import "firebase/database";
-import "firebase/auth";
-import "firebase/functions";
-import List from '@material-ui/core/List';
 import Box from '@material-ui/core/Box';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import List from '@material-ui/core/List';
+import { makeStyles } from '@material-ui/core/styles';
+import * as firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/database";
+import "firebase/functions";
+import React, { useEffect, useState } from 'react';
+import AddUserDialog from './AddUserDialog';
 import BetterButton from './BetterButton';
 import SectionTitle from './SectionTitle';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import { makeStyles } from '@material-ui/core/styles';
-import AddUserDialog from './AddUserDialog'
+import UserModificationItem from './UserModificationItem';
 
 const useStyles = makeStyles((theme) => ({
     topBottomSpacing: {
@@ -26,16 +26,6 @@ function UserManagementArea(props) {
     const [userModificationItems, setUserModificationItems] = useState([]);
     const [dialogOpen, setDialogOpen] = useState(false);
 
-    function deleteUserFromFirebase(uid) {
-        console.log("rdy to delete");
-        firebase.database().ref('/users/' + uid).remove();
-        var user = firebase.auth().currentUser;
-        user.delete().then(function() {
-            console.log("user deletion successful")
-        }).catch(function(error) {
-            console.log(error);
-        });
-    }
 
     function executeDeleteUserOnServer(idToken, deleteThisUid) {
         
@@ -64,7 +54,9 @@ function UserManagementArea(props) {
         });
       }
 
-    function deleteUserFromFirebaseV2(deleteThisUid) {
+
+    useEffect(() => {
+      function deleteUserFromFirebaseV2(deleteThisUid) {
         firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
             executeDeleteUserOnServer(idToken, deleteThisUid);
           }).catch(function(error) {
@@ -72,8 +64,6 @@ function UserManagementArea(props) {
           });
 
     }
-
-    useEffect(() => {
         function setUpFirebaseReadListener() {
 
             firebase.database().ref("users/").on('value', function(snapshot) {

@@ -1,10 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import { makeStyles, withTheme } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import CancelIcon from '@material-ui/icons/Cancel';
-import Grow from '@material-ui/core/Grow';
 import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import React, { useEffect, useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
     pollButtonSelected: {
@@ -28,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     },
     checkCircle: {
         fontSize: 16,
-        marginLeft: "0.25rem" 
+        marginRight: "0.25rem" 
     }
 
 }));
@@ -46,23 +43,23 @@ useEffect(() => {
         setPollButtonStyle(classes.pollButtonNotSelected)
     }
 
-})
+}, [props.buttonState, classes.pollButtonSelected, classes.pollButtonNotSelected])
 
 function handleClick() {
-    props.changePollOption(props.value);
+    props.changePollOption(props.option);
 }
 
 function getButton() {
     if (props.buttonState === "selected") {
         return (
-            <Button size="medium" className={pollButtonStyle} variant="contained" color="primary" onClick={handleClick}>
-            {props.value}<CheckCircleIcon className={classes.checkCircle}/>
+            <Button fullWidth size="medium" className={pollButtonStyle} variant="contained" color="primary" onClick={handleClick}>
+            <CheckCircleIcon className={classes.checkCircle}/>You voted: {props.option.name}
             </Button>
         );
     } else {
         return (
-            <Button size="medium" className={pollButtonStyle} variant="contained" color="primary" onClick={handleClick}>
-            {props.value}
+            <Button fullWidth size="medium" className={pollButtonStyle} variant="contained" color="primary" onClick={handleClick}>
+            {props.option.name}
             </Button>
         );
     }

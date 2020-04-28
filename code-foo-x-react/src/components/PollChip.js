@@ -1,7 +1,6 @@
-import React, {useEffect, useState} from 'react';
-import { makeStyles, withTheme } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
+import React from 'react';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -17,7 +16,8 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 500,
         display: "flex",
         alignContent: "center",
-        marginTop: "1rem"
+        marginTop: "0.4rem",
+        marginBottom: "0.15rem"
     },
     deleteIcon: {
         display: "flex",

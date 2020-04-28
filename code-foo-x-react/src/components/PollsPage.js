@@ -1,14 +1,14 @@
-import React, {useState, useEffect} from 'react'
-import NavBar from './NavBar';
 import Grid from '@material-ui/core/Grid';
-import "firebase/database";
-import "firebase/auth";
-import "firebase/functions";
-import AllPolls from './AllPolls';
-import PageTitle from './PageTitle';
-import BetterButton from './BetterButton';
 import { makeStyles } from '@material-ui/core/styles';
+import "firebase/auth";
+import "firebase/database";
+import "firebase/functions";
+import React, { useState } from 'react';
 import AddPollDialog from './AddPollDialog';
+import AllPolls from './AllPolls';
+import BetterButton from './BetterButton';
+import NavBar from './NavBar';
+import PageTitle from './PageTitle';
 
 function PollsPage(props) {
     const [addPollDialogOpen, setAddPollDialogOpen] = useState(false);

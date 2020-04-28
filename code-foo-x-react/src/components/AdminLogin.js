@@ -1,23 +1,19 @@
-import React from 'react'
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
-import { useState } from 'react';
-import * as firebase from "firebase/app";
-import "firebase/database";
-import "firebase/auth";
-import "firebase/functions";
-import SectionTitle from './SectionTitle'
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import * as firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/database";
+import "firebase/functions";
+import React, { useState } from 'react';
 import BetterButton from './BetterButton';
 import ErrorBox from './ErrorBox';
 import NavBar from './NavBar';
-import {
-  useLocation
-} from "react-router-dom";
+import SectionTitle from './SectionTitle';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -32,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
   },
   standardColor: {
     color: theme.palette.secondary.dark
+  },
+  mainGrid: {
+    marginTop: "2rem"
   }
 }));
 
@@ -66,37 +65,6 @@ function AdminLogin(props) {
       // enforceRole();
   }
 
-  function useQuery() {
-    return new URLSearchParams(useLocation().search);
-  }
-
-  let query = useQuery();
-
-  function enforceRole() {
-    if ("enforceRole" in props) {
-      // firebase.auth().signOut();
-      firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-          var userId = firebase.auth().currentUser.uid;
-          console.log('/users/' + userId + "/role");
-          firebase.database().ref('/users/' + userId + "/role").once("value").then(function(snapshot) {
-            const role = snapshot.val();
-            if (role === props.enforceRole) {
-              console.log("Role is valid.", role, props.enforceRole)
-              window.location.href = '/admin-portal';
-            } else {
-              console.log("Role is NOT valid.", role, props.enforceRole)
-              setErrorBoxText("This functionality requires an " + props.enforceRole + " account.");
-              setShowErrorBox(true);
-              setButtonState("normal");
-            }
-          });
-        }
-      });
-
-    }
-
-  }
 
 
   function handleEmailFieldChange(event) {
@@ -128,11 +96,11 @@ function AdminLogin(props) {
 
 
     return (
-        <Grid container spacing={5} justify="center">
+        <Grid container justify="center">
             <Grid item xs={12}>
                 <NavBar />
             </Grid>
-            <Grid item container xs={5}>
+            <Grid item container md={5} xs={10} className={classes.mainGrid}>
                 <Grid item md={12} xs={12} className={classes.marginBottom}>
                 <Card className={classes.card}> 
             <CardContent>

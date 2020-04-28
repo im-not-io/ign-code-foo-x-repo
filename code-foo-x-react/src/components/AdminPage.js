@@ -1,16 +1,14 @@
-import React, { useEffect } from 'react'
-import NavBar from './NavBar';
 import Grid from '@material-ui/core/Grid';
-import { useState } from 'react';
-import * as firebase from "firebase/app";
-import "firebase/database";
-import "firebase/auth";
-import "firebase/functions";
-import UserManagementArea from './UserManagementArea';
 import { makeStyles } from '@material-ui/core/styles';
-import SignOutArea from './SignOutArea';
-import Grow from '@material-ui/core/Grow';
+import * as firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/database";
+import "firebase/functions";
+import React, { useEffect, useState } from 'react';
 import GraphCalculatorDatasets from './GraphCalculatorDatasets';
+import NavBar from './NavBar';
+import SignOutArea from './SignOutArea';
+import UserManagementArea from './UserManagementArea';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -40,7 +38,6 @@ function AdminPage(props) {
   const classes = useStyles();
   // const [isLoginAreaShown, setIsLoginAreaShown] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     document.title = "Admin portal";
@@ -53,10 +50,6 @@ function AdminPage(props) {
         window.location.href = "/login";
       } else {
         setIsLoggedIn(true);
-        return firebase.database().ref('/users/' + user.uid).once('value').then(function(snapshot) {
-          const role = snapshot.val().role;
-          setIsAdmin(role === "owner" || role === "administrator");
-        });
       }
     });
   });
