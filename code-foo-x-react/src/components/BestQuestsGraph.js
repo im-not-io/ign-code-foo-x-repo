@@ -4,6 +4,9 @@ import { useEffect} from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import ZoomInIcon from '@material-ui/icons/ZoomIn';
+import ZoomOutIcon from '@material-ui/icons/ZoomOut';
 
 
 const width = (window.innerWidth/12) * 10;
@@ -16,6 +19,10 @@ const useStyles = makeStyles((theme) => ({
     svg: {
       width: "100%",
       height: "40em"
+    },
+    button: {
+        textTransform: "none",
+        fontSize: "1rem"
     }
   }));
 
@@ -83,17 +90,35 @@ function createBarChart(graph, pinLeftNode, pinRightNode) {
         let g = svg.append("g")
         .attr("style", "border: solid 1px black;");
 
+        function transition(zoomLevel) {
+            svg.transition()
+                .delay(100)
+                .duration(700)
+                .call(zoom.scaleBy, zoomLevel);
+                //.call(zoom.transform, transform);
+                //.on("end", function() { canvas.call(transition); });
+          }
+
+        function zoomed() {
+            g.attr('transform', `translate(${d3.event.transform.x}, ${d3.event.transform.y}) scale(${d3.event.transform.k})`);
+        }
+
         let zoom = d3.zoom()
         .on("zoom", zoomed);
 
-        svg
-    .call(zoom);
-        
-    
-        function zoomed() {
-            g.attr("transform", d3.event.transform);
-          }
 
+        svg.call(zoom)
+
+        .on("wheel.zoom", null);
+
+        document.getElementById("zoomInButton").addEventListener("click", () => {
+            transition(0.5);
+        });
+    
+        document.getElementById("zoomOutButton").addEventListener("click", () => {
+            transition(1.5);
+        });
+    
 
     
     
@@ -260,6 +285,19 @@ function BestQuestsGraph(props) {
                 <Grid item xs={12}>
                     <svg id = "mySvg" className = { classes.svg }></svg>
                 </Grid> 
+                <Grid item container xs={12} spacing={1}>
+                <Grid item md={1} className={classes.marginRight}>
+                    <Button id="zoomInButton" className={classes.button} fullWidth variant="contained" color="primary">
+                        -
+                    </Button>
+                </Grid>
+                <Grid item md={1}>
+                    <Button id="zoomOutButton" className={classes.button} fullWidth variant="contained" color="primary">
+                        +
+                    </Button>
+                </Grid>
+                </Grid>
+
                 </Grid>
             )
         } else {

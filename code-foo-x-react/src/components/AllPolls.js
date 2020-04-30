@@ -5,6 +5,8 @@ import "firebase/database";
 import "firebase/functions";
 import React, { useEffect, useState } from 'react';
 import Poll from './Poll';
+import Grow from '@material-ui/core/Grow';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 function AllPolls(props) {
 const [polls, setPolls]= useState(null);
@@ -16,7 +18,9 @@ const [polls, setPolls]= useState(null);
             for (let key in pollsObject) {
                 result.push(
                     <Grid item xs={12} key={key}>
-                        <Poll key={key} data={pollsObject[key]}/>
+                        <Grow in={true}>
+                            <Poll key={key} data={pollsObject[key]}/>
+                        </Grow>
                     </Grid>
                 )
             }
@@ -32,7 +36,11 @@ const [polls, setPolls]= useState(null);
 
         return (
             <Grid container>
-                {polls}
+                { polls !== null ? polls :
+                    <Grid item style={{width: "100%", marginTop: "1rem"}}>
+                        <LinearProgress color="primary" />
+                    </Grid>
+                }
             </Grid>
         );
 

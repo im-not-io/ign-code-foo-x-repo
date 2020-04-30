@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -9,6 +9,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import InfoIcon from '@material-ui/icons/Info';
 import Tooltip from '@material-ui/core/Tooltip';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -34,6 +35,24 @@ const useStyles = makeStyles((theme) => ({
 
 function UserModifcationItem(props) {
 
+let [isLoading, setIsLoading] = useState(false);
+let [icon, setIcon] = useState(null);
+
+
+function handleDelete() {
+    props.onDeleteIconClicked(props.uid);
+    setIsLoading(true)
+}
+
+function getLoading() {
+    if (isLoading === true) {
+        return <CircularProgress size={24} />;
+    } else {
+        return <DeleteIcon />;
+    }
+
+}
+
 const classes = useStyles();
         return (
             <ListItem key={props.uid}>
@@ -45,9 +64,9 @@ const classes = useStyles();
                 secondary={props.email}
                 />
                 <ListItemSecondaryAction>
-                <IconButton edge="end" aria-label="delete" onClick={function() { props.onDeleteIconClicked(props.uid) }}>
+                <IconButton edge="end" aria-label="delete" onClick={function() { handleDelete() }}>
                     {props.showDeleteIcon ? <Tooltip title="Delete" aria-label="Delete">
-                                                <DeleteIcon />
+                                                {getLoading()}
                                             </Tooltip> :
                                             <Tooltip title="Owner may not be deleted" aria-label="Owner may not be deleted">
                                                 <InfoIcon />

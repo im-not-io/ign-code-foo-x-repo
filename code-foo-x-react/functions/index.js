@@ -13,16 +13,16 @@ const cors = require('cors')({
 });
 
 
-//Use this for production ONLY
+// //Use this for production ONLY
 admin.initializeApp();
 
-// //Comment out for debug mode ONLY
-// admin.initializeApp({
-// credential: admin.credential.applicationDefault(),
-// databaseURL: 'https://code-foo-x-firebase.firebaseio.com/'
-// });
-// ////////////////////////////////////
 
+// var serviceAccount = require("/Users/macandcheese/Desktop/FirebaseAdminJson/code-foo-x-firebase-firebase-adminsdk-rrwkq-9155fc933b.json");
+
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: "https://code-foo-x-firebase.firebaseio.com"
+// });
 
 exports.calculateBestQuests = functions.https.onRequest(async (req, res) => {
 

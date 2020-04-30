@@ -108,7 +108,9 @@ export default function CustomizedDialogs(props) {
 
 
   function executeCreateUserOnServer(idToken) {
-    fetch('http://localhost:5000/code-foo-x-firebase/us-central1/users', {
+    //http://localhost:5000/code-foo-x-firebase/us-central1/users
+    //https://us-central1-code-foo-x-firebase.cloudfunctions.net/users
+    fetch('https://us-central1-code-foo-x-firebase.cloudfunctions.net/users', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json'

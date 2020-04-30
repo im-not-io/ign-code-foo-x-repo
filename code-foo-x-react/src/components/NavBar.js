@@ -115,7 +115,7 @@ export default function NavBar(props) {
         onKeyDown={toggleDrawer(anchor, false)}
       >
         <List>
-              <ListItem component={Link} to="/polls"  button key="all_polls" className={classes.listItem}>
+              <ListItem component={Link} to="/polls" button key="all_polls" className={classes.listItem}>
                 <PollIcon className={classes.icon}/>
                 <ListItemText className={classes.gray} primary="All polls" />
               </ListItem>
@@ -151,7 +151,7 @@ export default function NavBar(props) {
                   <img src="/ign-code-foo-logo-nick-edit-2020-04-03-night.svg" alt="Code Foo X Logo" className={classes.image}></img>
                 </Box>
             <div className={classes.spacer}></div>
-            <Button className={classes.loginButton}>All polls</Button>
+            <Button className={classes.loginButton} onClick={() => { console.log("hit"); window.location.href="/polls" }}>All polls</Button>
             </Toolbar>
             <SwipeableDrawer
             anchor={"left"}

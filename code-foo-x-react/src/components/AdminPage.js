@@ -9,6 +9,7 @@ import GraphCalculatorDatasets from './GraphCalculatorDatasets';
 import NavBar from './NavBar';
 import SignOutArea from './SignOutArea';
 import UserManagementArea from './UserManagementArea';
+import DeletePollArea from './DeletePollArea';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -41,9 +42,6 @@ function AdminPage(props) {
 
   useEffect(() => {
     document.title = "Admin portal";
-  });
-
-  useEffect(() => {
     firebase.auth().onAuthStateChanged(function(user) {
       if (!user) {
         setIsLoggedIn(false);
@@ -52,7 +50,9 @@ function AdminPage(props) {
         setIsLoggedIn(true);
       }
     });
-  });
+  }, []);
+
+
 
 
     return (<Grid container spacing={5} justify="center">
@@ -63,6 +63,9 @@ function AdminPage(props) {
                 <Grid item md={12} xs={12} className={classes.marginBottom}>
                   <UserManagementArea show={isLoggedIn}/>
                 </Grid>
+                <Grid item md={12} xs={12} className={classes.marginBottom}>
+                <DeletePollArea show={isLoggedIn} />
+              </Grid>
                 <Grid item md={12} xs={12} className={classes.marginBottom}>
                     <GraphCalculatorDatasets /> 
                 </Grid>

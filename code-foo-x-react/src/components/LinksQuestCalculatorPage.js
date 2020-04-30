@@ -46,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
     },
     marginLeft: {
       marginLeft: "0.25rem"
+    },
+    bottomPush: {
+      marginBottom: "0.5rem"
     }
   }));
 
@@ -178,11 +181,13 @@ function getQuestCalculatorTimestamp() {
                   <BestQuestsGraph questCalculatorResult={questCalculatorResult}/>
               </Grid> 
                 
-              <Grid container item xs={12} alignItems="center">
-                <Grid item xs={12}>
+              <Grid container item xs={12} md={4} alignItems="center">
+                <Grid item xs={12} className={classes.bottomPush}>
                   <p className={classes.instructionText}>{getQuestCalculatorTimestamp()}</p>
-                  <BetterButton state={reloadFromSourceButtonState} function={fetchQuestCalculatorResult}>Reload from source<ReplayIcon className={classes.marginLeft}/></BetterButton>
-                  <BetterButton function={toggleDialog}>Modify data source<SettingsIcon className={classes.marginLeft}/></BetterButton>
+                  <BetterButton fullWidth={true} state={reloadFromSourceButtonState} function={fetchQuestCalculatorResult}>Reload from source<ReplayIcon className={classes.marginLeft}/></BetterButton>
+                </Grid>
+                <Grid item xs={12}>
+                  <BetterButton fullWidth={true} function={toggleDialog}>Modify data source<SettingsIcon className={classes.marginLeft}/></BetterButton>
                 </Grid>
                   <Grid item>
                     <ErrorBox message="The server isn't feeling well right now. Please try again later."/>
