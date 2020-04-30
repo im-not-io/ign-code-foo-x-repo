@@ -26,7 +26,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 const useStyles = makeStyles((theme) => ({
     pollIcon: {
         color: theme.palette.secondary.dark,
-        fontSize: "3rem"
+        fontSize: "2.5rem"
     },
     progressBar: {
         marginTop: "1rem",

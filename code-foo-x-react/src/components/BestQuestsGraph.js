@@ -1,6 +1,6 @@
 import React from 'react'
 import * as d3 from 'd3';
-import { useEffect} from 'react';
+import { useEffect, useState } from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
@@ -11,9 +11,9 @@ import ZoomOutIcon from '@material-ui/icons/ZoomOut';
 
 const width = (window.innerWidth/12) * 10;
 const height = (window.innerHeight/12) * 10;
-const linkDistance = 500;
+const linkDistance = 350;
 const nodeRadius = 10;
-const SAFETY_PADDING = 20;
+const SAFETY_PADDING = 40;
 
 const useStyles = makeStyles((theme) => ({
     svg: {
@@ -26,8 +26,92 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-function createBarChart(graph, pinLeftNode, pinRightNode) {
 
+function BestQuestsGraph(props) {
+    const classes = useStyles();
+    const [bestQuests, setBestQuests] = useState(null);
+    const normalColor = "rgba(173,173,173,0.3)";
+    const highlightColor = "rgba(221, 10, 52, 1)";
+    const darkColor = "rgba(74,74,74,1)";
+    const lighterDarkColor = "rgba(74,74,74,0.3)";
+
+    useEffect(() => {
+        if (props.questCalculatorResult !== null) {
+            //add the start node in, because it previously removed
+            let maxPath = ["[[[[START_NODE]]]]"].concat(props.questCalculatorResult.maxPath.map((obj) => obj.quest));
+            setBestQuests(maxPath);
+        }
+    }, [props.questCalculatorResult]);
+
+    useEffect(() => {
+        if (bestQuests !== null) {
+            drawGraph(props.questCalculatorResult.graph, "[[[[START_NODE]]]]", props.questCalculatorResult.maxPath[props.questCalculatorResult.maxPath.length - 1].quest);
+        }
+    }, [bestQuests]);
+
+
+    // function doesQuestExist(list, name) {
+    //     console.log("dqe list", list);
+    //     for (let i = 0; i < list.length; i++) {
+    //         let obj = list[i];
+    //         if (obj.quest === name) {
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }
+
+
+    function getCorrectEdgeColor(edge) {
+        for (let i = 0; i < bestQuests.length - 1; i++) {
+            let source = bestQuests[i];
+            let target = bestQuests[i + 1];
+            if (edge.source.name === source && edge.target.name === target) {
+                return highlightColor;
+            }
+        }
+        return normalColor;
+    }
+
+    function getCorrectVertexColor(vertex) {
+        const vertexName = vertex.name;
+        if (bestQuests.indexOf(vertexName) !== -1) {
+            //Is part of the best path
+            return highlightColor;
+        } else {
+            //Isn't part of the best path
+            return normalColor;
+        }
+    }
+
+    function getArrowhead(edge) {
+        if (getCorrectEdgeColor(edge) === highlightColor) {
+            return "url(#arrowhead-normal)";
+        } else {
+            return "url(#arrowhead-highlighted)";
+        }
+    }
+
+    function getLabelColorEdge(edge) {
+        if (getCorrectEdgeColor(edge) === highlightColor) {
+            return darkColor;
+        } else {
+            return lighterDarkColor;
+        }
+    }
+
+    function getLabelColorNode(vertex) {
+        if (getCorrectVertexColor(vertex) === highlightColor) {
+            return darkColor;
+        } else {
+            return lighterDarkColor;
+        }
+    }
+
+
+
+
+    function drawGraph(graph, pinLeftNode, pinRightNode) {
         // var dataset = {
     
         // nodes: [
@@ -59,6 +143,8 @@ function createBarChart(graph, pinLeftNode, pinRightNode) {
     
         // ]
         // };
+
+        
 
         let dataset = {
     
@@ -95,8 +181,6 @@ function createBarChart(graph, pinLeftNode, pinRightNode) {
                 .delay(100)
                 .duration(700)
                 .call(zoom.scaleBy, zoomLevel);
-                //.call(zoom.transform, transform);
-                //.on("end", function() { canvas.call(transition); });
           }
 
         function zoomed() {
@@ -124,7 +208,9 @@ function createBarChart(graph, pinLeftNode, pinRightNode) {
     
         var force = d3.forceSimulation()
             .nodes(dataset.nodes)
-            .force("link", d3.forceLink(dataset.edges).id(function(d) { return d.name; }).distance(linkDistance))
+            .force("link", d3.forceLink(dataset.edges).id(function(d) {
+                return d.name;
+            }).distance(linkDistance))
             .force("charge", d3.forceManyBody())
             .force("center_force", d3.forceCenter(width / 2, height / 2));
     
@@ -137,9 +223,11 @@ function createBarChart(graph, pinLeftNode, pinRightNode) {
             .data(dataset.edges)
             .enter()
             .append("line")
-            .style("stroke","#adadad");
+            .style("stroke",(edge) => {
+                return getCorrectEdgeColor(edge);
+            });
           
-    
+    //            .style("stroke","#adadad");
     
     
     
@@ -150,9 +238,15 @@ function createBarChart(graph, pinLeftNode, pinRightNode) {
             .attr("x", function(d){return d.x; })
             .attr("y", function(d){return d.y; })
             .attr("class", "nodelabel")
-           .text(function(d){return d.name;})
+           .text(function(d){
+               if (d.name === "[[[[START_NODE]]]]") {
+                   return "Start Here";
+               } else {
+                    return d.name;
+               }
+            })
            .attr("font-size",15)
-           .attr("fill", "#4a4a4a")
+           .attr("fill", getLabelColorNode)
            .attr("font-family", "Verdana, sans-serif")
            .attr("font-weight", "bold");
     
@@ -168,10 +262,10 @@ function createBarChart(graph, pinLeftNode, pinRightNode) {
             .attr('class', 'edgepath')
             .attr('fill-opacity', 0)
             .attr('stroke-opacity', 0)
-            .attr('marker-end','url(#arrowhead)')
+            .attr('marker-end',getArrowhead)
             .attr('id', function(d,i) {return 'edgepath'+i})
-            
-    
+        
+
         var edgelabels = g.selectAll(".edgelabel")
             .data(dataset.edges)
             .enter()
@@ -182,7 +276,7 @@ function createBarChart(graph, pinLeftNode, pinRightNode) {
             .attr("dx",0)
             .attr("dy", 0)
             .attr("font-size",10)
-            .attr("fill", "#4a4a4a")
+            .attr("fill", getLabelColorEdge)
             .attr("font-family", "Verdana, sans-serif")
             .attr("font-weight", "bold");
     
@@ -204,7 +298,7 @@ function createBarChart(graph, pinLeftNode, pinRightNode) {
           .attr("r", nodeRadius)
           .attr("cx", 100)
           .attr("cy", 100)
-          .attr("fill", "#adadad");
+          .attr("fill", getCorrectVertexColor);
     
           drag_handler(nodes);
     
@@ -217,9 +311,10 @@ function createBarChart(graph, pinLeftNode, pinRightNode) {
             .attr("startOffset", "50%")
     
     
+        const defs = svg.append('defs')
     
-        svg.append('defs').append('marker')
-            .attr('id', 'arrowhead')
+        defs.append('marker')
+            .attr('id', 'arrowhead-highlighted')
             .attr('viewBox', '-0 -5 10 10')
             .attr('refX',19)
             .attr('refY', 0)
@@ -229,10 +324,23 @@ function createBarChart(graph, pinLeftNode, pinRightNode) {
             .attr('xoverflow','visible')
             .append('svg:path')
                 .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
-                .attr('fill', '#adadad')
-                .attr('stroke','#adadad')
-                .attr("font-family", "Verdana, sans-serif")
-                .attr("font-weight", "bold");
+                .attr('fill', normalColor)
+                .attr('stroke', normalColor)
+
+        defs.append('marker')
+            .attr('id', 'arrowhead-normal')
+                .attr('viewBox', '-0 -5 10 10')
+                .attr('refX',19)
+                .attr('refY', 0)
+                .attr('orient','auto')
+                .attr('markerWidth',10)
+                .attr('markerHeight',10)
+                .attr('xoverflow','visible')
+                .append('svg:path')
+                    .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
+                    .attr('fill', highlightColor)
+                    .attr('stroke',highlightColor)
+            
         
     
                 force.on("tick", function(){
@@ -271,13 +379,7 @@ function createBarChart(graph, pinLeftNode, pinRightNode) {
         
 }
 
-function BestQuestsGraph(props) {
-    const classes = useStyles();
-    useEffect(() => {
-        if (props.questCalculatorResult != null) {
-            createBarChart(props.questCalculatorResult.graph, "[[[[START_NODE]]]]", props.questCalculatorResult.maxPath[props.questCalculatorResult.maxPath.length - 1].quest);
-        }
-    });
+
     function getQuestGraph() {
         if (props.questCalculatorResult != null) {
             return (

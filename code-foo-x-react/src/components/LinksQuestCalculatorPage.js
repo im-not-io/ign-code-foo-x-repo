@@ -88,8 +88,6 @@ const classes = useStyles();
     function listenForFirebaseUpdates() {
       var ref = firebase.database().ref('questCalculatorResult/');
       ref.on('value', function(snapshot) {
-        console.log("snap");
-        console.log(snapshot.val());
         setQuestCalculatorResult(snapshot.val())
       });
     }
@@ -177,7 +175,8 @@ function getQuestCalculatorTimestamp() {
             
               <Grid item xs={12}>
                   <SectionTitle>All possible quest paths</SectionTitle>
-                  <p className={classes.instructionText}>Drag a node to drag it around to see things better.</p>
+                  <p className={classes.instructionText}>Drag a node to move it around. Use the +/- buttons to zoom in/out.</p>
+                  <p className={classes.instructionText}>The most lucrative path is highlighted in <b style={{color: "rgba(221, 10, 52, 1)"}}>red.</b></p>
                   <BestQuestsGraph questCalculatorResult={questCalculatorResult}/>
               </Grid> 
                 

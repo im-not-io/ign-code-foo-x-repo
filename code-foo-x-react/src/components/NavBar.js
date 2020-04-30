@@ -38,7 +38,8 @@ const useStyles = makeStyles((theme) => ({
       fontWeight: 450
   },
   image: {
-    height: "1.7em"
+    height: "1.7em",
+    cursor: "pointer"
   },
   navBar: {
     background: "linear-gradient(180deg, rgba(191,19,19,1) 0%, rgba(153,18,18,1) 100%)"
@@ -148,7 +149,7 @@ export default function NavBar(props) {
                     <MenuIcon />
                 </IconButton>
                 <Box>
-                  <img src="/ign-code-foo-logo-nick-edit-2020-04-03-night.svg" alt="Code Foo X Logo" className={classes.image}></img>
+                  <img src="/ign-code-foo-logo-nick-edit-2020-04-03-night.svg" alt="Code Foo X Logo" onClick={() => { console.log("hit"); window.location.href="/polls" }} className={classes.image}></img>
                 </Box>
             <div className={classes.spacer}></div>
             <Button className={classes.loginButton} onClick={() => { console.log("hit"); window.location.href="/polls" }}>All polls</Button>

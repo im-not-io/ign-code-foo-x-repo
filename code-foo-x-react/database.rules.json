@@ -13,7 +13,7 @@
  
     },
     "datasets": {
-      ".read": "root.child('users').child(auth.uid).child('role').val() === 'administrator' || root.child('users').child(auth.uid).child('role').val() === 'owner'",
+      ".read": true,
       ".write": "root.child('users').child(auth.uid).child('role').val() === 'administrator' || root.child('users').child(auth.uid).child('role').val() === 'owner'"
     },
     "activeDatasetUrl": {
