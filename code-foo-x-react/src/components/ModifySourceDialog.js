@@ -146,7 +146,7 @@ const classes = useStyles();
             <DialogContent>
             <Grid container>
               <Grid item className={classes.dialogInstructions} xs={12}>
-                Use the dropdown to permanently change the data source used by the quest calculator. Access the <Link className={classes.link} color="primary">Admin Panel</Link> to add/delete new datasets.
+                Use the dropdown to permanently change the data source used by the quest calculator. Access the <Link className={classes.link} color="primary" onClick={() => window.location.href="/admin-portal"}>Admin Panel</Link> to add/delete new datasets.
               </Grid>
               <Grid item xs={12}>
               <InputLabel>Select data set</InputLabel>
