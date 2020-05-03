@@ -21,28 +21,31 @@ import "firebase/database";
 import "firebase/functions";
 import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
+import Hidden from '@material-ui/core/Hidden';
 
 
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   spacer: {
       flexGrow: 1
   },
-  loginButton: {
+  allPolls: {
       fontSize: "1em",
       textTransform: "none",
       color: "white",
-      fontWeight: 450
+      fontWeight: 450,
+      lineHeight: 1
   },
   image: {
     height: "1.7em",
     cursor: "pointer"
   },
   navBar: {
-    background: "linear-gradient(180deg, rgba(191,19,19,1) 0%, rgba(153,18,18,1) 100%)"
+    background: "linear-gradient(180deg, rgba(191,19,19,1) 0%, rgba(153,18,18,1) 100%)",
+    width: "100%"
   },
   gray: {
     color: theme.palette.secondary.dark
@@ -152,7 +155,9 @@ export default function NavBar(props) {
                   <img src="/ign-code-foo-logo-nick-edit-2020-04-03-night.svg" alt="Code Foo X Logo" onClick={() => { console.log("hit"); window.location.href="/polls" }} className={classes.image}></img>
                 </Box>
             <div className={classes.spacer}></div>
-            <Button className={classes.loginButton} onClick={() => { console.log("hit"); window.location.href="/polls" }}>All polls</Button>
+            <Hidden smDown>
+              <Button className={classes.allPolls} onClick={() => { console.log("hit"); window.location.href="/polls" }}>All polls</Button>
+            </Hidden>
             </Toolbar>
             <SwipeableDrawer
             anchor={"left"}

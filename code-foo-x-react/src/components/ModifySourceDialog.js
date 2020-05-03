@@ -85,7 +85,6 @@ function ModifySourceDialog(props) {
   const [datasets, setDatasets] = useState([]);
   
   useEffect(() => {
-    console.log("use effect modify source diagram");
     firebase.database().ref("datasets/").on("value", (snapshot) => {
       
       let result = [];

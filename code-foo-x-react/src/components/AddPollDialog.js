@@ -72,7 +72,8 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: "-0.10rem"
     },
     dialogTitle: {
-      color: theme.palette.secondary.dark
+      color: theme.palette.secondary.dark,
+      marginLeft: "-0.5rem"
     },
     leftPadding: {
       paddingLeft: "1rem"
@@ -154,16 +155,30 @@ export default function AddPollDialog(props) {
     }
 
 
+    function doesPollOptionExist(optionName) {
+      for (let i = 0; i < pollOptions.length; i++) {
+        if (pollOptions[i].option === optionName) {
+          return true;
+        }
+      }
+      return false;
+    }
+
 
     function handleOptionInputKeydown(event) {
-      if (event.key === "Enter" && event.target.value !== "") {
-        if (event.target.value.length > 30) {
+      if (event.key === "Enter") {
+        if (event.target.value === "") {
+          setErrorText("The option may not be blank.");
+          setIsErrorBoxShown(true);
+        }
+        else if (doesPollOptionExist(event.target.value)) {
+
+          setErrorText("The option may not be repeated.");
+          setIsErrorBoxShown(true);
+        } else if (event.target.value.length > 30) {
           setErrorText("Your option may not exceed 30 characters.");
           setIsErrorBoxShown(true);
-          //stop next execution
-          return;
-        }
-
+        } else {
         //copy the array to force the state to re-render
         //major react gotcha
         let options = pollOptions.slice();
@@ -176,7 +191,7 @@ export default function AddPollDialog(props) {
         setPollOptions(options);
         //clear the input so another option can be typed
         setOptionInput("")
-
+      }
       }
     }
 

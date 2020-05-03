@@ -11,6 +11,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import AddDatasetDialog from './AddDatasetDialog'
 import GraphCalculatorDatasetItem from './GraphCalculatorDatasetItem'
+import Grid from '@material-ui/core/Grid';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -76,13 +77,17 @@ function UserManagementArea(props) {
     }
 
     return (
-            <Box>
-                <SectionTitle>Add/delete datasets</SectionTitle>
-                {getLoaderOrData()}
-                <BetterButton function={toggleAddDatasetDialog}>Add dataset</BetterButton>    
-                <AddDatasetDialog isOpen={dialogOpen} toggleFunction={toggleAddDatasetDialog}/>
-            </Box>
-
+            <Grid container>
+                <Grid item xs={12}>
+                    <SectionTitle>Add/delete datasets</SectionTitle>
+                </Grid>
+                <Grid item xs={12}>
+                    {getLoaderOrData()}
+                    <BetterButton function={toggleAddDatasetDialog}>Add dataset</BetterButton>    
+                    <AddDatasetDialog isOpen={dialogOpen} toggleFunction={toggleAddDatasetDialog}/>
+                </Grid>
+                
+            </Grid>
   );
 
 }

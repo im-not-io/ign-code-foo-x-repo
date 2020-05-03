@@ -41,7 +41,7 @@ function PollsPage(props) {
     return (<div>
             <NavBar />
             <Grid container spacing={0} justify="center">
-                <Grid item xs={9}>
+                <Grid item xs={10}>
                     <Grid item container className={classes.standardMargin}>
                         <Grid item xs={12} className={classes.spacer}>
                             <PageTitle>
@@ -50,7 +50,7 @@ function PollsPage(props) {
                             <BetterButton  function={toggleDialog}>Create a poll</BetterButton>
                         </Grid>
                     </Grid>
-                    <Grid item className={classes.pullUp}>
+                    <Grid item xs={12} className={classes.pullUp}>
                         <AllPolls />
                     </Grid>
 

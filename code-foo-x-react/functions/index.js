@@ -31,7 +31,6 @@ exports.calculateBestQuests = functions.https.onRequest(async (req, res) => {
         //return it for later use
         return admin.database().ref("activeDatasetUrl/").once("value")
         .then((dataSnapshot) => {
-            console.log("datasnap ready")
             return dataSnapshot.val();
         });
     }
@@ -502,8 +501,6 @@ exports.users = functions.https.onRequest((req, res) => {
                             });
                     }
                     if (req.method === 'DELETE') {
-                        console.log("requesting delete for uid", jsonBody["deleteUser"]);
-
                         admin.database().ref("users/" + jsonBody["deleteUser"] + "/role").once("value", function(snapshot) {
                             const role = snapshot.val();
                             if (role === "owner") {

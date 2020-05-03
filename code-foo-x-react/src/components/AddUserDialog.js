@@ -69,10 +69,10 @@ const DialogActions = withStyles((theme) => ({
 
 export default function CustomizedDialogs(props) {
   const classes = useStyles();
-  const [name, setName] = useState("Newu Sername");
-  const [email, setEmail] = useState("ndigeron@uci.edu");
-  const [emailConfirmation, setEmailConfirmation] = useState("ndigeron@uci.edu");
-  const [password, setPassword] = useState("password");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [emailConfirmation, setEmailConfirmation] = useState("");
+  const [password, setPassword] = useState("");
   const [isErrorBoxShown, setIsErrorBoxShown] = useState(false);
   const [errorText, setErrorText] = useState("The account creation failed.");
   const [buttonState, setButtonState] =  useState("normal");
@@ -152,7 +152,7 @@ export default function CustomizedDialogs(props) {
     <div>
       <Dialog maxWidth={"sm"} fullWidth={true} onClose={props.toggleFunction} aria-labelledby="customized-dialog-title" open={props.isOpen}>
         <DialogTitle onClose={props.toggleFunction}>
-          Add dataset
+          Add administrator
         </DialogTitle>
         <DialogContent dividers>
           <DialogContentText className={classes.pullUp}>

@@ -32,6 +32,10 @@ const useStyles = makeStyles((theme) => ({
   },
   accountCircle: {
       color: theme.palette.secondary.dark
+  },
+  padTopBottom: {
+    paddingTop: "1.5rem",
+    paddingBottom: "1rem"
   }
 }));
 
@@ -55,11 +59,11 @@ function AdminPage(props) {
 
 
 
-    return (<Grid container spacing={5} justify="center">
+    return (<Grid container justify="center">
             <Grid item xs={12}>
                 <NavBar />
             </Grid>
-            <Grid item container xs={6}>
+            <Grid item container xs={10} md={6} className={classes.padTopBottom}>
                 <Grid item md={12} xs={12} className={classes.marginBottom}>
                   <UserManagementArea show={isLoggedIn}/>
                 </Grid>

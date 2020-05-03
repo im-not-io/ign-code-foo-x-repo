@@ -44,7 +44,7 @@ export default function DeletePollArea() {
         let result = [];
         for (let key in pollsObject) {
             result.push(
-                  <ListItem>
+                  <ListItem key={key}>
                     <ListItemAvatar>
                         <PollIcon className={classes.pollIcon}/>
                     </ListItemAvatar>

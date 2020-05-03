@@ -31,6 +31,9 @@ const useStyles = makeStyles((theme) => ({
   },
   mainGrid: {
     marginTop: "2rem"
+  },
+  sectionTitle: {
+    marginBottom: "0.5rem"
   }
 }));
 
@@ -108,7 +111,7 @@ function AdminLogin(props) {
                 <Grid item md={12} xs={12} className={classes.marginBottom}>
                 <Card className={classes.card}> 
             <CardContent>
-            <SectionTitle>Please login to access the admin portal</SectionTitle>
+            <SectionTitle className={classes.sectionTitle}>Please login to access the admin portal</SectionTitle>
             <form noValidate autoComplete="off" onKeyDown={handleKeydown}>
                 <TextField label="Email" onChange={handleEmailFieldChange} fullWidth/>
                 <TextField label="Password" onChange={handlePasswordFieldChange} type="password" fullWidth/>

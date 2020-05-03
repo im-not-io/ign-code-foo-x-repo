@@ -100,12 +100,11 @@ export default function AddDatasetDialog(props) {
               url: url
             })
             .then(() => {
-              console.log("push success");
               setButtonState("normal");
               props.toggleFunction();
             })
             .catch(() => {
-              console.log("push failure")
+              console.log("Warning: Push failure.")
             });
           }
         });

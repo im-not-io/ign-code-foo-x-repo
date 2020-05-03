@@ -47,7 +47,6 @@ function getMaxVoted(arr) {
 }
 
 useEffect(() => {
-    console.log("resetting max indices", props.options)
     setMaxIndices(getMaxVoted(props.options))
 }, [props.options])
 

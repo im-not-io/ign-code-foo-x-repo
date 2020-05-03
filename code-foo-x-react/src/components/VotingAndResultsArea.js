@@ -41,13 +41,6 @@ const [previousOption, setPreviousOption] = useState(null);
 const [maxIndices, setMaxIndices] = useState(null);
 
 useEffect(() => {
-    console.log("prev, current", previousOption, selectedOption);
-    if (previousOption !== null) {
-        firebase.database().ref("polls/" + props.pollReference + "/options/" + previousOption.index + "/votes").once("value").then((snapshot) => {
-            const votes = snapshot.val();
-            firebase.database().ref("polls/" + props.pollReference + "/options/" + previousOption.index + "/votes").set(votes - 1);
-        });
-    }
     if (selectedOption !== null) {
         firebase.database().ref("polls/" + props.pollReference + "/options/" + selectedOption.index + "/votes").once("value").then((snapshot) => {
             const votes = snapshot.val();
@@ -55,8 +48,13 @@ useEffect(() => {
             props.voteWasCast();
         });
     }
+    if (previousOption !== null) {
+        firebase.database().ref("polls/" + props.pollReference + "/options/" + previousOption.index + "/votes").once("value").then((snapshot) => {
+            const votes = snapshot.val();
+            firebase.database().ref("polls/" + props.pollReference + "/options/" + previousOption.index + "/votes").set(votes - 1);
+        });
+    }
     if (previousOption !== null && selectedOption === null) {
-        console.log("ready to substract from votes");
         firebase.database().ref("polls/" + props.pollReference + "/options/" + previousOption.index + "/votes").once("value").then((snapshot) => {
             const votes = snapshot.val();
             firebase.database().ref("polls/" + props.pollReference + "/options/" + previousOption.index + "/votes").set(votes - 1);
@@ -89,7 +87,6 @@ function isSelected(currentOption) {
 }
 
 useEffect(() => {
-    console.log("resetting max indices", props.options)
     setMaxIndices(getMaxVoted(props.options))
 }, [props.options])
 

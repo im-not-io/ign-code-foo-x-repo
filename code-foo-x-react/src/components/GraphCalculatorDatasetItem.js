@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
     },
     accountCircle: {
         color: theme.palette.secondary.dark
+    },
+    breakLongWords: {
+        overflowWrap: "break-word"
     }
 }));
 
@@ -43,6 +46,7 @@ const classes = useStyles();
                 <ListItemText
                 primary={props.name}
                 secondary={props.url}
+                className={classes.breakLongWords}
                 />
                 <ListItemSecondaryAction>
                 <IconButton edge="end" aria-label="delete" onClick={function() { props.onDeleteIconClicked(props.uid) }}>

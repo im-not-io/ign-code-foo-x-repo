@@ -34,8 +34,6 @@ function voteWasCast() {
     setPollResultsVisible(true);
 }
 
-console.log("props in poll", props);
-
         return (
             <Container className={classes.container}>
                 <SectionTitle>{props.data.title}</SectionTitle>

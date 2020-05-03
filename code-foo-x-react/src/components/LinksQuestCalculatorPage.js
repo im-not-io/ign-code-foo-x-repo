@@ -98,7 +98,7 @@ const classes = useStyles();
     // deleteQuestCalculatorResult();
     //http://localhost:5000/code-foo-x-firebase/us-central1/calculateBestQuests
     //https://us-central1-code-foo-x-firebase.cloudfunctions.net/calculateBestQuests
-    fetch("https://us-central1-code-foo-x-firebase.cloudfunctions.net/calculateBestQuests")
+    fetch("https://us-central1-code-foo-x-firebase.cloudfunctions.net/calculateBestQuests", {method: "GET"})
     .then(
       function(response) {
         if (response.status !== 200) {
@@ -176,6 +176,7 @@ function getQuestCalculatorTimestamp() {
               <Grid item xs={12}>
                   <SectionTitle>All possible quest paths</SectionTitle>
                   <p className={classes.instructionText}>Drag a node to move it around. Use the +/- buttons to zoom in/out.</p>
+                  <p className={classes.instructionText}>This graph visualizes how my algorithm calculates the sequence of quests that would earn Link the most money. It works by building a directed acyclic graph with vertices representing quests and edges representing rupees earned if a quest is taken.</p>
                   <p className={classes.instructionText}>The most lucrative path is highlighted in <b style={{color: "rgba(221, 10, 52, 1)"}}>red.</b></p>
                   <BestQuestsGraph questCalculatorResult={questCalculatorResult}/>
               </Grid> 

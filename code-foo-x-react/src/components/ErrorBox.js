@@ -13,9 +13,6 @@ const useStyles = makeStyles((theme) => ({
         padding: "1rem",
         borderRadius: "0.5rem"
     },
-    cancelIcon: {
-        marginRight: "0.5em"
-    },
     errorBox: {
         marginTop: "1rem",
         marginBottom: "1rem"
@@ -30,10 +27,10 @@ const classes = useStyles();
                 <Grow in={props.show} timeout={500} unmountOnExit={true}>
                     <Grid container className={classes.errorBox}>
                         <Grid container item justify="flex-start" alignItems="center" className={classes.error}>
-                            <Grid item container xs={1} alignItems="center">
-                                <CancelIcon className={classes.cancelIcon}/>
+                            <Grid item container xs={2} alignItems="center">
+                                <CancelIcon/>
                             </Grid>
-                            <Grid item container alignItems="center" className={classes.moveLeft} xs={11}>
+                            <Grid item container alignItems="center" className={classes.moveLeft} xs={10}>
                                 {props.children}
                             </Grid>
                         </Grid>
