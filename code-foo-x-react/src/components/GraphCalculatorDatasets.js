@@ -19,13 +19,18 @@ const useStyles = makeStyles((theme) => ({
         marginTop: "1rem",
         marginBottom: "2rem"
     },
+    nothing: {
+        marginTop: "0.5rem",
+        color: theme.palette.secondary.dark,
+        marginBottom: "1rem"
+    }
 }));
 
 
 
 function UserManagementArea(props) {
     const classes = useStyles();
-    const [datasetItems, setDatasetItems] = useState([]);
+    const [datasetItems, setDatasetItems] = useState(null);
     const [dialogOpen, setDialogOpen] = useState(false);
 
     function deleteDataset(deleteThisUid) {
@@ -61,14 +66,18 @@ function UserManagementArea(props) {
 
 
     function getLoaderOrData() {
-        if (datasetItems.length > 0) {
+        if (datasetItems === null) {
+            return <LinearProgress className={classes.topBottomSpacing}/>;
+        }
+        if (datasetItems.length === 0) {
+            return <div className={classes.nothing}>There are no items</div>;
+        }
+        if (datasetItems.length >= 1) {
             return (
                 <List dense={true}>
                     {datasetItems}
                 </List>
             )
-        } else {
-            return <LinearProgress className={classes.topBottomSpacing}/>
         }
     }
 

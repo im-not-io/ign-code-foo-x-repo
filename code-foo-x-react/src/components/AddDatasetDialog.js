@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -15,6 +15,7 @@ import "firebase/database";
 import "firebase/auth";
 import "firebase/functions";
 import ErrorBox from './ErrorBox';
+import { set } from 'd3';
 
 const styles = (theme) => ({
   root: {
@@ -74,6 +75,11 @@ export default function AddDatasetDialog(props) {
   const [errorText, setErrorText] = useState("The user could not be created.");
   const [isErrorBoxShown, setIsErrorBoxShown] = useState(false);
   const [buttonState, setButtonState] = useState("normal");
+
+  useEffect(() => {
+    setName("");
+    setUrl("");
+  }, [props.toggleFunction]);
 
   function handleKeydown(event) {
     if (event.key === "Enter") {

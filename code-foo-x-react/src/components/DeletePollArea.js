@@ -31,7 +31,12 @@ const useStyles = makeStyles((theme) => ({
     progressBar: {
         marginTop: "1rem",
         width: "100%"
+    },
+    nothing: {
+      marginTop: "0.5rem",
+      color: theme.palette.secondary.dark
     }
+    
 }));
 
 export default function DeletePollArea() {
@@ -71,6 +76,21 @@ export default function DeletePollArea() {
         });
     }, []);
 
+  function getDeleteItems() {
+    if (deleteItems !== null && deleteItems.length === 0) {
+      console.log("no polls");
+      return <div className={classes.nothing}>There are no polls.</div>
+    }
+    if (deleteItems !== null && deleteItems.length >= 1) {
+      return (
+      <List dense={true}>
+        {deleteItems}
+      </List> 
+      )
+    } else {
+        return <LinearProgress color="primary" className={classes.progressBar}/>
+    }
+  }
 
   return (
             
@@ -79,11 +99,7 @@ export default function DeletePollArea() {
                     <SectionTitle>Delete polls</SectionTitle>
                 </Grid>
                 <Grid item xs={12}>
-                    {(deleteItems !== null) ? 
-                        <List dense={true}>
-                            {deleteItems}
-                        </List>
-                    : <LinearProgress color="primary" className={classes.progressBar}/>}
+                  {getDeleteItems()}
                 </Grid>
             </Grid> 
   );

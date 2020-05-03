@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -76,6 +76,13 @@ export default function CustomizedDialogs(props) {
   const [isErrorBoxShown, setIsErrorBoxShown] = useState(false);
   const [errorText, setErrorText] = useState("The account creation failed.");
   const [buttonState, setButtonState] =  useState("normal");
+
+  useEffect(() => {
+    setName("");
+    setEmail("");
+    setEmailConfirmation("");
+    setPassword("");
+  }, [props.toggleFunction]);
 
   function handleKeydown(event) {
     if (event.key === "Enter") {
