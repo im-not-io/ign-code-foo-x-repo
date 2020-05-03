@@ -131,7 +131,7 @@ export default function NavBar(props) {
                 <SupervisorAccountIcon className={classes.icon}/>
                 <ListItemText className={classes.gray} primary="Admin Portal" />
               </ListItem>
-            <ListItem button onClick={function() { window.location.href="/assets/How%20Nick%20Made%20This%20Website.pdf" }}>
+            <ListItem button onClick={function() { window.location.href="/assets/IGN%20Code%20Foo%20Website%20-%20How%20it's%20made.pdf" }}>
               <InfoIcon className={classes.icon}/>
               <ListItemText className={classes.gray} primary="How Nick Made This" />
             </ListItem>
