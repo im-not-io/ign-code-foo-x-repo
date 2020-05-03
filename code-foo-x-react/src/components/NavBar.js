@@ -131,7 +131,7 @@ export default function NavBar(props) {
                 <SupervisorAccountIcon className={classes.icon}/>
                 <ListItemText className={classes.gray} primary="Admin Portal" />
               </ListItem>
-            <ListItem button onClick={function() { window.location.href="/assets/IGN%20Code%20Foo%20Website%20-%20How%20it's%20made.pdf" }}>
+            <ListItem button onClick={function() { window.open("/assets/IGN%20Code%20Foo%20Website%20-%20How%20it's%20made.pdf", "_blank") }}>
               <InfoIcon className={classes.icon}/>
               <ListItemText className={classes.gray} primary="How Nick Made This" />
             </ListItem>
@@ -152,7 +152,7 @@ export default function NavBar(props) {
                     <MenuIcon />
                 </IconButton>
                 <Box>
-                  <img src="/ign-code-foo-logo-nick-edit-2020-04-03-night.svg" alt="Code Foo X Logo" onClick={() => { console.log("hit"); window.location.href="/polls" }} className={classes.image}></img>
+                  <img src="/ign-code-foo-logo-nick-edit-2020-04-03-night.svg" alt="Code Foo X Logo" onClick={() => { window.location.href="/polls" }} className={classes.image}></img>
                 </Box>
             <div className={classes.spacer}></div>
             <Hidden smDown>
